@@ -1,0 +1,447 @@
+WEB_BLUEPRINT — JOBS TAB
+
+(FELON ENTREPRENEUR WEB APP — MOBILE-FIRST)
+
+This blueprint defines the Jobs tab experience for the Felon Entrepreneur web application.
+It is fully aligned with the Onboarding Overview and Tiers & Access blueprints.
+
+This document is written so it can be used to derive builder-ready prompts for:
+
+Frontend (Next.js App Router + React + TypeScript + Tailwind CSS)
+
+Backend (Next.js Route Handlers + Supabase)
+
+Database schema (Supabase Postgres + RLS (Row-Level Security))
+
+Tier enforcement, quotas, and throttling
+
+Security, abuse prevention, and auditability
+
+Admin tooling and future reporting
+
+0. Role of the Jobs Tab (Web App Context)
+
+The Jobs tab is where Felon Entrepreneur converts Life Plan data into income.
+
+The Jobs tab must:
+
+Turn Life Plan insights + FE Resume data into high-signal job matches
+
+Reduce friction for users who struggle with forms, systems, and bureaucracy
+
+Respect justice-impacted realities (felon-friendly awareness and filtering)
+
+Clearly demonstrate the value of Plus and Pro tiers without blocking Starter users from opportunity
+
+Everything in Jobs exists to help users get hired faster and smarter, not to browse endlessly.
+
+Relationship to other app areas
+
+Plan Tab
+Supplies skills, schedule constraints, goals, and environment data used for job ranking and “Matches Your Life Plan” indicators.
+
+FE Button
+Hosts learning, readiness content, and career skills that reinforce job success.
+
+Profile / Settings
+Holds tier, trial status, subscription controls, and billing access.
+
+Onboarding
+ZIP code and location feed default job search location.
+
+1. Routes, Navigation, and Access
+1.1 Routes (App Router)
+
+All Jobs features live inside the authenticated (app) route group and are only available to logged-in, onboarded users.
+
+/jobs — Main Jobs Hub (search, results, tools overview)
+
+/jobs/[jobId] — Job detail view (page or modal route)
+
+/jobs/saved — Saved jobs (“My Jobs”)
+
+/jobs/resumes — Resume list and management
+
+/jobs/resumes/new — Resume Builder flow
+
+/jobs/application-assistant — Application Assistant flow
+
+/jobs/interview-prep — Interview Prep flow
+
+Modal routes may be used in later phases; MVP can use full-page routes.
+
+1.2 Navigation
+Mobile (Primary)
+
+Global bottom navigation bar:
+
+Left: Home → /dashboard
+
+Left-center: Plan → /plan
+
+Center: Elevated FE Button (opens FE menu)
+
+Right-center: Jobs (active)
+
+Right: Profile → /profile
+
+Tapping Jobs always navigates to /jobs.
+
+Desktop / Tablet
+
+Top navigation bar:
+
+Home | Plan | FE | Jobs | Profile (plus logo)
+
+When Jobs is active, /jobs content fills the main layout with multi-column layouts at larger breakpoints.
+
+1.3 Access Control & Gating
+
+Only authenticated users with completed onboarding can access /jobs.
+
+On request to any /jobs route:
+
+No Supabase session → redirect to /login
+
+Onboarding incomplete → redirect to next onboarding step
+
+Tier data is read from:
+
+profiles.tier
+
+profiles.subscription_status
+
+profiles.trial_started_at / profiles.trial_ends_at
+
+There is no plan_tier or tool-specific tier field.
+
+2. Tier Behavior (Jobs Scope — Canonical)
+2.1 Starter (Free)
+
+Starter users can:
+
+Search jobs with filters
+
+View job details
+
+Save jobs to “My Jobs”
+
+Use FE Coach AI only via universal AI credits (10 credits / 7-day rolling window)
+
+Starter users cannot:
+
+Use Resume Builder
+
+Use Interview Prep
+
+Use resume-powered job matching
+
+Locked tools remain visible with upgrade messaging.
+
+2.2 Trial — 7-Day Pro-Lite Trial
+
+Trial users:
+
+Do not unlock Resume Builder or Interview Prep
+
+Can see locked tool cards with messaging:
+“This tool unlocks on Plus or Pro.”
+
+At trial end:
+
+Not canceled → converts to Plus
+
+Canceled → reverts to Starter
+
+2.3 Plus (Paid — $15/month)
+
+Plus users can:
+
+Everything Starter can
+
+Resume Builder: 5 resumes per month
+
+Application Assistant: 15 sessions per month
+
+Interview Prep: 3 sessions per month
+
+Resume-powered job matching
+
+FE Coach AI with soft monthly caps + throttling
+
+2.4 Pro (Paid — $25/month)
+
+Pro users can:
+
+Everything Plus can
+
+Resume Builder: 10 resumes per month
+
+Application Assistant: 30 sessions per month
+
+Interview Prep: 6 sessions per month
+
+Higher AI ceilings and relaxed throttling
+
+Advanced matching signals (future expansion)
+
+3. UI Layout — Mobile-First
+3.1 Jobs Intro
+
+Component: <JobsIntroStrip />
+
+Title: “Jobs Hub”
+
+Subline: “We help you get hired — not just search.”
+
+Caption: “Jobs are matched to your Life Plan, skills, and location.”
+
+3.2 Job Search Card
+
+Component: <JobsSearchCard />
+
+Includes:
+
+Search input (free text)
+
+Location (from ZIP; editable)
+
+Radius selector (5 / 15 / 30 / 50 miles)
+
+Toggles:
+
+Match to my Life Plan skills (default ON if Plan complete)
+
+Use my FE Resume (Plus/Pro only; disabled otherwise)
+
+Felon-friendly filter
+
+Search button → /api/jobs/search
+
+3.3 Filters Row
+
+Component: <JobsFiltersRow />
+
+Filter chips:
+
+Job type
+
+Distance
+
+Experience level
+
+Requirements (no degree / no experience)
+
+Schedule
+
+All filters are sent as structured payload to backend.
+
+3.4 Job Results List
+
+Component: <JobResultsList /> + <JobCard />
+
+Each card includes:
+
+Job title, company, location
+
+Pay range
+
+Tags:
+
+Felon-friendly
+
+No degree required
+
+No experience required
+
+Matches your Life Plan
+
+Matches your FE Resume (Plus/Pro only)
+
+Bookmark toggle
+
+Tap → /jobs/[jobId]
+
+3.5 Job Detail Page
+
+Component: <JobDetailPage />
+
+Actions by tier:
+
+Starter / Trial
+
+Open employer site to apply
+
+Info message explaining Plus/Pro tools
+
+Plus / Pro
+
+Open employer site
+
+Use FE Resume
+
+Use Application Assistant
+
+4. Resume Builder (Plus & Pro Only)
+4.1 Access Rules
+
+Starter & Trial: locked
+
+Plus: 5/month
+
+Pro: 10/month
+
+Single-use purchase available ($3.99)
+
+4.2 Resume Builder Flow
+
+Route: /jobs/resumes/new
+
+Steps:
+
+Contact basics
+
+Target role & industry
+
+Work history
+
+Skills & strengths (pre-filled from Life Plan)
+
+Education & certifications
+
+Style & focus
+
+AI generation occurs server-side.
+
+5. Application Assistant (Plus & Pro Only)
+
+Starter & Trial: locked
+
+Plus: 15/month
+
+Pro: 30/month
+
+Single-use purchase: $2.99
+
+Flow:
+
+Select job
+
+Select resume
+
+Paste application questions
+
+Generate editable answers
+
+Copy/export
+
+6. Interview Prep (Plus & Pro Only)
+
+Starter & Trial: locked
+
+Plus: 3/month
+
+Pro: 6/month
+
+Flow:
+
+Choose job context
+
+Choose resume
+
+Optional anxiety/context notes
+
+AI generates practice Q&A
+
+7. Database Model (Supabase)
+7.1 profiles (canonical)
+
+Includes:
+
+id
+
+preferred_name
+
+zip_code
+
+city, state
+
+onboarding_step
+
+tier (starter, trial, plus, pro)
+
+subscription_status
+
+trial_started_at
+
+trial_ends_at
+
+timestamps
+
+7.2 jobs
+
+Publicly readable job listings with flags for felon-friendly and requirements.
+
+7.3 saved_jobs
+
+User-scoped saved job records.
+
+7.4 fe_resumes
+
+Stores generated resumes and matching metadata.
+
+7.5 usage_periods
+
+Monthly counters:
+
+resume_generations_count
+
+application_assists_count
+
+interview_preps_count
+
+ai_messages_count
+
+7.6 usage_events
+
+Append-only audit trail for all tool usage.
+
+8. Backend APIs
+
+POST /api/jobs/search
+
+POST /api/jobs/save
+
+POST /api/resumes/generate
+
+POST /api/application-assistant/generate
+
+POST /api/interview-prep/generate
+
+All enforce tier, quotas, and throttling server-side only.
+
+9. Security & RLS
+
+RLS enabled on all user tables
+
+Clients never write tier, usage, or billing fields
+
+All AI endpoints:
+
+Authenticate
+
+Resolve tier
+
+Enforce limits
+
+Log usage events
+
+10. Admin & Internal Controls (Future)
+
+Job moderation
+
+Felon-friendly tagging
+
+Aggregate analytics (no PII)
+
+Admin role with strict RLS separation

@@ -1,0 +1,460 @@
+CHEAT CODES Blueprint (FE Button Feature)
+1. Purpose and Positioning
+
+Cheat Codes is a monetized micro-content library of high-value “life hacks” delivered as short videos. Content can be created by:
+
+Kyle and Nate (primary creators)
+
+Approved community creators (secondary creators)
+
+AI-generated videos featuring Kyle/Nate (only if you choose to support that workflow)
+
+Cheat Codes lives inside the FE Button (center hub). It is listed under the Courses area as its own dedicated card/module, and it can open into its own full page/section.
+
+Core value proposition:
+
+Low-ticket, impulse-buy videos ($2–$10 each)
+
+Immediately actionable advice (practical life wins)
+
+Easy discovery and purchase inside the FE Button hub
+
+2. Information Architecture (IA) and Navigation
+2.1 Entry Points
+
+Mobile (primary):
+
+User taps FE Button (center glowing button in bottom navigation)
+
+FE Button opens the FE Hub panel / modal page
+
+Under the Courses grouping, user sees a Cheat Codes card
+
+Desktop/Tablet:
+
+FE Button equivalent entry (button in UI, or FE Hub menu item)
+
+Same structure: FE Hub → Courses grouping → Cheat Codes
+
+2.2 Locations
+
+Cheat Codes can exist in both:
+
+FE Hub module view (quick browse, featured content)
+
+Dedicated Cheat Codes page (full catalog and filters)
+
+Recommended routes:
+
+FE Hub: /fe (or modal state)
+
+Cheat Codes main: /fe/cheat-codes
+
+Cheat Code detail: /fe/cheat-codes/[slug-or-id]
+
+3. User Experience (UX) Requirements
+3.1 FE Hub Card (Cheat Codes Card)
+
+Card content:
+
+Title: Cheat Codes
+
+Subtitle: “High-value life hacks you can buy instantly.”
+
+Small featured video thumbnails (top 3)
+
+CTA (Call To Action): Browse Cheat Codes
+
+Interactions:
+
+Clicking card opens /fe/cheat-codes (or expands in FE Hub)
+
+3.2 Cheat Codes Catalog Page
+
+Page sections:
+
+Header
+
+Title: Cheat Codes
+
+Subtitle: “Life hacks from Kyle, Nate, creators, and AI.”
+
+Filters & Sorting
+
+Category (dropdown)
+
+Price range ($2–$10)
+
+Creator (Kyle, Nate, Community, AI)
+
+Sort: Most Popular, Newest, Price Low→High, Rating
+
+Grid/List of Cheat Code Cards
+Each card shows:
+
+Thumbnail
+
+Title
+
+Creator badge (Kyle / Nate / Community / AI)
+
+Price
+
+Duration (e.g., “2:34”)
+
+Short teaser text (1–2 lines)
+
+Button: Watch Teaser
+
+Button: Buy & Unlock (or Unlocked if owned)
+
+3.3 Cheat Code Detail Page
+
+Layout:
+
+Video header area with a player
+
+Title + creator + category + price
+
+Teaser playback always available (free)
+
+Locked full video requires purchase
+
+Key UI elements:
+
+“What you’ll learn” bullet list
+
+“Who it’s for” quick tags
+
+Upsell:
+
+“Buy 3 Cheat Codes, save 10%” (optional later)
+
+“Related Cheat Codes” carousel
+
+4. Purchase and Access Rules
+4.1 Pricing
+
+Each video is individually priced: $2 to $10
+
+Price is stored per video item and can change for future items
+
+4.2 Ownership Model
+
+Purchases unlock per-video access
+
+Owned videos become permanently available to the purchaser (unless you later define license terms)
+
+4.3 Teaser vs Full Video
+
+Teaser is always watchable without payment (or optionally requires account to reduce abuse)
+
+Full video is gated behind purchase
+
+4.4 Logged-Out Users
+
+Two acceptable patterns (choose one; recommended is #2):
+
+Allow browsing + teaser viewing; purchase requires signup/login.
+
+Allow browsing only; teaser + purchase requires signup/login. (recommended for fraud reduction and clean tracking)
+
+5. Content Types and Creator Workflows
+5.1 Creator Types
+
+Official: Kyle, Nate
+
+Community: approved creators (future)
+
+AI: AI-generated videos “featuring” Kyle/Nate (future, requires careful governance)
+
+5.2 Submission Sources
+
+Admin upload (Kyle/Nate): upload video + thumbnail + metadata
+
+Community creator portal (future): submit for review
+
+AI generation pipeline (future): generate, review, publish
+
+5.3 Moderation and Quality Control
+
+Required states:
+
+Draft
+
+Pending Review
+
+Published
+
+Unlisted
+
+Removed
+
+Only Published shows to users.
+
+6. Data Model and Database Requirements
+6.1 Tables
+cheat_codes
+
+id (uuid, primary)
+
+title (text)
+
+slug (text, unique)
+
+description (text)
+
+teaser_url (text) — public teaser video
+
+full_video_url (text) — gated video
+
+thumbnail_url (text)
+
+duration_seconds (int)
+
+price_cents (int) — e.g., 200–1000
+
+currency (text, default “USD”)
+
+creator_type (enum: kyle, nate, community, ai)
+
+creator_profile_id (uuid nullable; for community creators)
+
+category (text or FK to categories table)
+
+tags (text[] optional)
+
+status (enum: draft, pending, published, unlisted, removed)
+
+created_at, updated_at
+
+cheat_code_purchases
+
+id (uuid)
+
+user_id (uuid, FK to auth user)
+
+cheat_code_id (uuid, FK)
+
+price_cents_at_purchase (int)
+
+currency (text)
+
+payment_provider (text: stripe, etc.)
+
+payment_intent_id (text)
+
+purchase_status (enum: pending, paid, refunded, chargeback)
+
+created_at
+
+cheat_code_access
+
+(You can also derive access from purchases, but a dedicated table is useful for performance and refunds)
+
+user_id
+
+cheat_code_id
+
+access_status (enum: active, revoked)
+
+revoked_reason (text nullable)
+
+created_at, updated_at
+
+cheat_code_views
+
+(optional analytics)
+
+id
+
+user_id nullable (for logged-out teaser)
+
+cheat_code_id
+
+view_type (enum: teaser, full)
+
+watched_seconds
+
+created_at
+
+6.2 RLS (Row Level Security) Rules
+
+Users can read cheat_codes where status = published (public read)
+
+Users can read their own cheat_code_purchases and cheat_code_access
+
+Full video URL should not be exposed directly to unauthorized users:
+
+Best practice: store full video in private storage and serve via signed URLs
+
+7. Payments and Delivery (Functional Requirements)
+7.1 Payment Provider
+
+Recommended: Stripe
+
+Create a Checkout flow or Payment Intent flow
+
+On successful payment:
+
+record purchase
+
+set cheat_code_access.active
+
+unlock full video
+
+7.2 Refunds / Chargebacks
+
+If refunded or chargeback:
+
+set purchase status
+
+revoke access (access_status = revoked)
+
+full video should no longer load
+
+7.3 Video Hosting
+
+Recommended approach:
+
+Store videos in a bucket (private for full videos, public for teasers)
+
+Use signed URLs for full videos
+
+Throttle repeated requests
+
+8. Security, Anti-Abuse, and Compliance
+8.1 Prevent Full Video Leakage
+
+Do not put full video direct URLs into the page HTML for non-owners
+
+Use a backend endpoint that checks access and returns a short-lived signed URL
+
+8.2 Rate Limiting
+
+Rate-limit teaser playback requests
+
+Rate-limit signed URL generation endpoints
+
+8.3 Purchase Integrity
+
+Only trust Stripe webhook confirmation for “paid”
+
+Never grant access based only on frontend “success” state
+
+8.4 Content Authenticity
+
+For AI-generated videos “featuring” real people:
+
+Require internal approval before publishing
+
+Label as AI clearly in the UI
+
+Keep a policy / disclaimer page
+
+9. UI Components List (Build Targets)
+9.1 FE Hub
+
+FEHubPanel
+
+FEHubCoursesSection
+
+CheatCodesCard (featured previews)
+
+9.2 Cheat Codes Pages
+
+CheatCodesCatalog
+
+CheatCodeCard
+
+CheatCodeDetail
+
+CheatCodeVideoPlayer (teaser/full modes)
+
+BuyUnlockButton
+
+CreatorBadge
+
+FilterBar
+
+9.3 Admin (Phase 2 but define now)
+
+CheatCodesAdminList
+
+CheatCodesAdminEditor
+
+UploadVideoAsset
+
+PublishControls
+
+10. Step-by-Step User Flows
+10.1 Browse and Purchase
+
+User taps FE Button
+
+User taps Cheat Codes card under Courses
+
+Catalog opens
+
+User taps a Cheat Code card
+
+Detail opens
+
+User watches teaser
+
+User taps Buy & Unlock
+
+Payment completes
+
+Full video unlocks immediately
+
+Video appears under “My Cheat Codes” (owned library)
+
+10.2 Owned Library
+
+Add a sub-tab or filter: Owned
+
+Shows only purchased items
+
+Allows immediate full playback
+
+11. MVP Scope vs Phase 2
+MVP (launchable quickly)
+
+Catalog
+
+Teasers
+
+Stripe checkout
+
+Purchase unlock
+
+Owned library filter
+
+Admin upload (manual, not community)
+
+Phase 2
+
+Community submissions + review
+
+Bundles/discounts
+
+Ratings/reviews
+
+Personalized recommendations
+
+AI generation pipeline with approval workflow
+
+12. Copy and Labeling (Initial Defaults)
+
+“Cheat Codes” (feature name)
+
+“Watch Teaser”
+
+“Buy & Unlock”
+
+“Unlocked”
+
+“My Cheat Codes”
+
+Creator badges: “Kyle”, “Nate”, “Community”, “AI”

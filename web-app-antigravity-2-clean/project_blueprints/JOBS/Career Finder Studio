@@ -1,0 +1,291 @@
+Career Finder Studio
+
+
+Career Finder Studio (Jobs): high-value features to implement
+1) Dual-input matching (Life Plan + “Career Intent Box”)
+
+This is your “job description box” idea, expanded into a deliberate mechanism:
+
+A. Life Plan signal (default ON)
+
+Uses life_plan.feature_slices.jobs + work_money.job_preferences (roles, constraints, keywords).
+
+Prevents random matches and “browse hell.”
+
+B. Career Intent Box (user-controlled)
+
+A text box: “Describe what you want to do (or what you’ve done).”
+
+AI converts it into structured intent:
+
+target roles, industries, must-have conditions, deal-breakers, keywords, seniority
+
+The user can “lock” constraints (example: “no nights,” “no travel,” “must be within 20 miles”).
+
+Why it’s high value
+
+People often don’t know job titles. They can describe what they want, and the system translates it into a search strategy.
+
+2) “Skills & Proof Card” beside search (your idea, made powerful)
+
+A small card next to search (or a collapsible drawer on mobile) with:
+
+“Skills I have” (chips + free text)
+
+“Work I’ve done” (1–3 short bullets per job)
+
+“Credentials” (licenses, certs, OSHA, ServSafe, CDL, etc.)
+
+“Proof links” (portfolio links if relevant)
+
+AI turns this into:
+
+Skill taxonomy (normalized skills)
+
+Keywords for ATS (Applicant Tracking System—resume screening software)
+
+Missing skills for target roles (gap analysis)
+
+This card becomes reusable across:
+
+Jobs matching
+
+Resume Builder
+
+Application Assistant
+
+Courses recommendations
+
+3) Job Match Score (0–100) with explainability (not a black box)
+
+You’re right to want a score. The critical piece is: make it explainable so the user trusts it.
+
+Score components (example)
+
+Fit (0–40): role alignment vs Life Plan + Career Intent
+
+Skills match (0–25): overlap of required/preferred skills vs user skills/resume
+
+Constraints match (0–15): schedule, distance, pay floor, remote/on-site, physical requirements
+
+Eligibility risk (0–10): background checks / licensing / degree gating (if detectable)
+
+Competitiveness (0–10): seniority mismatch, under/over-qualified signals
+
+Each job card shows:
+
+“Match Score: 82”
+
+2–4 “Because” bullets:
+
+“Matches your target roles: Warehouse Lead / Logistics”
+
+“You have 7/9 required skills”
+
+“Within 12 miles of your ZIP”
+
+“No degree required”
+
+“Improve my score” button
+
+AI suggests exact actions:
+
+“Add forklift certification (if you have it)”
+
+“Rewrite bullet #2 to include inventory management keywords”
+
+“Take Course X to cover skill gap Y”
+
+This is one of the biggest “wow” moments you can build.
+
+4) Felon-friendly intelligence (real value, handled responsibly)
+
+Your blueprint has a “felon-friendly filter.” You can make it significantly more useful:
+
+Felon-friendly confidence label (not absolute truth):
+
+“Likely friendly”
+
+“Unknown”
+
+“Likely strict”
+
+Based on:
+
+job posting language (background check mentions, “bondable,” etc.)
+
+employer category and historical user feedback (later)
+
+user-specific flags (if user chooses to store them)
+
+This must be framed carefully:
+
+“We can’t guarantee employer policy. This is an estimate.”
+
+5) Feedback loop: “Did you apply?” “Did you get a response?”
+
+Every job card can collect 1-tap feedback:
+
+Saved
+
+Applied
+
+Interview
+
+Rejected
+
+Hired
+
+This creates:
+
+Better ranking over time
+
+Proof of progress for the Plan tab
+
+Data to generate weekly “Momentum Reports”
+
+6) “Two-lane results”: Safe picks vs Stretch picks
+
+Instead of one list:
+
+Best Matches (Safe Picks): high probability, low friction
+
+Stretch Matches: bigger pay/title but requires steps
+
+Users love this because it feels strategic, not random.
+
+7) “Job-to-Resume Fit Preview” (Plus/Pro)
+
+When a job is selected:
+
+AI shows a quick preview:
+
+“Your resume currently matches 63% of this posting.”
+
+“Top missing keywords: X, Y, Z.”
+
+One click: “Generate Resume Tailored to This Job.”
+
+This ties Jobs → Resume Builder directly.
+
+8) “One-click Apply Kit”
+
+A job gets an “Apply Kit” bundle:
+
+Resume (tailored)
+
+Cover letter (optional)
+
+60-second “pitch script” (for phone calls or video cover letter)
+
+“Application Answers Pack” (from Application Assistant)
+
+This is high perceived value because users walk away with deliverables, not just listings.
+
+9) “Search modes” that feel like a studio
+
+Make it fun without gimmicks:
+
+Mode: Quick Match (fast, minimal input)
+
+Mode: Deep Match (uses Life Plan + Skills Card + Intent Box + Resume)
+
+Mode: No Experience (filters for entry-level + no degree + training)
+
+Mode: Fast Cash (short onboarding: immediate hire categories + weekly pay emphasis)
+
+10) Trust & safety details (must-have)
+
+Clear “Why this match?” explanation
+
+Transparent scoring
+
+Ability to hide sensitive factors
+
+“Private Mode” toggle: prevents storing certain notes (especially justice-impacted info)
+
+Modern resume expectations (2024–2025 reality you need to design around)
+
+These are the practical expectations your AI resume system should optimize for:
+
+ATS-friendly formatting is still the default requirement
+Clean structure, minimal styling, predictable headings, keyword alignment.
+Indeed
++2
+Jobscan
++2
+
+Keyword alignment matters because screening is increasingly automated
+Tools and recruiters emphasize mirroring job-description language where truthful.
+resumebuilder.com
++2
+Forbes
++2
+
+File type is not universal: DOCX is often safer than PDF in ATS workflows
+Many ATS systems parse DOCX more reliably; PDF is fine only when the employer explicitly supports it.
+TopResume
++2
+Let's Eat, Grandma
++2
+
+Portfolios/links are expected in many modern/creative/technical roles
+A portfolio link is a common differentiator (design, UX, front-end, marketing).
+General Assembly
++1
+
+Short video intros / video cover letters are an emerging “edge,” not a universal norm
+Useful in communication-heavy roles; not always advisable; should be optional and user-approved.
+Business Insider
++1
+
+Implication for your Resume Builder
+You should generate two “tracks”:
+
+ATS Track (default): clean DOCX/PDF, no graphics, keyword-optimized, job-tailored
+
+Proof Track (optional add-ons): portfolio links, project highlights, optional video link, case studies
+
+Tier mapping (practical, aligned with your blueprint)
+
+Your blueprint already defines monthly quotas. For “fun + value,” the gating should feel fair:
+
+Starter
+
+Job search + filters + match scoring (basic)
+
+Intent Box (limited)
+
+Saved jobs
+
+“Why this match?” explanations
+
+Limited AI “Improve my score” (using your global credit system)
+
+Trial (Pro-Lite)
+
+Same as Starter for tools (per blueprint), but you can preview locked features:
+
+“Resume-powered matching preview” (blurred / sample)
+
+“Apply Kit preview”
+
+Plus
+
+Resume-powered matching ON
+
+Resume Builder (monthly quota)
+
+Application Assistant (quota)
+
+Interview Prep (quota)
+
+Deeper scoring + “Improve my score” fully enabled
+
+Pro
+
+Same as Plus with higher quotas + “deep match mode” enhancements:
+
+multi-variant resume generation (your 2 vs 4 versions concept fits here well)
+
+more aggressive tailoring and optimization cycles

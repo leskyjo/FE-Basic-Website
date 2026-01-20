@@ -1,0 +1,503 @@
+WEB_BLUEPRINT — HOME TAB (DASHBOARD)
+
+Felon Entrepreneur Web App — Authenticated “Home” experience aligned with Jobs, Courses, and FE Button
+
+This blueprint defines the authenticated Home/Dashboard page that users land on after onboarding and that appears as Home in the mobile bottom nav. It is designed to match the same build style and enforcement patterns as:
+
+Jobs tab (authenticated app route group, onboarding gate, tier-aware tool cards) 
+
+JOBS WEB APP FINAL
+
+FE Button / FE Hub (mobile-only overlay, global bottom nav structure, FE hub state) 
+
+FE BUTTON FINAL
+
+Courses (public vs in-app routes, tier-aware UI, purchases via Stripe, signed content access patterns) 
+
+COURSES WEB APP FINAL
+
+Tier & Access enforcement (tier badge, “X days left” trial indicator, server-side enforcement, usage counters) 
+
+ONBOARDING_TIERS_AND_ACCESS_FIN…
+
+0. Purpose & Scope
+0.1 Purpose of Home (Dashboard)
+
+Home is the central, daily-return dashboard. It must do four things simultaneously:
+
+Welcome + Identity: “Welcome, {first_name}” + FE brand lockup + a short welcome video.
+
+Overview: Show what they’ve been doing across the app (Plan, Jobs, Courses, Resume Builder, Application Assistant, FE Hub mini-features).
+
+Progress & Next Actions: Give clear “what to do next” prompts that feel encouraging, not naggy.
+
+Tier Awareness: Show tier badge and trial countdown (if applicable), with subtle upgrade nudges consistent with your tier system. 
+
+ONBOARDING_TIERS_AND_ACCESS_FIN…
+
+0.2 What Home is NOT
+
+Not a marketing landing page (marketing belongs to / per your onboarding architecture). 
+
+Onboarding Overview POTENTIAL
+
+Not a replacement for Plan/Jobs/Courses — it is a launchpad.
+
+1. Routes, Navigation, and Access
+1.1 Route Map (Next.js App Router)
+
+Authenticated app route:
+
+/dashboard — Home (Dashboard)
+
+Supporting routes (already exist or will exist):
+
+/plan — Plan tab
+
+/jobs — Jobs tab 
+
+JOBS WEB APP FINAL
+
+/fe/courses — Courses in-app route (via FE Hub or desktop nav) 
+
+COURSES WEB APP FINAL
+
+/profile — Profile (tier, billing, settings)
+
+1.2 Navigation placement (must match your established navigation)
+
+Mobile bottom nav includes Home → /dashboard 
+
+FE BUTTON FINAL
+
+Desktop/tablet header includes Home as a top-level link consistent with Jobs’ desktop nav behavior 
+
+JOBS WEB APP FINAL
+
+FE Button remains mobile-only and opens FE Hub overlay; Home must not duplicate FE Hub UI on desktop 
+
+FE BUTTON FINAL
+
+1.3 Access Control & Gating
+
+Home is an (app) route. Enforce:
+
+If no Supabase session → redirect /login
+
+If onboarding incomplete → redirect to first incomplete onboarding step (same rule as Jobs) 
+
+JOBS WEB APP FINAL
+
+2. Core User Experience & Flows
+2.1 First visit after onboarding
+
+When onboarding completes and the Life Plan is generated, user lands on:
+
+/dashboard showing:
+
+Welcome header + name
+
+Welcome video (auto-play muted, user-controlled)
+
+“Your Next Moves” card stack driven by their Plan + activity state
+
+Tier badge and trial countdown if in trial 
+
+ONBOARDING_TIERS_AND_ACCESS_FIN…
+
+2.2 Returning daily user
+
+Home becomes a “status screen”:
+
+Progress highlights (Plan completion %, streaks)
+
+Jobs momentum (saved jobs count, recommended matches)
+
+Courses momentum (owned courses, continue where left off)
+
+Tools nudges (Resume Builder / Application Assistant)
+
+FE Hub momentum (Daily Boost, Tiny Wins, Cheat Codes surfacing)
+
+2.3 Upgrade nudges (subtle, rules-based)
+
+Home should encourage upgrades only when relevant, e.g.:
+
+Trial days left banner
+
+User clicks locked tools elsewhere (Home can surface “Unlock Resume Builder with Plus/Pro” card)
+
+User hits usage limits (Home can show “You’re out of X—upgrade to continue”) consistent with server returned errors. 
+
+ONBOARDING_TIERS_AND_ACCESS_FIN…
+
+3. Frontend UI Layout & Visual System
+3.1 Global header (shared app header)
+
+At top of /dashboard:
+
+Left: FE logo/mark
+
+Center: “Felon Entrepreneur”
+
+Right: hamburger → Settings/Profile shortcuts (pattern mirrors Jobs header bar approach) 
+
+JOBS WEB APP FINAL
+
+3.2 Hero Welcome Block (above the fold)
+
+Component: <DashboardWelcomeHero />
+
+Contents:
+
+“Welcome, {first_name}”
+
+Small line: “Here’s your progress today.”
+
+Tier badge chip: Starter / Trial / Plus / Pro
+
+If Trial: show “X days left” 
+
+ONBOARDING_TIERS_AND_ACCESS_FIN…
+
+3.3 Welcome Video Panel (must feel premium)
+
+Component: <WelcomeVideoCard />
+
+Requirements:
+
+Video player with poster image
+
+Auto-play muted (user can unmute)
+
+“Replay” control
+
+“Skip welcome video” setting (see Settings)
+
+Video source:
+
+Stored in public assets or secured storage depending on whether it’s public brand content (recommended: public).
+
+3.4 Dashboard “Overview Grid” (core of the page)
+
+Home content below video is a stack of high-signal cards. Mobile-first, then desktop becomes 2–3 column grid.
+
+Sections (in order):
+
+A) “Your Next Moves” (Action Recommendations)
+
+Component: <NextMovesCard />
+Shows 3–5 recommended actions based on their state:
+
+“Finish your Life Plan section: {missing_section}”
+
+“Save 1 job you’d actually apply for”
+
+“Continue your course: {course_title}”
+
+“Use the Application Assistant on a saved job”
+
+“Log a Tiny Win” (mobile FE Hub link)
+
+Each action has:
+
+label
+
+1-line “why”
+
+CTA button
+
+B) Plan Progress Snapshot
+
+Component: <PlanProgressCard />
+
+Completion % (or stage labels if your Plan isn’t percent-based)
+
+“Last update” timestamp
+
+CTA: “Open Plan” → /plan
+
+C) Jobs Snapshot
+
+Component: <JobsSnapshotCard />
+
+Saved jobs count
+
+Recommended jobs count (or “new matches”)
+
+CTA: “Open Jobs” → /jobs
+
+Secondary CTA: “Use Application Assistant” → /jobs/application-assistant (if allowed)
+
+This must respect your tier gating patterns (locked card, upgrade CTA if not allowed). 
+
+ONBOARDING_TIERS_AND_ACCESS_FIN…
+
+D) Courses Snapshot
+
+Component: <CoursesSnapshotCard />
+
+Owned courses count
+
+Continue course button if in progress
+
+CTA: “Browse Training” → /fe/courses (in-app) 
+
+COURSES WEB APP FINAL
+
+E) Tools Spotlight (Resume Builder + Application Assistant)
+
+Component: <ToolsSpotlightRow />
+Two cards side-by-side on desktop, stacked on mobile:
+
+Resume Builder card
+
+Application Assistant card
+
+Each card:
+
+Shows current month usage (if applicable)
+
+Shows lock state if tier disallows
+
+If locked: “Available on Plus/Pro” + Upgrade CTA 
+
+ONBOARDING_TIERS_AND_ACCESS_FIN…
+
+F) FE Hub Highlights (mobile-aware)
+
+Component: <FeHubHighlights />
+
+On mobile: shows “Open FE Hub” button and highlights:
+
+Daily Boost status
+
+Tiny Wins count this week
+
+Cheat Codes “new drop” teaser
+
+On desktop/tablet: shows a simplified “Daily Boost / Tiny Wins” teaser as read-only OR a link that routes to a future desktop-friendly surface (do not render the mobile FE Hub overlay on desktop). 
+
+FE BUTTON FINAL
+
+3.5 Trial banner rules (if in trial)
+
+If tier == Trial:
+
+Show a slim banner near top:
+
+“Trial: {X} days left”
+
+“Upgrade now to keep your progress uninterrupted”
+
+CTA: “View Plans” → /profile/billing (or wherever billing lives)
+
+Must be subtle and non-aggressive.
+
+4. Backend Data & APIs (Server-Enforced)
+4.1 Dashboard summary endpoint (single fast call)
+
+GET /api/dashboard/summary
+Returns all data needed to render Home in one request.
+
+Response payload (example):
+
+user: first_name, tier, trial_days_left, onboarding_complete
+
+plan: progress metrics + last_updated
+
+jobs: saved_count, new_recommendations_count
+
+courses: owned_count, continue_course (optional)
+
+tools: resume_allowed, resume_used_this_period, resume_limit; app_assist_allowed, app_assist_used, app_assist_limit
+
+fe: tiny_wins_week_count, daily_boost_last_seen, cheat_codes_new (bool)
+
+nudges: array of recommended actions (server-generated)
+
+4.2 Recommendation generation (server-side)
+
+Either:
+
+Generate “Next Moves” in /api/dashboard/summary, OR
+
+Separate endpoint: GET /api/dashboard/recommendations
+
+Rules must be deterministic and auditable:
+
+Based on missing Plan sections, inactivity windows, tool eligibility, and limits.
+
+4.3 Tier and usage enforcement
+
+Dashboard must not compute entitlements client-side. It must read:
+
+tier from profiles
+
+usage counters from usage-period table(s)
+and return “allowed” flags exactly like other modules must do. 
+
+ONBOARDING_TIERS_AND_ACCESS_FIN…
+
+5. Database Schema (Supabase Postgres)
+
+This blueprint assumes you already have core tables (profiles, life plan records, jobs, courses, usage periods). Where you don’t, this defines the minimum to power Home.
+
+5.1 profiles (existing + required dashboard fields)
+
+Add/ensure:
+
+first_name (text)
+
+tier (starter|trial|plus|pro) 
+
+ONBOARDING_TIERS_AND_ACCESS_FIN…
+
+trial_started_at, trial_ends_at (timestamps) 
+
+ONBOARDING_TIERS_AND_ACCESS_FIN…
+
+onboarding_complete (bool)
+
+last_seen_at (timestamp)
+
+welcome_video_last_seen_at (timestamp nullable)
+
+dashboard_opt_out_welcome_video (bool default false)
+
+5.2 usage_periods (monthly counters) — required for tools/tier UI meters
+
+One row per user per billing period, as described in tiers blueprint. 
+
+ONBOARDING_TIERS_AND_ACCESS_FIN…
+
+5.3 dashboard_activity_events (new, optional but recommended)
+
+Table: dashboard_activity_events (append-only, server inserts)
+
+id uuid PK
+
+user_id
+
+event_type (plan_update, job_saved, course_started, resume_generated, app_assist_used, tiny_win_logged, daily_boost_viewed, cheat_code_viewed)
+
+metadata jsonb
+
+created_at
+
+Purpose:
+
+Power “what you’ve been doing” feed
+
+Support future weekly digest email
+
+5.4 dashboard_snapshots (optional optimization)
+
+Table: dashboard_snapshots
+
+user_id PK
+
+snapshot_json jsonb
+
+computed_at timestamp
+
+Used if you want to precompute summary for speed.
+
+6. Security Model (Mandatory)
+6.1 RLS (Row-Level Security) policies
+
+profiles: user can read own profile; update only safe fields (not tier/trial/usage). 
+
+ONBOARDING_TIERS_AND_ACCESS_FIN…
+
+usage_periods: user can read own rows (optional) but cannot write; server-only writes. 
+
+ONBOARDING_TIERS_AND_ACCESS_FIN…
+
+dashboard_activity_events: user read optional (recommended: not directly), server inserts only
+
+Any tool usage counters: server-only increments (atomic)
+
+6.2 Server-only “money fields”
+
+Client must never write:
+
+tier
+
+trial dates
+
+remaining tool counts
+
+usage period counters 
+
+ONBOARDING_TIERS_AND_ACCESS_FIN…
+
+6.3 Rate limiting and abuse controls
+
+Even for Home:
+
+Rate limit /api/dashboard/summary per user (avoid scraping)
+
+If you generate AI-based recommendations later, apply stricter throttles
+
+7. Email + Notifications (Dashboard-Relevant Only)
+
+Home itself doesn’t send emails, but it depends on system events that do.
+
+7.1 Transactional emails triggered by dashboard-linked events
+
+Trial reminder: 2 days left, 1 day left 
+
+ONBOARDING_TIERS_AND_ACCESS_FIN…
+
+Weekly progress digest (optional): “Your week in FE” with Plan/Jobs/Courses highlights
+
+Usage warnings: “You’re almost out of X this period” (Resume/App Assistant) 
+
+ONBOARDING_TIERS_AND_ACCESS_FIN…
+
+7.2 In-app banners (preferred over email for “nudges”)
+
+Home should show banners for:
+
+credits low / limits near (if your tier model has it)
+
+trial countdown
+
+payment issues (if any)
+
+8. Settings (User Controls that affect Home)
+
+Settings must include toggles that Home respects:
+
+Welcome video autoplay (on/off)
+
+Hide welcome video after first view (on/off)
+
+Weekly digest email (on/off)
+
+In-app nudge frequency (light/normal; optional)
+
+Transactional billing emails remain mandatory (compliance). 
+
+ONBOARDING_TIERS_AND_ACCESS_FIN…
+
+9. Implementation Checklist (Builder-Ready)
+
+Create /dashboard page wrapped in the authenticated app layout (bottom nav on mobile, header on desktop) 
+
+FE BUTTON FINAL
+
+Add GET /api/dashboard/summary returning a single payload for the entire screen
+
+Implement the card components listed above (Welcome, Video, Next Moves, Plan/Jobs/Courses snapshots, Tools spotlight, FE highlights)
+
+Wire tier badge + trial days left using server-truth fields 
+
+ONBOARDING_TIERS_AND_ACCESS_FIN…
+
+Add RLS policies + server-only write protections for tier/usage fields 
+
+ONBOARDING_TIERS_AND_ACCESS_FIN…
+
+Add basic in-app banners (trial countdown + locked tools messaging)

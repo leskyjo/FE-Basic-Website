@@ -1,0 +1,445 @@
+ONBOARDING_NAV_LAYOUT.md
+
+Felon Entrepreneur — Navigation & Layout Blueprint
+(Revised for No-Navigation Onboarding Tunnel)
+
+This blueprint defines every navigation element in the Felon Entrepreneur web app, and precisely when it appears or does not appear. It also describes the front-end visuals, route behaviors, and gating logic based on authentication and onboarding progress.
+
+This document is the single source of truth for:
+
+Where bottom nav, header nav, and hamburger menu appear.
+
+What each navigation item does based on:
+
+Logged-out vs logged-in status
+
+Onboarding completion state
+
+Starter / Plus / Pro tier access (where applicable later)
+
+How routing changes dynamically depending on onboarding status.
+
+There must be zero ambiguity in navigation rules. A developer should be able to build the entire nav system from this blueprint alone.
+
+1. Device Layout Strategy — The Three States of Navigation
+
+There are three main navigation visibility states:
+
+State A — Public Layout (navigation visible)
+
+Used for:
+
+Landing page /
+
+Any public preview page (e.g., Plan Preview, Jobs Preview, Courses Preview)
+
+Legal pages (Terms, Policy)
+
+Logged-out users browsing
+
+Navigation shown:
+
+Mobile: bottom nav + hamburger menu
+
+Desktop/tablet: header nav (full)
+
+State B — Auth + Onboarding Tunnel Layout (navigation hidden)
+
+Used for:
+
+/login, /signup, /forgot-password (if used)
+
+/onboarding/name
+
+/onboarding/location
+
+/onboarding/bridge
+
+/onboarding/questions
+
+Navigation not visible:
+
+No bottom nav
+
+No header nav
+
+No hamburger
+
+Only minimal navigation elements allowed:
+
+App logo at top center
+
+A text or icon link: “Back to Home” → /
+
+This prevents distraction and funnel leaks.
+
+State C — App Layout (navigation visible again)
+
+Used for:
+
+/dashboard
+
+/plan
+
+/jobs
+
+/courses
+
+/shop
+
+/profile
+
+/settings, /notifications, etc.
+
+Navigation shown:
+
+Mobile: bottom nav + hamburger menu
+
+Desktop/tablet: header nav
+
+This is the primary logged-in experience.
+
+2. Mobile Bottom Navigation Bar (App Layout Only)
+
+Never shown in auth + onboarding tunnel.
+
+2.1 Final structure and styling requirements
+
+From left to right:
+
+Home
+
+Plan
+
+FE Button (center, glowing)
+
+Jobs
+
+Profile
+
+Visual design:
+
+Entire bar is glass-style: dark translucent background, subtle blur.
+
+Fully rounded pill shape.
+
+Soft outer glow around bar.
+
+Icons + labels always visible.
+
+Touch target: 44×44px minimum per item.
+
+Active item visual:
+
+Bright FE red icon + label
+
+Subtle glow beneath icon
+
+Inactive item visual:
+
+Soft gray icon + label, low emphasis
+
+Disabled item visual (if temporary lock required):
+
+Reduced opacity on icon and label
+
+Tap still triggers modal or informational “unlock message”
+
+2.2 FE Center Button Visuals
+
+Circular shape intersects the top edge of the bar.
+
+Slightly larger than other icons.
+
+Inside: “F” in FE red + “E” in white (exact brand logo).
+
+Intense red halo glow behind it.
+
+Allows quick access to FE “Tools Menu” (Courses, Extra tools, Community, etc.).
+
+3. Desktop / Tablet Header Navigation (Public + App Layouts)
+
+Displayed only in:
+
+Public layout pages
+
+App layout pages after onboarding
+
+Never displayed in:
+
+Auth + onboarding tunnel
+
+3.1 Header nav item order (final)
+
+Left:
+
+FE logo → /
+
+Right (exact order):
+
+Home
+
+Plan
+
+Jobs
+
+Courses
+
+Shop
+
+Profile
+
+Log In (only logged-out)
+
+Join Free (only logged-out)
+
+Facebook (hyperlink icon)
+
+Instagram (hyperlink icon)
+
+Hover rules:
+
+Red text glow or underline on hover
+
+Icons highlight for social links
+
+4. Navigation Behavior Rules Based on User State
+
+There are three execution branches that determine routing:
+
+Branch A — Logged Out (Public visitor)
+
+If they tap bottom nav or header nav items:
+
+Home → / (scroll to hero if already on page)
+
+Plan → Plan Preview
+
+Jobs → Jobs Preview
+
+Courses → Courses Preview
+
+Shop → Public Shop (if separate) or scroll-to merch on Home
+
+Profile → /login (CTA: “Join free” visible)
+
+FE Button → Tools modal with CTA “Create a free account to unlock these tools”
+
+Hamburger menu:
+
+Join Free → /signup
+
+Log In → /login
+
+Account → /login
+
+Settings → disabled or links to /login
+
+Notifications → disabled
+
+Legal + Social links → open normally
+
+Goal: show capability, push them into /signup.
+
+Branch B — Logged In BUT Onboarding Not Finished
+
+Global nav is not visible at all on:
+
+/login
+
+/signup
+
+Any /onboarding/* path
+
+If they attempt to navigate elsewhere (by URL or deep-link):
+
+Detect onboarding_step < 4
+
+Redirect back to the correct onboarding step automatically
+
+Correct redirect logic:
+
+Step 0 → /onboarding/name
+
+Step 1 → /onboarding/location
+
+Step 2 → /onboarding/bridge
+
+Step 3 → /onboarding/questions
+
+For example:
+User types /plan into browser while onboarding incomplete:
+→ Immediately forced into /onboarding/questions or correct step
+
+You cannot land on:
+
+/dashboard
+
+/plan
+
+/jobs
+
+/courses
+
+/shop
+
+/profile
+
+until onboarding_step ≥ 4
+
+Onboarding is the only path forward.
+
+Branch C — Logged In AND Onboarding Complete
+
+Once:
+
+profiles.onboarding_step >= 4
+
+
+→ Full App Layout is unlocked
+
+Now navigation behaves like a normal core UX:
+
+Home → /dashboard
+
+Plan → /plan
+
+Jobs → /jobs
+
+Courses → /courses (with tier gating inside)
+
+Shop → /shop
+
+Profile → /profile
+
+FE Button → Tools modal (Shortcuts to Courses, Extra Tools, Community, etc.)
+
+Hamburger menu now fully functional:
+
+Account → /profile
+
+Settings → /settings
+
+Notifications → /notifications
+
+Terms & Policy → /terms, /privacy
+
+Help → /help
+
+Branch C ensures the app becomes fully navigable only after the Life Plan is triggered.
+
+5. Additional Guardrails and UX Rules
+5.1 Browsing protection during onboarding
+
+User cannot accidentally:
+
+Skip onboarding
+
+Explore locked pages
+
+Land in a layout with nav before completion
+
+Always force correct onboarding resume.
+
+5.2 Resuming onboarding anytime
+
+If onboarding incomplete and user logs back in:
+→ Directly into /onboarding/*
+
+No dashboard until onboarding complete.
+
+5.3 No “half-plan”
+
+User cannot reach /plan unless:
+
+Life plan generation already started
+
+Or plan exists in DB
+
+If generation fails:
+
+/dashboard shows retry UI only
+
+6. Security, Layout Enforcement, and Device Rules
+
+These must be enforced both client-side and server-side:
+
+Routing middleware check:
+
+If logged-out → public layout
+
+If logged-in AND onboarding_step < 4 → onboarding layout (no nav)
+
+If logged-in AND onboarding_step ≥ 4 → app layout (nav visible)
+
+Nav rendering condition checks:
+
+Bottom nav should mount only if
+(deviceIsMobile && onboardingCompleted) OR (deviceIsMobile && loggedOut)
+
+Header nav should mount only if
+(deviceIsDesktop && onboardingCompleted) OR (deviceIsDesktop && loggedOut)
+
+Hamburger should mount only if
+deviceIsMobile && (loggedOut OR onboardingCompleted)
+
+Hard rule:
+Never render global nav inside onboarding route components.
+
+7. Development Checklist (For Codex)
+
+When implementing this:
+
+Whether routing is triggered by:
+
+Clicking nav
+
+URL address bar
+
+Deep linking via email
+→ Rules above must still hold
+
+Checklist:
+
+ Build three layouts:
+
+PublicLayout
+
+OnboardingLayout
+
+AppLayout
+
+ Implement routing guard/middleware based on auth + onboarding_step
+
+ Ensure bottom nav never appears in OnboardingLayout
+
+ Ensure header nav never appears in OnboardingLayout
+
+ FE center button modal behavior implemented in AppLayout only
+
+ Full nav item visibility controlled by:
+
+User state
+
+Device type
+
+Onboarding completion
+
+Tier gating (later)
+
+ Handle visual active states correctly
+
+ Ensure “Back to Home” link always exists in onboarding steps
+
+If any of these fail:
+→ App UX breaks, onboarding leaks, or security issues emerge.
+
+Final Warning for Developers
+
+There must never be a scenario where a user:
+
+Sees navigation during onboarding, OR
+
+Can enter app pages without finishing onboarding
+
+Enforce these two principles and navigation stays airtight.

@@ -1,0 +1,664 @@
+# MULTI-PLAN ARCHITECTURE
+
+**Created:** 2025-12-31  
+**Phase:** MVP to Phase 2  
+**Priority:** High  
+**Replaces:** Single "Life Plan" concept
+
+---
+
+## Overview
+
+Multi-Plan Architecture replaces the single "Life Plan" with 5 specialized plans, each addressing a specific life domain. Users can generate each plan independently, get specialized AI coaching per plan, and track progress across multiple areas simultaneously.
+
+This provides more focused, actionable guidance compared to trying to cover everything in one mega-plan.
+
+---
+
+## The 5 Plan Types
+
+### 1. Career Plan
+**Focus:** Employment (Professional) or Business (Entrepreneur)
+
+**Professional version:**
+- Career progression roadmap
+- Skills to develop per level
+- Promotion strategies
+- Salary negotiation tips
+
+**Entrepreneur version:**
+- Business milestones
+- Launch checklist
+- Revenue goals
+- Scaling strategies
+
+**Questionnaire (3-5 questions):**
+- Current role/business status
+- Goals (1-year, 5-year)
+- Industry/niche
+- Biggest blocker
+
+---
+
+### 2. Health & Wellness Plan
+**Focus:** Physical + mental health
+
+**Covers:**
+- Physical health priorities (sleep, diet, exercise)
+- Mental health support
+- Substance use recovery (if applicable)
+- Stress management
+- Support system building
+
+**Questionnaire (5-7 questions):**
+- Current physical health status
+- Mental health challenges
+- Substance use history
+- Stress triggers
+- Support system quality
+
+---
+
+### 3. Financial Plan
+**Focus:** Money management + debt + savings
+
+**Covers:**
+- Budget creation
+- Debt payoff strategy
+- Emergency fund building
+- Credit repair steps
+- Income optimization
+
+**Questionnaire (5-7 questions):**
+- Current income
+- Monthly expenses
+- Debt situation
+- Financial goals
+- Credit score (if known)
+
+---
+
+### 4. Resources Plan
+**Focus:** Immediate needs + stability
+
+**Covers:**
+- Housing stability roadmap
+- Food security
+- Transportation access
+- Legal obligations (probation/parole)
+- Essential services connections
+
+**Questionnaire (3-5 questions):**
+- Housing status
+- Food security
+- Transportation access
+- Legal obligations
+- Immediate needs
+
+---
+
+### 5. Education Plan
+**Focus:** Skills + learning + certifications
+
+**Covers:**
+- Skills gap analysis
+- Course recommendations (from FE catalog)
+- Certification paths
+- Learning timeline
+- Career-relevant education
+
+**Questionnaire (3-5 questions):**
+- Current skills
+- Desired skills
+- Learning style
+- Time availability
+- Budget for courses
+
+---
+
+## Shared Structure: Horizons
+
+All 5 plans use the same timeline structure:
+
+**Horizons:**
+- **Week 1:** Immediate actions (hyper-specific)
+- **Month 1:** 30-day milestones
+- **Quarter 1 (90 days):** Transformation goals (primary focus)
+- **6 Months:** Visible results
+- **1 Year:** Major achievements
+- **5 Years:** Long-term vision (optional, more vague)
+
+**Detail level:**
+- Week 1 → 90 days: Most detailed, actionable
+- 6 months → 1 year: Strategic, less tactical
+- 5 years: Aspirational, vision-oriented
+
+---
+
+## Mobile-First Requirements 📱
+
+**CRITICAL: Plan viewing and generation must be optimized for phone screens.**
+
+### Touch Optimization
+- Plan cards in overview: Min 100px height
+- "Generate Plan" buttons: Min 48px height, full width on mobile
+- Questionnaire inputs: Min 48px height
+- Action items in Horizons view: Tappable, min 64px height
+- Swipe between Horizons (Week 1 → Month 1 → etc.) on mobile
+
+### Readability
+- Font sizes: Min 16px for body text (prevents zoom on iOS)
+- Contrast: WCAG AA compliant (4.5:1 ratio)
+- Line length: Max 75 characters on mobile
+- Adequate spacing between action items (min 12px)
+
+### Forms (Questionnaires)
+- Each question on separate screen (mobile)
+- Large "Next" button (min 48px height)
+- Progress indicator (e.g., "Question 2 of 5")
+- Use native input types (`type="number"`, `type="email"`, etc.)
+- One question per screen (prevent scrolling)
+
+### Performance
+- Lazy load plan content (show Week 1 first, load rest in background)
+- Cache generated plans locally
+- Optimistic UI (show saving state immediately)
+
+### Capacitor Features
+- **@capacitor/haptics**: Vibrate when plan generated successfully
+- **@capacitor/share**: Share plan milestones with counselor/mentor
+- **@capacitor/local-notifications**: Remind user to complete Week 1 actions
+
+### Offline
+- Plans cached locally after generation
+- Can view plans offline
+- Regenerations queued until online
+
+---
+
+## User Journey
+
+### Initial Onboarding
+1. User completes Path Choice
+2. Immediately generates **Career Plan only** (default)
+3. Sees other plan options in dashboard
+4. Can generate additional plans anytime
+
+### Generating Additional Plans
+1. User navigates to Plan tab
+2. Sees "Generate [Plan Type]" buttons for ungener ated plans
+3. Clicks button → Mini-questionnaire (3-7 questions)
+4. AI generates specialized plan
+5. Plan saved to database
+6. User can view/regenerate
+
+### Viewing Plans
+**Plan tab shows:**
+- List of generated plans
+- Status (active, outdated, regenerating)
+- Last updated date
+- Quick view of Week 1 actions
+- Button to view full plan
+- Button to regenerate (tier-limited)
+
+### AI Coaching Context
+When user chats with AI Coach:
+- AI has access to ALL generated plans
+- Can reference specific plan when giving advice
+- Can suggest generating missing plan (e.g., "You mentioned debt - have you generated your Financial Plan?")
+
+---
+
+## Tier Access
+
+### Regeneration Limits (TOTAL across all plans)
+
+**Starter:**
+- Can generate each plan once (free)
+- 0 regenerations per month
+- Must pay $10/use to regenerate any plan
+
+**Plus:**
+- 4 regenerations per month (shared across all 5 plans)
+- Example: Regenerate Career Plan 2x + Financial Plan 2x = 4 total
+
+**Pro:**
+- 8 regenerations per month (shared across all 5 plans)
+
+**ProTeams:**
+- Same as Pro (8/month)
+
+### Generation vs Regeneration
+
+**Generation (first time):**
+- Always free (all tiers)
+- User completes questionnaire
+- AI creates plan from scratch
+
+**Regeneration:**
+- Tier-limited
+- Updates existing plan with new data (if questionnaire changed)
+- Or refreshes with same data (if just want new recommendations)
+
+---
+
+## Path-Specific Behavior
+
+### Career Plan Only
+
+**Professional Path:**
+- Career progression focus
+- BMC tool integration
+- Job search recommendations
+
+**Entrepreneur Path:**
+- Business milestones focus
+- BMB tool integration
+- Business resources recommendations
+
+### Other Plans (Universal)
+
+**Health, Financial, Resources, Education:**
+- Same structure for both paths
+- AI tone adapts slightly (Professional = corporate language, Entrepreneur = startup language)
+- Recommendations may differ (e.g., health insurance options differ for W-2 vs self-employed)
+
+---
+
+## Database Schema
+
+### Plan tables
+
+**Each plan type gets its own table for generated content:**
+
+```sql
+-- Career Plans
+CREATE TABLE career_plans (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  plan_json jsonb NOT NULL, -- Full plan with Horizons structure
+  questionnaire_answers jsonb NOT NULL, -- Snapshot of answers
+  user_path text NOT NULL CHECK (user_path IN ('professional', 'entrepreneur')),
+  model text NOT NULL, -- "gpt-4o"
+  status text NOT NULL CHECK (status IN ('active', 'outdated', 'archived')),
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
+-- Health Plans
+CREATE TABLE health_plans (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  plan_json jsonb NOT NULL,
+  questionnaire_answers jsonb NOT NULL,
+  model text NOT NULL,
+  status text NOT NULL CHECK (status IN ('active', 'outdated', 'archived')),
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
+-- Financial Plans
+CREATE TABLE financial_plans (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  plan_json jsonb NOT NULL,
+  questionnaire_answers jsonb NOT NULL,
+  model text NOT NULL,
+  status text NOT NULL CHECK (status IN ('active', 'outdated', 'archived')),
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
+-- Resources Plans
+CREATE TABLE resources_plans (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  plan_json jsonb NOT NULL,
+  questionnaire_answers jsonb NOT NULL,
+  model text NOT NULL,
+  status text NOT NULL CHECK (status IN ('active', 'outdated', 'archived')),
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
+-- Education Plans
+CREATE TABLE education_plans (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  plan_json jsonb NOT NULL,
+  questionnaire_answers jsonb NOT NULL,
+  model text NOT NULL,
+  status text NOT NULL CHECK (status IN ('active', 'outdated', 'archived')),
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
+-- Enable RLS on all
+ALTER TABLE career_plans ENABLE ROW LEVEL SECURITY;
+ALTER TABLE health_plans ENABLE ROW LEVEL SECURITY;
+ALTER TABLE financial_plans ENABLE ROW LEVEL SECURITY;
+ALTER TABLE resources_plans ENABLE ROW LEVEL SECURITY;
+ALTER TABLE education_plans ENABLE ROW LEVEL SECURITY;
+
+-- RLS policies (same for all)
+CREATE POLICY "Users access own career plans" ON career_plans
+  FOR ALL USING (auth.uid() = user_id);
+
+CREATE POLICY "Users access own health plans" ON health_plans
+  FOR ALL USING (auth.uid() = user_id);
+
+CREATE POLICY "Users access own financial plans" ON financial_plans
+  FOR ALL USING (auth.uid() = user_id);
+
+CREATE POLICY "Users access own resources plans" ON resources_plans
+  FOR ALL USING (auth.uid() = user_id);
+
+CREATE POLICY "Users access own education plans" ON education_plans
+  FOR ALL USING (auth.uid() = user_id);
+```
+
+### Track regenerations
+
+```sql
+CREATE TABLE plan_generations (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  plan_type text NOT NULL CHECK (plan_type IN ('career', 'health', 'financial', 'resources', 'education')),
+  generation_type text NOT NULL CHECK (generation_type IN ('initial', 'regeneration')),
+  tier_at_time text NOT NULL,
+  tokens_used integer,
+  created_at timestamptz DEFAULT now()
+);
+
+ALTER TABLE plan_generations ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users access own generations" ON plan_generations
+  FOR ALL USING (auth.uid() = user_id);
+
+-- Index for counting monthly regenerations
+CREATE INDEX idx_plan_generations_user_month ON plan_generations(user_id, created_at);
+```
+
+---
+
+## API Endpoints
+
+### Generate Plan
+
+**Endpoint:** `POST /api/plans/generate`
+
+**Request:**
+```json
+{
+  "plan_type": "career" | "health" | "financial" | "resources" | "education",
+  "answers": {
+    "q1": "...",
+    "q2": "...",
+    // ...
+  }
+}
+```
+
+**Logic:**
+1. Authenticate user
+2. Check if plan already exists (if yes, this is a regeneration)
+3. If regeneration:
+   - Get tier
+   - Count regenerations this month (across ALL plan types)
+   - If exceeded limit → return 403 with upgrade/pay prompt
+4. Build AI prompt based on plan_type + answers + user_path
+5. Call OpenAI with Horizons structure schema
+6. Parse JSON response
+7. Save to appropriate table (career_plans, health_plans, etc.)
+8. Log to plan_generations
+9. Return success
+
+**Response:**
+```json
+{
+  "success": true,
+  "plan_id": "uuid",
+  "plan_type": "career",
+  "regenerations_remaining": 3
+}
+```
+
+### Get All Plans
+
+**Endpoint:** `GET /api/plans`
+
+**Response:**
+```json
+{
+  "plans": {
+    "career": {
+      "exists": true,
+      "last_updated": "2025-12-31T10:00:00Z",
+      "status": "active"
+    },
+    "health": {
+      "exists": false
+    },
+    "financial": {
+      "exists": true,
+      "last_updated": "2025-12-20T10:00:00Z",
+      "status": "active"
+    },
+    "resources": {
+      "exists": false
+    },
+    "education": {
+      "exists": false
+    }
+  },
+  "regenerations_used_this_month": 2,
+  "regenerations_limit": 4
+}
+```
+
+---
+
+## Business Rules
+
+### Generation Order
+
+**Onboarding default:**
+- Career Plan generated automatically after Path Choice
+- Other plans optional
+
+**Recommended order:**
+1. Career (default)
+2. Resources (if housing/legal issues)
+3. Health (if substance/mental health challenges)
+4. Financial (for everyone eventually)
+5. Education (when ready to upskill)
+
+### Regeneration Quota
+
+**Shared quota across all plans:**
+- Starter: 0/month (pay $10/use)
+- Plus: 4/month total
+- Pro: 8/month total
+
+**Example (Plus user):**
+- Regenerates Career Plan 3 times
+- Has 1 regeneration left
+- Can use it on any plan type (Career, Health, Financial, Resources, or Education)
+
+### Plan Status
+
+**Active:** Most recent plan, displayed to user  
+**Outdated:** Previous version (replaced by regeneration)  
+**Archived:** Manually archived by user
+
+---
+
+## Implementation Notes
+
+### AI Prompts
+
+Each plan type needs its own system prompt:
+
+**Prompt files:**
+- `lib/ai/prompts/career-plan-prompt.ts`
+- `lib/ai/prompts/health-plan-prompt.ts`
+- `lib/ai/prompts/financial-plan-prompt.ts`
+- `lib/ai/prompts/resources-plan-prompt.ts`
+- `lib/ai/prompts/education-plan-prompt.ts`
+
+**Common structure:**
+- Horizons: Week 1 → Year 5
+- Action items with: title, description, why_it_matters, estimated_time, resources, completion_criteria
+- Path-aware (if Career Plan)
+
+### Progressive Questionnaires
+
+**Questionnaire files:**
+- `components/plans/career-questionnaire.tsx`
+- `components/plans/health-questionnaire.tsx`
+- `components/plans/financial-questionnaire.tsx`
+- `components/plans/resources-questionnaire.tsx`
+- `components/plans/education-questionnaire.tsx`
+
+**Flow:**
+1. User clicks "Generate [Plan Type]"
+2. Modal opens with questionnaire
+3. User answers 3-7 questions
+4. Submit → API call → generation
+5. Loading state → redirect to plan view
+
+### File Structure
+
+```
+app/
+├── app/
+│   └── plans/
+│       ├── page.tsx (overview of all plans)
+│       ├── career/
+│       │   ├── page.tsx
+│       │   └── generate/page.tsx
+│       ├── health/
+│       │   ├── page.tsx
+│       │   └── generate/page.tsx
+│       ├── financial/
+│       │   ├── page.tsx
+│       │   └── generate/page.tsx
+│       ├── resources/
+│       │   ├── page.tsx
+│       │   └── generate/page.tsx
+│       └── education/
+│           ├── page.tsx
+│           └── generate/page.tsx
+├── api/
+│   └── plans/
+│       ├── generate/route.ts
+│       ├── route.ts (get all)
+│       └── [type]/[id]/route.ts (get specific)
+components/
+└── plans/
+    ├── plan-overview-card.tsx
+    ├── horizons-view.tsx
+    ├── career-questionnaire.tsx
+    ├── health-questionnaire.tsx
+    ├── financial-questionnaire.tsx
+    ├── resources-questionnaire.tsx
+    └── education-questionnaire.tsx
+```
+
+---
+
+## Verification Criteria
+
+### Acceptance Tests
+
+1. **Career Plan generation:**
+   - ✅ Generates after onboarding
+   - ✅ Professional vs Entrepreneur versions differ
+   - ✅ Horizons structure correct
+
+2. **Additional plan generation:**
+   - ✅ Can generate Health Plan
+   - ✅ Questionnaire asks relevant questions
+   - ✅ Plan saved to correct table
+   - ✅ Appears in Plans overview
+
+3. **Regeneration limits:**
+   - ✅ Starter cannot regenerate (blocked with payment prompt)
+   - ✅ Plus limited to 4/month (across all plans)
+   - ✅ Counter displays correctly
+   - ✅ Resets monthly
+
+4. **AI Coach integration:**
+   - ✅ Can reference specific plan in conversation
+   - ✅ Suggests generating missing plans
+   - ✅ Context includes all generated plans
+
+5. **Mobile responsive:**
+   - ✅ Plan cards display well
+   - ✅ Questionnaires mobile-friendly
+   - ✅ Horizons view readable
+
+---
+
+## Dependencies
+
+**Blocks:**
+- Plan tab UI (needs multi-plan support)
+- AI Coach context (needs access to all plans)
+
+**Depends on:**
+- Path Choice (determines Career Plan type) ✅
+- OpenAI integration ✅
+- Tier system ✅
+
+---
+
+## Migration Strategy
+
+**For existing "life_plan_versions":**
+```sql
+-- Migrate old life plans to career_plans
+INSERT INTO career_plans (user_id, plan_json, questionnaire_answers, user_path, model, status, created_at)
+SELECT 
+  lpv.user_id,
+  lpv.plan_json,
+  lpv.source_answers,
+  COALESCE(p.user_path, 'professional'), -- Default to professional if missing
+  lpv.model,
+  'active',
+  lpv.created_at
+FROM life_plan_versions lpv
+JOIN profiles p ON p.user_id = lpv.user_id
+WHERE lpv.status = 'succeeded'
+AND lpv.id IN (
+  SELECT current_version_id FROM life_plans WHERE user_id = lpv.user_id
+);
+```
+
+**Then:**
+- Keep old tables for historical reference
+- New generations go to new tables
+- Eventually deprecate old tables
+
+---
+
+## Future Enhancements
+
+### Phase 3
+- Plan progress tracking (% complete)
+- Plan syncing (if Financial Plan says "pay off debt," Health Plan adjusts stress management accordingly)
+- Plan dependencies (can't generate Education Plan without Career Plan)
+- Plan templates (pre-built plans for common situations)
+
+### Phase 4
+- AI-suggested plan priorities ("Based on your answers, you should generate Resources Plan first")
+- Plan comparison (compare current vs previous regeneration)
+- Plan sharing (share anonymized plan with counselor/probation officer)
+
+---
+
+**Status:** Ready for implementation  
+**Estimated Effort:** 30-40 hours (all 5 plans + infrastructure)  
+**Phasing:** 
+- MVP: Career Plan only
+- Phase 2: Add Health + Financial + Resources + Education

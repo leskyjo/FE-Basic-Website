@@ -1,0 +1,437 @@
+# PATH CHOICE - ONBOARDING STEP
+
+**Created:** 2025-12-31  
+**Phase:** MVP (Phase 1)  
+**Priority:** Critical  
+**Replaces:** Old 10-12 question questionnaire
+
+---
+
+## Overview
+
+Path Choice is the NEW second step in onboarding (after ZIP code). Users choose between Professional (employee-focused) or Entrepreneur (business-focused), which determines their initial app experience, available tools, and AI coaching style.
+
+This replaces the previous multi-question questionnaire with a single, clear decision point.
+
+---
+
+## User Journey
+
+### Step-by-Step Flow
+
+1. User completes Name step
+2. User completes ZIP code step
+3. **NEW: Path Choice page loads**
+4. User sees two large, attractive cards:
+   - Professional Path (🏢)
+   - Entrepreneur Path (🚀)
+5. User clicks one card to select
+6. **Tier rules notice** displays below cards (Starter: 1 switch, Plus/Pro: unlimited)
+7. User confirms choice
+8. Path saved to database (`profiles.user_path`, `profiles.primary_path`)
+9. Redirect to Generating page (Life Plan → Career Plan generation)
+10. After generation → Complete page
+
+### Post-Onboarding Behavior
+
+**First time visiting key features:**
+- Jobs page → Mini-questionnaire (employment status, goals)
+- Courses page → Mini-questionnaire (learning preferences)
+- (Progressive profiling)
+
+**Path switching (Settings):**
+- Starter: Shows "1 switch remaining" or "Upgrade to switch again"
+- Plus/Pro: Shows "Switch anytime" with simple confirmation
+
+---
+
+## Tier Access
+
+**All tiers** can complete Path Choice during onboarding.
+
+**Path switching rules:**
+- **Starter:** Can switch once (total), then locked
+- **Plus:** Unlimited switches
+- **Pro:** Unlimited switches
+- **ProTeams:** 
+  - Owner + first 3 seats: Unlimited switches
+  - Additional seats: Path locked at onboarding (permanent)
+
+---
+
+## Path-Specific Behavior
+
+### Professional Path
+
+**Initial setup:**
+- `profiles.user_path = 'professional'`
+- `profiles.primary_path = 'professional'`
+
+**Career Plan generation:**
+- AI focuses on employee career progression
+- Milestones: Junior → Senior → Manager → Director → VP → Executive
+- Tools recommended: BMC, Resume Builder, Interview Prep
+
+**BMB/BMC access:**
+- Plus: BMC only (primary path)
+- Pro: BMC + BMB (both paths)
+
+### Entrepreneur Path
+
+**Initial setup:**
+- `profiles.user_path = 'entrepreneur'`
+- `profiles.primary_path = 'entrepreneur'`
+
+**Career Plan generation:**
+- AI focuses on business milestones
+- Milestones: Idea → Validation → MVP → Launch → Revenue → Scaling
+- Tools recommended: BMB, business courses
+
+**BMB/BMC access:**
+- Plus: BMB only (primary path)
+- Pro: BMB + BMC (both paths)
+
+---
+
+## Mobile-First Requirements 📱
+
+**CRITICAL: This feature must be designed mobile-first for Capacitor deployment.**
+
+### Touch Optimization
+- Card height: Minimum 200px (easy thumb reach)
+- Buttons: Minimum 48px height (Apple/Android standard)
+- Spacing between cards: 16px minimum
+- Touch feedback: Active state with scale/color change
+
+### Performance
+- Load Path Choice page < 1 second on 4G
+- Images optimized for mobile (if using icons/illustrations)
+- No layout shift on load
+
+### Capacitor Compatibility
+- Uses client-side routing (Next.js App Router ✅)
+- No server-side API routes that won't work in static export
+- Works offline (save choice locally, sync when online)
+
+### Native Feel
+- Status bar color matches app theme
+- Safe area insets respected (iPhone notch, Android nav)
+- Haptic feedback on card selection (optional enhancement)
+
+---
+
+## UI/UX Requirements
+
+### Mobile-First Design
+
+**Page Layout:**
+```
+┌─────────────────────────────────────────────┐
+│         [<  Back]    FE Logo    [Skip >]    │  ← Header
+├─────────────────────────────────────────────┤
+│                                             │
+│  Welcome to Felon Entrepreneur              │
+│                                             │
+│  Choose your path to get personalized       │
+│  guidance and tools:                        │
+│                                             │
+│  ┌─────────────────────────────────────┐   │
+│  │ 🏢 Professional                     │   │
+│  │                                     │   │
+│  │ Level up and become the employee,  │   │
+│  │ manager, supervisor, president or  │   │
+│  │ CEO that is irreplaceable and the  │   │
+│  │ company you work for can't live    │   │
+│  │ without.                           │   │
+│  │                                     │   │
+│  │          [Choose Professional]      │   │
+│  └─────────────────────────────────────┘   │
+│                                             │
+│  ┌─────────────────────────────────────┐   │
+│  │ 🚀 Entrepreneur                     │   │
+│  │                                     │   │
+│  │ Launch into the life of passionate  │   │
+│  │ business adventure that you can't   │   │
+│  │ stop thinking about and build an    │   │
+│  │ empire and a legacy.               │   │
+│  │                                     │   │
+│  │          [Choose Entrepreneur]      │   │
+│  └─────────────────────────────────────┘   │
+│                                             │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━    │
+│                                             │
+│  IMPORTANT: PATH SWITCHING RULES            │
+│                                             │
+│  • Starter Plan: You can switch paths      │
+│    ONCE. After that, upgrade to Plus.      │
+│                                             │
+│  • Plus/Pro: Unlimited path switching.     │
+│    Full access to both paths.              │
+│                                             │
+│  Choose carefully, but don't worry —        │
+│  you can always upgrade!                    │
+│                                             │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━    │
+│                                             │
+└─────────────────────────────────────────────┘
+```
+
+**Card Interaction:**
+- Cards are large, tappable targets (min 200px height)
+- Hover/focus state: subtle glow, slight scale up
+- Active state: highlighted border
+- Button inside card (not the whole card clickable to avoid accidental taps)
+
+**Responsive:**
+- Mobile (< 768px): Cards stack vertically
+- Desktop (≥ 768px): Cards side-by-side
+
+---
+
+## Database Schema
+
+### Tables Updated
+
+**profiles table:**
+```sql
+ALTER TABLE profiles ADD COLUMN user_path text CHECK (user_path IN ('professional', 'entrepreneur'));
+ALTER TABLE profiles ADD COLUMN primary_path text CHECK (primary_path IN ('professional', 'entrepreneur'));
+ALTER TABLE profiles ADD COLUMN path_switch_count integer DEFAULT 0;
+```
+
+**Track path switches:**
+```sql
+CREATE TABLE user_path_switches (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  from_path text NOT NULL CHECK (from_path IN ('professional', 'entrepreneur')),
+  to_path text NOT NULL CHECK (to_path IN ('professional', 'entrepreneur')),
+  tier_at_time text NOT NULL,
+  switched_at timestamptz DEFAULT now()
+);
+
+ALTER TABLE user_path_switches ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users access own path switches" ON user_path_switches
+  FOR ALL USING (auth.uid() = user_id);
+```
+
+---
+
+## API Endpoints
+
+### Save Path Choice
+
+**Endpoint:** `POST /api/onboarding/save-path`
+
+**Request:**
+```json
+{
+  "path": "professional" | "entrepreneur"
+}
+```
+
+**Logic:**
+1. Authenticate user
+2. Check if user already has path set (if yes, this is a switch, not initial choice)
+3. If initial choice:
+   - Set `profiles.user_path = path`
+   - Set `profiles.primary_path = path`
+4. If switch (from Settings):
+   - Check tier
+   - If Starter: Check `path_switch_count` (if ≥ 1, return 403 with upgrade prompt)
+   - If Plus/Pro: Allow
+   - Update `profiles.user_path = new_path`
+   - Increment `path_switch_count`
+   - Log to `user_path_switches`
+5. Update `profiles.onboarding_step = 3` (move to Generating step)
+6. Return success
+
+**Response:**
+```json
+{
+  "success": true,
+  "path": "professional",
+  "next_step": "/onboarding/generating"
+}
+```
+
+---
+
+## Business Rules
+
+### Tier Enforcement
+
+**Starter:**
+- Initial choice: Free
+- First switch: Free
+- Second switch attempt: Blocked, show upgrade prompt
+
+**Plus/Pro:**
+- Unlimited switches
+- Rate limit: Max 5 switches per 24 hours (anti-abuse)
+
+**ProTeams Additional Seats (4+):**
+- Path chosen at onboarding
+- Locked permanently (no switches, no matter what tier owner has)
+
+### Onboarding Step Tracking
+
+**Updated step numbers:**
+- Step 0: Name
+- Step 1: ZIP code
+- **Step 2: Path Choice** ← NEW
+- Step 3: Generating (Career Plan)
+- Step 4: Complete
+
+### Path Switch Triggers Re-Onboarding
+
+When user switches paths:
+1. Path updated in database
+2. Redirect to mini-onboarding specific to new path
+3. Mini-onboarding collects 3-5 questions for that path
+4. Career Plan regenerated with new path
+5. User returned to dashboard with new path active
+
+---
+
+## Security Considerations
+
+**RLS:**
+- `profiles` table already has RLS (user can only read/update own row)
+- `user_path_switches` has RLS policy
+
+**Input Validation:**
+- Path must be exactly 'professional' or 'entrepreneur' (enum check)
+- User must be authenticated
+- If switching, must respect tier limits
+
+**Anti-Abuse:**
+- Rate limit: 5 switches per 24 hours (even for Plus/Pro)
+- Log all switches to `user_path_switches` for monitoring
+- If suspicious pattern detected (e.g., 100 switches in a week), flag for review
+
+---
+
+## Implementation Notes
+
+### File Structure
+
+**Create new:**
+- `app/(tunnel)/onboarding/path-choice/page.tsx`
+- `app/(tunnel)/onboarding/path-choice/path-choice-cards.tsx` (component)
+- `app/api/onboarding/save-path/route.ts`
+
+**Delete:**
+- `app/(tunnel)/onboarding/questions/` (entire folder, old questionnaire)
+
+**Update:**
+- `lib/profiles.ts` → Update step mapping (step 2 = path-choice)
+- `app/(tunnel)/onboarding/layout.tsx` → Update progress bar (4 steps total)
+
+### Component Hierarchy
+
+```
+page.tsx
+└── PathChoiceCards
+    ├── ProfessionalCard
+    │   └── ChooseButton
+    └── EntrepreneurCard
+        └── ChooseButton
+```
+
+### State Management
+
+**No complex state needed:**
+- User clicks button → immediate API call
+- Show loading state during save
+- On success → redirect to generating
+
+---
+
+## Verification Criteria
+
+### Acceptance Tests
+
+1. **New user onboarding:**
+   - ✅ After ZIP code, sees Path Choice page
+   - ✅ Can select Professional or Entrepreneur
+   - ✅ Path saved to database correctly
+   - ✅ Redirected to Generating page
+   - ✅ Career Plan generated with correct path focus
+
+2. **Path switching (Starter):**
+   - ✅ Can switch once from Settings
+   - ✅ Second switch blocked with upgrade prompt
+   - ✅ Path switch count incremented correctly
+
+3. **Path switching (Plus/Pro):**
+   - ✅ Can switch unlimited times
+   - ✅ Each switch triggers mini-onboarding
+   - ✅ Career Plan regenerated correctly
+
+4. **Mobile responsive:**
+   - ✅ Cards stack vertically on mobile
+   - ✅ Cards side-by-side on desktop
+   - ✅ Touch targets large enough (min 44px)
+
+5. **Security:**
+   - ✅ Cannot set invalid path value
+   - ✅ Cannot switch beyond tier limit
+   - ✅ RLS prevents viewing other users' data
+
+---
+
+## Dependencies
+
+**Blocks:**
+- Career Plan generation (needs path to determine prompt)
+- BMB/BMC access checks (need primary_path)
+- AI Coach (needs path for context)
+
+**Depends on:**
+- Auth system ✅ (working)
+- Profiles table ✅ (exists, needs column added)
+- Onboarding routing ✅ (working, needs step update)
+
+---
+
+## Migration Path
+
+**For existing users (if any):**
+```sql
+-- Infer path from old questionnaire answer (Q2: desired_employment)
+UPDATE profiles
+SET 
+  user_path = CASE
+    WHEN desired_employment LIKE '%business%' OR desired_employment LIKE '%entrepreneur%' THEN 'entrepreneur'
+    ELSE 'professional'
+  END,
+  primary_path = user_path
+WHERE user_path IS NULL;
+```
+
+**For new users:**
+- Path Choice is mandatory (cannot skip)
+- No default assigned (must choose)
+
+---
+
+## Future Enhancements
+
+### Phase 2
+- Path recommendation quiz (5 questions to suggest best path)
+- "Not sure?" option → takes quiz → gets recommendation
+- Path preview (try Professional for 7 days, then switch if wrong)
+
+### Phase 3
+- Hybrid path (access both equally from start, Pro-only)
+- Path personality assessment (deeper than just Professional/Entrepreneur)
+
+---
+
+**Status:** Ready for implementation
+**Estimated Effort:** 6-8 hours
+**Files to create:** 3
+**Files to update:** 2
+**Files to delete:** 1 folder (~5 files)

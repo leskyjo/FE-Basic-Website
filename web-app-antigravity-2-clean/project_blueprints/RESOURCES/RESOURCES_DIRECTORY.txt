@@ -1,0 +1,590 @@
+# RESOURCES DIRECTORY
+
+**Created:** 2025-12-31  
+**Phase:** MVP (Phase 1)  
+**Priority:** Critical  
+**Feature Type:** Free for all tiers
+
+---
+
+## Overview
+
+Resources Directory is a comprehensive database of local, state, and federal resources for people rebuilding their lives. It provides contact information, addresses, and details for agencies offering housing, food, transportation, legal services, mental health support, and more.
+
+This is a **free feature** available to all users regardless of tier, as it addresses immediate survival needs.
+
+---
+
+## Resource Categories
+
+### 1. Housing
+- Emergency shelters
+- Transitional housing programs
+- Permanent housing assistance
+- Halfway houses
+- Rent assistance programs
+
+### 2. Food Assistance
+- Food banks
+- SNAP (food stamps) offices
+- Meal programs
+- Community kitchens
+- Food pantries
+
+### 3. Transportation
+- Bus pass programs
+- Ride share services
+- Vehicle assistance
+- Gas vouchers
+- Driver's license reinstatement help
+
+### 4. Drug & Alcohol Services
+- Treatment centers (inpatient/outpatient)
+- AA/NA meetings
+- Sober living homes
+- Recovery support groups
+- Harm reduction services
+
+### 5. Mental Health
+- Counseling services
+- Therapy (sliding scale/free)
+- Crisis hotlines
+- Support groups
+- Psychiatric services
+
+### 6. Family & Children Services
+- Childcare assistance
+- Parenting classes
+- Family counseling
+- Child support services
+- Reunification programs
+
+### 7. Legal Services
+- Probation offices
+- Parole offices
+- Public defenders
+- Legal aid societies
+- Expungement assistance
+- Court-related services
+
+### 8. Other Essential Services
+- Phone services (Lifeline program)
+- Internet access (public libraries, free Wi-Fi)
+- Clothing assistance
+- Hygiene products
+- ID/birth certificate help
+
+---
+
+## User Journey
+
+### Discovery
+
+**Entry points:**
+1. Primary navigation (all users)
+2. Resources Plan recommendation (if generated)
+3. AI Coach suggestions
+4. Search from home dashboard
+
+### Search & Filter Flow
+
+1. User lands on Resources Directory page
+2. Sees search bar + category filters + location filter
+3. Options:
+   - **Search by keyword** ("food bank near me")
+   - **Filter by category** (Housing, Food, etc.)
+   - **Filter by location** (uses ZIP code from profile, can override)
+4. Results displayed as cards
+5. User clicks card → detail view
+6. User can save resources (favorites) or share
+
+### Detail View
+
+**Resource card shows:**
+- Organization name
+- Category tag
+- Distance from user (if location detected)
+- Phone number (tap to call on mobile)
+- Address (tap to open in Maps)
+- Website (tap to visit)
+- Email
+- Hours of operation
+- Eligibility requirements
+- Services offered
+- Notes/warnings (e.g., "Requires referral")
+
+---
+
+## Tier Access
+
+**All tiers:** Full access (free feature)
+
+**Why free:**
+- These are survival resources
+- Aligns with mission (helping people rebuild)
+- Not a monetization opportunity
+- Builds trust and goodwill
+
+---
+
+## Path-Specific Behavior
+
+**No path differentiation** - resources are universal.
+
+Both Professional and Entrepreneur path users see the same resources.
+
+**Special considerations:**
+- Resources Plan (if generated) may recommend specific categories based on user's situation
+- AI Coach can suggest resources contextually (e.g., housing if user mentions homelessness)
+
+---
+
+## Mobile-First Requirements 📱
+
+**CRITICAL: 80%+ of users will access resources from phones (often their only device).**
+
+### Touch Optimization
+- Resource cards: Min 88px height (enough info + tappable)
+- "Call" button: Direct tap-to-call functionality (`tel:` links)
+- "Directions" button: Opens native Maps app
+- Search bar: Min 48px height, large enough for thumbs
+- Category filter chips: Min 36px height, adequate spacing
+
+### Location Features
+- Detect user's ZIP from profile (pre-fill search)
+- Show distance to each resource
+- "Near me" default sort (closest first)
+- Tap address → Opens in Apple Maps (iOS) or Google Maps (Android)
+
+### Performance
+- Lazy load resource cards (infinite scroll)
+- Cache searches locally (offline access to recent searches)
+- Fast search (< 500ms response time)
+
+### Capacitor Native Features
+- **@capacitor/geolocation**: Get precise location (with permission)
+- **@capacitor/browser**: Open resource websites in in-app browser
+- **@capacitor/share**: Share resources with others
+- **@capacitor/phone-call**: Direct calling from cards
+
+### Offline Support
+- Save favorite resources for offline viewing
+- Show cached resources if no internet
+- Queue save actions, sync when online
+
+---
+
+## UI/UX Requirements
+
+### Mobile-First Design
+
+**Resources Directory Page:**
+
+```
+┌─────────────────────────────────────────────┐
+│  [≡]  Resources Directory        [Search]  │  ← Header
+├─────────────────────────────────────────────┤
+│  📍 Searching near: [ZIP 12345] [Change]    │  ← Location banner
+├─────────────────────────────────────────────┤
+│  [🔍 Search resources...]                   │  ← Search bar
+├─────────────────────────────────────────────┤
+│  Category Filters:                          │
+│  [🏠 Housing] [🍞 Food] [🚗 Transport]      │
+│  [💊 Drug/Alcohol] [🧠 Mental Health]       │
+│  [👨‍👩‍👧 Family] [⚖️ Legal] [📱 Other]           │
+├─────────────────────────────────────────────┤
+│  Found 42 resources near you                │
+├─────────────────────────────────────────────┤
+│  ┌───────────────────────────────────────┐ │
+│  │ 🏠 Hope Transitional Housing          │ │
+│  │ Transitional housing for re-entry    │ │
+│  │                                       │ │
+│  │ 📍 0.8 miles away                     │ │
+│  │ ☎️ (555) 123-4567                     │ │
+│  │ 🌐 hopehouse.org                      │ │
+│  │                                       │ │
+│  │ [View Details]       [⭐ Save]        │ │
+│  └───────────────────────────────────────┘ │
+│                                             │
+│  ┌───────────────────────────────────────┐ │
+│  │ 🍞 Community Food Bank                │ │
+│  │ Free groceries, no ID required        │ │
+│  │                                       │ │
+│  │ 📍 1.2 miles away                     │ │
+│  │ ☎️ (555) 789-0123                     │ │
+│  │ 🌐 communityfoodbank.org              │ │
+│  │                                       │ │
+│  │ Mon-Fri 9am-5pm, Sat 10am-2pm         │ │
+│  │                                       │ │
+│  │ [View Details]       [⭐ Save]        │ │
+│  └───────────────────────────────────────┘ │
+│                                             │
+│  [Load More]                                │
+└─────────────────────────────────────────────┘
+```
+
+**Detail View (Modal or Full Page):**
+
+```
+┌─────────────────────────────────────────────┐
+│  [← Back]  Resource Details                 │
+├─────────────────────────────────────────────┤
+│  Hope Transitional Housing                  │
+│  🏠 Housing                                  │
+├─────────────────────────────────────────────┤
+│  Description:                               │
+│  6-month transitional housing program for   │
+│  people re-entering from incarceration.     │
+│  Provides case management and job support.  │
+│                                             │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━    │
+│                                             │
+│  📍 Address:                                │
+│  123 Hope Street                            │
+│  Springfield, IL 62701                      │
+│  [📍 Open in Maps]                          │
+│                                             │
+│  ☎️ Phone:                                  │
+│  (555) 123-4567                             │
+│  [📞 Call Now]                              │
+│                                             │
+│  🌐 Website:                                │
+│  hopehouse.org                              │
+│  [🔗 Visit Website]                         │
+│                                             │
+│  📧 Email:                                  │
+│  info@hopehouse.org                         │
+│                                             │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━    │
+│                                             │
+│  🕒 Hours:                                  │
+│  Office: Mon-Fri 8am-5pm                    │
+│  Intake: Tuesdays 1pm-4pm (walk-in)         │
+│                                             │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━    │
+│                                             │
+│  ✅ Eligibility:                            │
+│  • Released from prison within 6 months     │
+│  • Currently homeless or unstable housing   │
+│  • Must pass drug screening                 │
+│  • Willing to participate in programming    │
+│                                             │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━    │
+│                                             │
+│  Services Offered:                          │
+│  • Shared room housing (6 months max)       │
+│  • Case management                          │
+│  • Job search assistance                    │
+│  • Life skills workshops                    │
+│  • Substance abuse counseling               │
+│                                             │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━    │
+│                                             │
+│  [⭐ Save to Favorites]  [↗️ Share]          │
+└─────────────────────────────────────────────┘
+```
+
+---
+
+## Database Schema
+
+### resources table
+
+```sql
+CREATE TABLE resources (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  
+  -- Basic info
+  name text NOT NULL,
+  category text NOT NULL CHECK (category IN (
+    'housing', 'food', 'transportation', 'drug_alcohol', 
+    'mental_health', 'family_services', 'legal', 'other'
+  )),
+  subcategory text, -- e.g., "emergency_shelter" under housing
+  description text NOT NULL,
+  
+  -- Contact info
+  phone text,
+  phone_extension text,
+  email text,
+  website text,
+  
+  -- Location
+  address_line_1 text,
+  address_line_2 text,
+  city text NOT NULL,
+  state text NOT NULL,
+  zip_code text NOT NULL,
+  latitude decimal,
+  longitude decimal,
+  
+  -- Mailing address (if different)
+  mailing_address_line_1 text,
+  mailing_city text,
+  mailing_state text,
+  mailing_zip_code text,
+  
+  -- Operational info
+  hours_of_operation text, -- JSON or text
+  eligibility_requirements text,
+  services_offered text[], -- Array of services
+  notes text,
+  
+  -- Metadata
+  resource_level text CHECK (resource_level IN ('local', 'state', 'federal')),
+  verified boolean DEFAULT false,
+  last_verified_at timestamptz,
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
+-- Indexes for search performance
+CREATE INDEX idx_resources_category ON resources(category);
+CREATE INDEX idx_resources_zip ON resources(zip_code);
+CREATE INDEX idx_resources_city_state ON resources(city, state);
+CREATE INDEX idx_resources_location ON resources USING gist(ll_to_earth(latitude, longitude));
+
+-- Full-text search index
+CREATE INDEX idx_resources_search ON resources USING gin(
+  to_tsvector('english', name || ' ' || description || ' ' || coalesce(services_offered::text, ''))
+);
+```
+
+### user_saved_resources (favorites)
+
+```sql
+CREATE TABLE user_saved_resources (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  resource_id uuid NOT NULL REFERENCES resources(id) ON DELETE CASCADE,
+  notes text, -- User's personal notes about this resource
+  created_at timestamptz DEFAULT now(),
+  
+  UNIQUE(user_id, resource_id)
+);
+
+ALTER TABLE user_saved_resources ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users access own saved resources" ON user_saved_resources
+  FOR ALL USING (auth.uid() = user_id);
+```
+
+---
+
+## API Endpoints
+
+### Search Resources
+
+**Endpoint:** `GET /api/resources/search`
+
+**Query params:**
+- `q` (string, optional): Search query
+- `category` (string, optional): Filter by category
+- `zip` (string, optional): ZIP code for location-based search (defaults to user's ZIP)
+- `radius` (number, optional): Search radius in miles (default: 25)
+- `limit` (number, optional): Results per page (default: 20)
+- `offset` (number, optional): Pagination offset
+
+**Logic:**
+1. Build query based on filters
+2. If ZIP provided, calculate distance (lat/long)
+3. Full-text search if query provided
+4. Sort by distance (if location search) or relevance
+5. Return results
+
+**Response:**
+```json
+{
+  "results": [
+    {
+      "id": "uuid",
+      "name": "Hope Transitional Housing",
+      "category": "housing",
+      "description": "...",
+      "phone": "(555) 123-4567",
+      "address": "123 Hope St",
+      "city": "Springfield",
+      "state": "IL",
+      "zip_code": "62701",
+      "distance_miles": 0.8,
+      "website": "hopehouse.org",
+      "hours": "Mon-Fri 8am-5pm"
+    }
+  ],
+  "total": 42,
+  "has_more": true
+}
+```
+
+### Save Resource
+
+**Endpoint:** `POST /api/resources/save`
+
+**Request:**
+```json
+{
+  "resource_id": "uuid",
+  "notes": "Called on 12/31, need to visit on Tuesday"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "saved_resource_id": "uuid"
+}
+```
+
+---
+
+## Business Rules
+
+### Data Sourcing
+
+**Initial seed:**
+- Manually curate 100-200 critical resources per major city
+- Partner with 211 services (information and referral hotline)
+- Scrape public databases (government resources)
+
+**Ongoing updates:**
+- Community submissions (vetted by admins)
+- Partner organizations can update their own listings
+- Quarterly verification (call to confirm still operational)
+
+### Quality Control
+
+**Verification process:**
+1. All resources manually reviewed before publish
+2. Quarterly phone verification
+3. User reports flag outdated info
+4. Admin dashboard to manage resources
+
+### Search Algorithm
+
+**Ranking factors:**
+1. Distance (if location-based)
+2. Relevance (full-text search score)
+3. Verification status (verified resources rank higher)
+4. Last updated (recent = higher)
+
+---
+
+## Security Considerations
+
+**No user auth required** for viewing resources (public data).
+
+**Auth required** for saving favorites.
+
+**RLS:**
+- `user_saved_resources` table has RLS policy
+- `resources` table is publicly readable (no RLS needed)
+
+**Rate limiting:**
+- Search endpoint: 100 requests per minute per IP
+- Prevents scraping abuse
+
+---
+
+## Implementation Notes
+
+### File Structure
+
+**Create:**
+- `app/app/resources/page.tsx` (main page)
+- `app/app/resources/[id]/page.tsx` (detail page)
+- `components/resources/resource-card.tsx`
+- `components/resources/resource-detail.tsx`
+- `components/resources/category-filters.tsx`
+- `components/resources/search-bar.tsx`
+- `app/api/resources/search/route.ts`
+- `app/api/resources/save/route.ts`
+
+### Data Seeding
+
+**Initial data:**
+- Create CSV with 100-200 resources
+- Run seed script to populate database
+- Manually verify first 50 resources
+
+**Priority cities:**
+1. Chicago, IL
+2. Los Angeles, CA
+3. Houston, TX
+4. New York, NY
+5. Philadelphia, PA
+
+### Third-Party Integrations
+
+**Consider:**
+- Google Maps API (geocoding, distance calculation)
+- 211 API (if available)
+- Aunt Bertha API (social care network)
+
+---
+
+## Verification Criteria
+
+### Acceptance Tests
+
+1. **Search & filter:**
+   - ✅ Can search by keyword
+   - ✅ Can filter by category
+   - ✅ Results sorted by distance
+   - ✅ Pagination works
+
+2. **Detail view:**
+   - ✅ All info displayed correctly
+   - ✅ Phone number clickable (mobile)
+   - ✅ Address opens in Maps
+   - ✅ Website link works
+
+3. **Save favorites:**
+   - ✅ Can save resource
+   - ✅ Can view saved resources
+   - ✅ Can unsave resource
+   - ✅ Can add personal notes
+
+4. **Mobile responsive:**
+   - ✅ Cards display well on mobile
+   - ✅ Filters accessible
+   - ✅ Detail view readable
+
+5. **Performance:**
+   - ✅ Search results load < 1 second
+   - ✅ Handles 10,000+ resources
+
+---
+
+## Dependencies
+
+**Blocks:**
+- Resources Plan (needs Resources Directory to exist)
+
+**Depends on:**
+- User ZIP code (from profiles) ✅
+- Database (Supabase) ✅
+- Maps integration (optional, for directions)
+
+---
+
+## Future Enhancements
+
+### Phase 2
+- User reviews/ratings of resources
+- "I got help here" success stories
+- Resource availability status (accepting new clients?)
+- Appointment booking (for select partners)
+
+### Phase 3
+- Chatbot for resource recommendations
+- SMS notifications for resource updates
+- Multi-language support
+- Accessibility features (text-to-speech for addresses)
+
+---
+
+**Status:** Ready for implementation  
+**Estimated Effort:** 12-16 hours (including data seeding)  
+**Files to create:** 8  
+**Data to seed:** 100-200 resources minimum

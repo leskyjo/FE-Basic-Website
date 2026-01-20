@@ -1,0 +1,896 @@
+ONBOARDING_STEPS.md
+
+Felon Entrepreneur — Onboarding Steps Blueprint
+(Name, Location, Bridge, Questionnaire)
+
+This blueprint defines the four onboarding steps that live inside the auth + onboarding tunnel:
+
+/onboarding/name
+
+/onboarding/location
+
+/onboarding/bridge
+
+/onboarding/questions
+
+It covers:
+
+Front-end UI and UX for each step.
+
+Back-end logic and data persistence.
+
+How profiles.onboarding_step is updated.
+
+How questionnaire_answers is written and read.
+
+Security expectations around these steps.
+
+Email-related triggers that depend on onboarding progress.
+
+This document must be consistent with:
+
+ONBOARDING_OVERVIEW.md
+
+ONBOARDING_NAV_LAYOUT.md
+
+ONBOARDING_AUTH_PROFILE.md
+
+and must be written so an AI builder can implement each step precisely from this spec.
+
+1. Shared rules for all onboarding steps
+1.1 Layout and navigation
+
+All of the following routes:
+
+/onboarding/name
+
+/onboarding/location
+
+/onboarding/bridge
+
+/onboarding/questions
+
+are rendered inside the auth + onboarding tunnel layout.
+
+This layout has these characteristics:
+
+No bottom nav on mobile.
+
+No header nav on desktop/tablet.
+
+No hamburger menu anywhere in onboarding.
+
+What is allowed:
+
+FE logo at the top.
+
+A small “Back to Home” or “Exit” text link that goes to /.
+
+Page title and description.
+
+Progress indicator (step count and/or progress bar).
+
+Primary and secondary buttons for navigation within onboarding.
+
+The visual style:
+
+Clean, dark, modern.
+
+Minimal distractions.
+
+Clear hierarchy: title, short supportive text, main content area, navigation controls.
+
+1.2 Auth + profile precondition
+
+All onboarding routes require an authenticated user and an existing profiles row:
+
+If the user is not logged in:
+
+Redirect immediately to /login.
+
+If profiles row does not exist for this user:
+
+Create one with defaults (as defined in Auth & Profile blueprint).
+
+Start at /onboarding/name.
+
+1.3 onboarding_step gate logic
+
+On every request to any /onboarding/* route:
+
+Fetch profiles.onboarding_step.
+
+Then apply this logic:
+
+If onboarding_step is 0:
+
+Allow /onboarding/name.
+
+Any other /onboarding/* should redirect to /onboarding/name.
+
+If onboarding_step is 1:
+
+Allow /onboarding/location.
+
+/onboarding/name should redirect forward to /onboarding/location.
+
+Other steps (bridge/questions) should redirect to /onboarding/location.
+
+If onboarding_step is 2:
+
+Allow /onboarding/bridge.
+
+Earlier steps redirect forward.
+
+/onboarding/questions kicks off from /onboarding/bridge.
+
+If onboarding_step is 3:
+
+Allow /onboarding/questions.
+
+Earlier steps redirect to /onboarding/questions.
+
+If onboarding_step is 4 or greater:
+
+User should not be in onboarding.
+
+Any attempt to access /onboarding/* redirects to /dashboard.
+
+This prevents rewinding and keeps steps in order. If we later support editing, we can provide a separate “Edit your info” flow; the onboarding tunnel remains strictly linear.
+
+1.4 “Exit onboarding” behavior
+
+Every onboarding page must show a small “Back to Home” link.
+
+When clicked:
+
+Redirect to / (public landing) with nav visible.
+
+Do not reset their onboarding progress.
+
+Ensure current progress and answers are saved (for questions).
+
+They can always log back in later and resume from their onboarding_step.
+
+2. Step 1 — /onboarding/name
+2.1 Purpose
+
+Collect a preferred name that the app will use in greetings and copy.
+
+2.2 Front-end UI
+
+Page elements:
+
+Top:
+
+FE logo.
+
+“Back to Home” link.
+
+Main section:
+
+Title: “What should we call you?”
+
+Short description explaining that this is the name that will appear in the app, not necessarily their legal name.
+
+Example: “Use the name you’re most comfortable with. We’ll use it to personalize your plan.”
+
+Form:
+
+Single text input labeled “Preferred name”.
+
+Placeholder example: “James” or “Tee”.
+
+Buttons:
+
+Primary button: “Continue”.
+
+Optional secondary “Skip” button (if we allow leaving it blank, but recommended to require it).
+
+Visual notes:
+
+Input is large and easy to type on mobile.
+
+Pressing Enter (on desktop) triggers Continue.
+
+2.3 Validation rules
+
+Client-side:
+
+Required field:
+
+Must be non-empty unless we explicitly allow Skip.
+
+Length:
+
+Minimum 1, maximum ~50 characters.
+
+Allowed characters:
+
+Basic letters, spaces, hyphens, apostrophes.
+
+Use simple sanitization or validation to avoid code injection.
+
+If validation fails:
+
+Show inline error under the input:
+
+Example: “Please enter a name” or “That name is too long.”
+
+2.4 Back-end behavior and database
+
+On successful submit:
+
+Update profiles for the current user:
+
+preferred_name = value from form.
+
+onboarding_step = 1 (only if current value < 1).
+
+updated_at = now.
+
+Implementation details:
+
+Use Supabase client (in client component) or server action to:
+
+Upsert into profiles where user_id = auth.uid().
+
+Only update fields for this user.
+
+Route after update:
+
+Redirect to /onboarding/location.
+
+2.5 Security notes
+
+Ensure RLS on profiles only lets the current user update their own record.
+
+Validate payload on server side; ignore any unexpected fields.
+
+Do not log the exact name value in plaintext logs if not needed.
+
+3. Step 2 — /onboarding/location
+3.1 Purpose
+
+Collect a ZIP code (and optionally derive city/state) to localize jobs and resources.
+
+3.2 Front-end UI
+
+Page elements:
+
+Top:
+
+FE logo.
+
+“Back to Home” link.
+
+Progress indicator:
+
+Example: “Step 2 of 4”.
+
+Main content:
+
+Title: “Where are you based right now?”
+
+Short explanation:
+
+“We use your ZIP code to find jobs and support close to you. You can update this later if you move.”
+
+Form:
+
+Single text input labeled “ZIP code”.
+
+Optionally, small helper text: “5-digit ZIP code (US).”
+
+Optional auto-complete showing “City, State” once a valid ZIP is entered.
+
+Buttons:
+
+Back: goes to /onboarding/name (or stays within tunnel).
+
+Continue: advances to /onboarding/bridge.
+
+On pre-existing profiles:
+
+If zip_code is already set, pre-fill the input to help returning users.
+
+3.3 Validation rules
+
+Client-side:
+
+Required field.
+
+Must be exactly 5 digits for US (for launch).
+
+Reject any non-numeric input.
+
+Server-side:
+
+Optionally validate ZIP against a known range or reference service.
+
+Optionally derive city, state from ZIP and store them as additional profile fields.
+
+Error handling:
+
+If invalid ZIP:
+
+Show inline error: “Please enter a valid 5-digit ZIP code.”
+
+3.4 Back-end behavior and database
+
+On successful submit:
+
+Update profiles:
+
+zip_code = entered ZIP.
+
+Optionally city, state = derived from ZIP.
+
+If onboarding_step < 2, set onboarding_step = 2.
+
+updated_at = now.
+
+After update:
+
+Redirect to /onboarding/bridge.
+
+3.5 Security considerations
+
+ZIP is not highly sensitive, but still protect via RLS with user_id = auth.uid().
+
+If geocoding is used, ensure external calls are secure and handle errors gracefully.
+
+4. Step 3 — /onboarding/bridge
+4.1 Purpose
+
+Prepare the user emotionally and mentally before asking deeper questions:
+
+Explain what’s next.
+
+Reassure them about privacy.
+
+Align expectations about how the plan will be used.
+
+4.2 Front-end UI
+
+Page content:
+
+Top:
+
+FE logo.
+
+“Back to Home” link.
+
+Progress indicator:
+
+Example: “Step 3 of 4”.
+
+Main area:
+
+Title: “Let’s get real for a minute.”
+
+Supporting copy:
+
+A short paragraph or bullet list explaining:
+
+We’re not here to judge.
+
+Their answers are private.
+
+The questions only exist to build a real plan that fits their life.
+
+Video:
+
+Embedded short video (hosted in /public or external, controlled by the project).
+
+The video should autoplay muted on desktop (optional), tap to play on mobile.
+
+Key statements (for example as bullet points):
+
+“Your answers stay private and are protected.”
+
+“You can take your time and come back if you need a break.”
+
+“Answer honestly — your plan is only as useful as the picture you give us.”
+
+Buttons:
+
+Primary: “Start Questions” → /onboarding/questions.
+
+Secondary: “Maybe later” (optional) that:
+
+Can send them back to / with the ability to resume later.
+
+4.3 Back-end behavior and database
+
+When user clicks “Start Questions”:
+
+Update profiles:
+
+If onboarding_step < 3, set onboarding_step = 3.
+
+updated_at = now.
+
+Redirect to /onboarding/questions.
+
+If they click “Maybe later”:
+
+Do not change onboarding_step back; keep it at its current maximum.
+
+onboarding_step stays at 2 or 3 depending on whether they previously reached this page.
+
+Redirect to /.
+
+4.4 Security/privacy messaging
+
+The copy here must reinforce:
+
+We cannot guarantee jobs, but we will help plan and point them to tools.
+
+Data is protected by modern security standards.
+
+We never sell their answers.
+
+We do not expose implementation details here but the assurance must match actual security practices defined in the data/security blueprint.
+
+5. Step 4 — /onboarding/questions
+5.1 Purpose
+
+Collect all input required to generate the first Life Goal Plan.
+
+5.2 Overall structure
+
+This page is a multi-step questionnaire powered by a lifePlanQuestionnaire configuration file.
+
+Key characteristics:
+
+Group questions into logical sections:
+
+For example:
+
+Background & situation
+
+Jobs & skills
+
+Money & debts
+
+Legal & supervision
+
+Habits & health
+
+Support & environment
+
+Goals & timeframes
+
+Each group is one “page” or “slide” in the multi-step UI.
+
+Progress is visible:
+
+For example: “Section 3 of 7” and a progress bar.
+
+5.3 Front-end UI requirements
+
+Overall page:
+
+Top:
+
+FE logo.
+
+“Back to Home” link.
+
+Under that:
+
+Step title (the group name).
+
+Brief description for that group (why these questions matter).
+
+Main content:
+
+A vertical list of questions from the current group.
+
+Each question displays:
+
+Question text, clear and friendly.
+
+Optional hint text.
+
+Question types:
+
+Multiple choice (single-select):
+
+Show options as large, tappable cards or buttons.
+
+Selected option shows a clear highlight (border + background).
+
+Multiple choice (multi-select):
+
+Cards with checkmarks; user can pick more than one.
+
+Selected cards remain highlighted.
+
+Short text:
+
+Single-line text input.
+
+Long text:
+
+Multi-line textarea (for short “story” answers).
+
+Numeric (if needed):
+
+Number input with restrictions.
+
+Form navigation:
+
+At bottom of the group:
+
+Left button: “Back” (disabled on first group).
+
+Right button: “Next” or “Continue”.
+
+On the last group:
+
+The right button text changes to “Generate My Life Plan”.
+
+Autosave indicator:
+
+A small text label, for example “Saved” or “Saving…” when an answer is updated.
+
+5.4 lifePlanQuestionnaire config (high-level)
+
+The questionnaire is driven by a config object, something like:
+
+An array of groups.
+
+Each group has:
+
+group_id
+
+Title
+
+Description
+
+List of questions.
+
+Each question has:
+
+question_id (unique per question).
+
+group_id.
+
+label (the text the user sees).
+
+type (single_choice, multi_choice, short_text, long_text, numeric).
+
+options for multiple choice (if applicable).
+
+required (true/false).
+
+Any validation constraints (max length, allowed values).
+
+This config will be defined in more detail in a dedicated questionnaire file, but this blueprint defines how it is used.
+
+5.5 Data model for answers
+
+Answers are stored in questionnaire_answers.
+
+Each row should minimally contain:
+
+user_id (UUID, reference to auth user).
+
+question_id.
+
+group_id.
+
+answer_value (JSON or text; use JSON if multi-select).
+
+created_at and updated_at.
+
+We may also store:
+
+version or session_id if we support multiple runs later.
+
+5.6 Autosave behavior
+
+Every time the user changes an answer, we should:
+
+Debounce save (e.g., save 300–1000ms after the last change to avoid hammering the DB).
+
+Upsert into questionnaire_answers for that user_id and question_id.
+
+Front-end steps:
+
+User selects an option or types text.
+
+Front-end updates local state.
+
+Debounced call to Supabase (or API) to save the answer.
+
+On success:
+
+Show a small “Saved” indicator.
+
+On failure:
+
+Show non-blocking message: “Problem saving right now. We’ll try again.”
+
+Back-end rules:
+
+Upsert logic must ensure:
+
+One answer row per (user_id, question_id).
+
+Overwrites previous answer rather than creating duplicates.
+
+5.7 Required vs optional questions
+
+Before allowing “Next” or “Generate My Life Plan”:
+
+Check that all required questions in the current group are answered.
+
+Optional design:
+
+For the final submission (when generating plan), we may additionally check that all required questions across all groups are answered.
+
+If some required questions are missing:
+
+Show a clear summary: “You still have some questions to answer in section X.”
+
+Provide buttons to jump back to incomplete sections.
+
+However, as a launch baseline, we can:
+
+Enforce required questions on a per-group basis when navigating Next.
+
+Allow generating a plan even if some non-critical questions are missing.
+
+5.8 “Generate My Life Plan” button behavior
+
+On the last group:
+
+The primary button is labeled “Generate My Life Plan”.
+
+When clicked:
+
+Final validation:
+
+Ensure all required questions in current group are answered.
+
+Optional: ensure minimal required combination across all groups.
+
+Update profile:
+
+Set profiles.onboarding_step to 4 (if current value < 4).
+
+updated_at = now.
+
+Trigger generation:
+
+Call a server-side route (for example /api/life-plan/generate).
+
+This endpoint:
+
+Authenticates the user (server-side session).
+
+Fetches all questionnaire_answers for this user.
+
+Assembles prompt for AI model.
+
+Stores a “generation started” record in ai_generations.
+
+May either:
+
+Synchronously generate and store the Life Plan, or
+
+Queue a background job (recommended if generation is slow).
+
+Redirect:
+
+Immediately redirect user to /dashboard after triggering the generation.
+
+Do not wait for AI to finish; dashboard shows the “pulsing globe” as defined in the overview.
+
+Error handling:
+
+If the generation trigger fails:
+
+Set onboarding_step to 3 or 4 depending on design.
+
+Show an error message and allow re-try.
+
+Log details for analysis.
+
+5.9 Resume behavior
+
+If a user leaves /onboarding/questions midway:
+
+onboarding_step remains 3.
+
+questionnaire_answers contains whatever they saved so far.
+
+When they come back and we route them to /onboarding/questions:
+
+Load existing answers from questionnaire_answers.
+
+Pre-fill the relevant fields and highlight previously selected options.
+
+Set the first group to:
+
+Either the first incomplete group, or
+
+The first group with partially answered required questions.
+
+This provides a smooth “Resume where you left off” experience.
+
+6. Security considerations specifically for onboarding steps
+6.1 RLS policies
+
+Onboarding interacts with:
+
+profiles
+
+questionnaire_answers
+
+life_plans (indirectly, via generation trigger)
+
+ai_generations (logging generation)
+
+Row-Level Security must ensure:
+
+Users only access their own rows in all these tables.
+
+The typical policy is:
+
+user_id = auth.uid() for all SELECT, INSERT, and UPDATE from client-side.
+
+No client-side call is allowed to read another user’s answers or profile.
+
+6.2 Sensitive data in answers
+
+Some onboarding questions will be sensitive (e.g., legal status, substance history, etc.). We must:
+
+Store answers in a way that:
+
+Keeps them encrypted at rest if possible (or at least in a secure DB).
+
+Allows only their owner to read them (no broad admin access except with secure service role).
+
+Avoid logging raw answer values in application logs.
+
+AI prompts:
+
+When building the prompt to send to the AI model, we must:
+
+Strip out any personally identifying information that is not necessary (like email).
+
+Use only a minimum set of context needed to generate the plan.
+
+6.3 CSRF and session integrity
+
+These routes are all behind auth, but we still:
+
+Use secure session cookies (HTTP-only, secure).
+
+Use standard CSRF protection for POST requests if needed, or rely on Next.js best practices.
+
+Avoid exposing sensitive tokens in the front-end.
+
+7. Email behavior connected to onboarding steps
+
+The onboarding steps themselves do not directly send emails, but they influence email triggers and content.
+
+7.1 Onboarding reminder emails
+
+Logic (high-level, implemented as scheduled job or background worker):
+
+If profiles.onboarding_step is:
+
+0, 1, 2, or 3
+
+And user has not updated profiles.updated_at or questionnaire_answers.updated_at in a certain time window (24–72 hours)
+
+Then send a reminder email.
+
+Reminder email content:
+
+Subject: “Ready to finish your Life Goal Plan?”
+
+Body:
+
+Short, supportive message.
+
+Reassure them that they can pick up where they left off.
+
+Include a deep link back to the correct /onboarding/* route.
+
+The link should:
+
+Route back into the auth + onboarding layout.
+
+Respect onboarding_step gate logic.
+
+7.2 “Life Plan ready” email
+
+Triggered after the AI generation of the plan completes (on the back-end, not immediately on /onboarding/questions):
+
+Email:
+
+Subject: “Your Life Goal Plan is ready.”
+
+Brief summary and a clear “Open My Plan” button.
+
+Link:
+
+Goes to /plan or /dashboard.
+
+Since onboarding_step is now ≥ 4, user is in app layout with navigation.
+
+These flows are detailed more fully in the Data/Security/Email blueprint, but they depend on onboarding_step and questionnaire_answers behavior defined here.
+
+8. Implementation checklist for Codex / Builder
+
+To implement onboarding steps correctly, the builder must:
+
+Build the shared auth + onboarding layout with:
+
+No global nav.
+
+Logo + “Back to Home”.
+
+Common visual style.
+
+Implement /onboarding/name:
+
+Single preferred name input.
+
+Validation and profile update.
+
+Set onboarding_step = 1.
+
+Redirect to /onboarding/location.
+
+Implement /onboarding/location:
+
+ZIP input, optional geocoding to city/state.
+
+Profile update and onboarding_step = 2.
+
+Redirect to /onboarding/bridge.
+
+Implement /onboarding/bridge:
+
+Video, reassurance copy.
+
+“Start Questions” button that sets onboarding_step = 3 and sends to /onboarding/questions.
+
+Optional “Maybe later” that returns to /.
+
+Implement /onboarding/questions:
+
+Multi-step UI driven by lifePlanQuestionnaire.
+
+Autosaving answers into questionnaire_answers.
+
+Resume behavior for returning users.
+
+Final “Generate My Life Plan” button that:
+
+Updates onboarding_step = 4.
+
+Triggers generation via secure API.
+
+Redirects immediately to /dashboard.
+
+Enforce onboarding_step gate on all /onboarding/* routes:
+
+Lower steps redirect forward.
+
+Users with step ≥ 4 redirect to /dashboard.
+
+Respect RLS and security for all DB operations:
+
+No leaks of other users’ data.
+
+No plain logs of sensitive answers.
+
+Ensure email-related fields and timestamps are updated correctly so reminder and plan-ready email jobs can run later.

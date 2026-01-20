@@ -1,0 +1,557 @@
+COMPLETE OVERVIEW
+
+
+1) What Felon Entrepreneur is and what it’s supposed to accomplish
+
+Felon Entrepreneur (FE) is a mobile-first web application designed to help people rebuild their lives with structure, clarity, and momentum—especially users transitioning from incarceration or rebuilding from hardship. The product’s “core promise” is:
+
+Turn a user’s situation + goals into a personalized Life Plan (a structured roadmap).
+
+Provide action tools (jobs, applications, resume generation, habit/discipline prompts, etc.) to execute that plan.
+
+Monetize via a tier model (Starter → 7-day trial → paid Plus/Pro) while keeping the public website accessible for awareness and conversion.
+
+The build is explicitly intended to be implemented as a Next.js App Router web app with Supabase (Postgres) for authentication/data, and server-controlled AI endpoints (no AI keys in the client).
+
+2) Mobile-first requirement (and how mobile differs from desktop/tablet)
+Core rule
+
+Most users will be on phones, so the UI/UX must be optimized for mobile first. Desktop/laptop/tablet can share a “wide layout,” but mobile is not just a resized desktop—it has different navigation patterns and layout behaviors.
+
+Navigation strategy across devices
+
+The project defines three navigation states and device rules:
+
+Onboarding Tunnel (No Nav)
+
+During signup/login + onboarding steps, no global navigation is shown (mobile or desktop).
+
+User must complete onboarding flow without distraction.
+
+Public Marketing Website Nav
+
+Public pages are accessible without an account.
+
+Desktop/tablet/laptop uses a top header nav.
+
+Mobile uses a simplified experience appropriate for phones.
+
+In-App Nav (After onboarding)
+
+Mobile: bottom navigation bar with: Home, Plan, FE Button (center), Jobs, Profile.
+
+Desktop/Tablet/Laptop: top header navigation with broader tabs (including Courses and Shop).
+
+The FE Button is central to mobile navigation and acts as a modal/overlay hub for “boost tools,” including Courses and Cheat Codes (Cheat Codes lives under Courses inside the FE Button experience).
+
+3) The onboarding experience (the “master tunnel”)
+
+Onboarding is treated as the “master story” that all other modules must follow:
+
+High-level phases (conceptual)
+
+Public landing (marketing)
+
+Account creation / login
+
+Onboarding flow (card-based, guided)
+
+Questionnaire completion
+
+Life Plan generation
+
+Immediate post-onboarding dashboard state
+
+Starter usage → upgrade triggers → trial → paid tiers
+
+Onboarding steps (defined as card-based flow)
+
+The onboarding blueprint defines a multi-card sequence that includes:
+
+Welcome/introduction cards (purpose, mindset framing, expectations)
+
+A Life Plan Questionnaire (your zip includes “FINAL v3 (20 QUESTIONS)” organized by cards)
+
+Submission triggers Life Plan creation
+
+After onboarding completion, user is routed into the app with correct nav state
+
+Auth + Profile behavior (Supabase)
+
+Uses Supabase Auth for identity.
+
+A profiles row is created/maintained for the user.
+
+onboarding_step is used to enforce correct routing:
+
+Users cannot bypass steps by URL manipulation.
+
+If partially complete, they get routed back into the correct onboarding card/page.
+
+4) Tier structure, 7-day trial, and entitlements (access control)
+
+The tier canon in this project is:
+
+Tier states (exact set)
+
+A user is always in exactly one state:
+
+Starter (Free)
+
+Trial (7-Day ProLite universal trial)
+
+Plus (Paid)
+
+Pro (Paid)
+
+Trial behavior
+
+Trial is offered when a Starter user hits meaningful limits (e.g., AI credits exhausted or attempts locked tools).
+
+Trial is time-limited (7 days) and enforced server-side.
+
+Tier changes are handled via billing webhooks (authoritative source of truth).
+
+Core entitlements (examples pulled from the tier blueprint)
+
+Life Plan
+
+Starter: 1 Life Plan generation after onboarding; no included regenerations
+
+Trial: 1 Life Plan regeneration during trial
+
+Plus: 4 regenerations/month
+
+Pro: 8 regenerations/month
+
+Additional regenerations purchasable per use
+
+Resume Builder
+
+Starter: locked
+
+Trial: locked
+
+Plus: 5 generations/month
+
+Pro: 10 generations/month
+
+Application Assistant
+
+Starter: 1 sample use (initial experience)
+
+Plus: 15 assisted applications/month
+
+Pro: 30 assisted applications/month
+
+Jobs module
+
+Starter: limited saves and basic scoring/insights
+
+Pro: more saves and deeper scoring + “next best jobs” suggestions
+
+Interview practice
+
+Pro-only
+
+UI requirements for tier gating
+
+Always show a tier badge inside the app:
+
+Starter / Trial (with days remaining) / Plus / Pro
+
+Locked features remain visible but show:
+
+Lock icon
+
+Short explanation (“Available on Plus or Pro”)
+
+Upgrade CTA (call-to-action)
+
+Usage meters must exist for:
+
+AI credits/usage
+
+Resume generations
+
+Application Assistant uses
+
+Life Plan regenerations
+
+On mobile, usage meters should use stacked UI, sheets, or compact cards (not dense tables).
+
+5) Core modules and what each page/feature does
+A) Home (Dashboard concept)
+
+The blueprints reference a post-onboarding “dashboard behavior,” including:
+
+Immediate “in-app” state after Life Plan generation
+
+Visible tier status and upgrade prompts when limits are reached
+
+Quick entry points to Plan / Jobs / FE Button tools
+
+(Your zip is module-heavy; Home is more implicit, but it is the app’s primary landing after onboarding.)
+
+B) Plan tab (Life Plan module)
+
+The Plan blueprint establishes Plan as the core identity feature of FE.
+
+Typical Plan capabilities:
+
+Display the user’s current Life Plan (structured sections)
+
+Support limited regeneration of Life Plan based on tier rules
+
+Store plan versions/history (or at minimum the latest plan plus metadata)
+
+Gate regeneration and advanced “Plan tools” behind Plus/Pro and/or per-use purchases
+
+AI behavior:
+
+Life Plan generation is triggered after questionnaire submission.
+
+Regeneration must be server-controlled and rate-limited.
+
+C) Jobs tab
+
+The Jobs blueprint defines a job exploration and action system that includes:
+
+Job browsing/search + filters (mobile-friendly filter UI)
+
+Job result cards and job detail views
+
+Saved jobs (tier-based limits)
+
+AI job insights and scoring (tier-based depth)
+
+Application support features that connect to the Application Assistant entitlements
+
+D) Courses (separate top-level tab on desktop; also reachable via FE Button)
+
+Courses is a structured content catalog with:
+
+Course listing and detail experiences
+
+Enrollment/locked content behavior based on tier
+
+Upgrade prompts where access is gated
+
+Server-authoritative entitlement checks
+
+Important structural requirement from your project direction:
+Courses must also be accessible from the FE Button hub (mobile-first reality), even if it exists as a full tab in the desktop header navigation.
+
+E) FE Button (center hub on mobile)
+
+The FE Button blueprint defines a central, glowing, always-available action hub in the mobile bottom nav. It opens an overlay that contains “boost tools” (quick wins and high-impact helpers).
+
+It is designed to:
+
+Surface motivational and execution tools
+
+Provide tier-aware access to premium boosts
+
+Be fast and thumb-friendly on mobile
+
+It explicitly includes:
+
+Courses
+
+Cheat Codes (as a section under Courses inside the FE Button experience)
+
+F) Cheat Codes (micro-paid “life hacks” video store inside FE Button > Courses)
+
+Cheat Codes is a dedicated section (card + possible standalone page) that provides:
+
+A catalog of short, high-value “life hack” videos
+
+Each item has:
+
+A teaser/preview
+
+A price (generally $2–$10 per video)
+
+A purchase flow
+
+Post-purchase full access
+
+Multiple creator types:
+
+Founders (you/Nate)
+
+Approved users/creators
+
+Potential AI-generated/assisted content (but still must be controlled and reviewed if you want consistent brand trust)
+
+This is effectively a microtransaction content marketplace inside the FE ecosystem.
+
+G) Shop tab (merchandise)
+
+Shop is a standard ecommerce experience for physical goods (merch), supported by the merch image assets in the zip.
+
+Defined pages include:
+
+Shop listing
+
+Product detail
+
+Cart
+
+Checkout flow (typically Stripe)
+
+Shipping + policies content
+
+Confirmation + receipt emails
+
+This is intentionally a simpler “standard ecommerce page,” but must still meet security/compliance requirements.
+
+H) Profile
+
+Profile is responsible for:
+
+User account information
+
+Tier status + billing management entry points
+
+Usage meters and limits visibility
+
+Possibly saved data: saved jobs, plan metadata, course progress, purchases (cheat codes/merch)
+
+6) Data model overview (Supabase Postgres)
+
+Your blueprints strongly imply these core tables/entities (minimum viable):
+
+Identity & Access
+
+auth.users (Supabase managed)
+
+profiles
+
+user_id (FK to auth.users)
+
+onboarding_step
+
+tier_state (Starter/Trial/Plus/Pro)
+
+trial_start, trial_end
+
+usage counters / quotas (or usage tracked in separate tables)
+
+Life Plan
+
+life_plan_responses (questionnaire answers; raw structured responses)
+
+life_plans
+
+current plan content (structured JSON or text)
+
+versioning fields (optional but recommended)
+
+created_at, updated_at
+
+life_plan_regenerations (ledger of regeneration usage)
+
+Jobs
+
+jobs_cache (optional, depending on job sourcing strategy)
+
+saved_jobs
+
+job_insights (AI scoring/explanations)
+
+Resume Builder
+
+resumes
+
+resume_generations (usage ledger)
+
+Application Assistant
+
+applications
+
+application_assistant_uses (usage ledger)
+
+Courses
+
+courses
+
+lessons
+
+enrollments
+
+course_progress
+
+Shop + Cheat Codes commerce
+
+products (merch + cheat code SKUs, or separate product types)
+
+orders
+
+order_items
+
+payments
+
+entitlements (who owns what: purchased cheat codes, course unlocks, etc.)
+
+Billing
+
+subscriptions
+
+billing_events (webhook receipts / audit trail)
+
+Key architectural principle: tier and entitlement decisions must be derived from server-side truth (DB + billing webhooks), not client state.
+
+7) Security requirements (must-have, builder-facing)
+
+This project repeatedly emphasizes “security-first,” especially around AI, auth, and paid access.
+
+A) Authentication & session security
+
+Supabase Auth with secure session handling
+
+Email verification + password reset flows
+
+Brute-force and abuse mitigation:
+
+rate limiting on auth endpoints
+
+login attempt throttling
+
+Optional future: “new device login alerts”
+
+B) Row-Level Security (RLS)
+
+Implement Supabase RLS (Row-Level Security) so users can only access:
+
+their own profile
+
+their own plan and questionnaire responses
+
+their own saved jobs, resumes, applications
+
+their own purchases and entitlements
+
+C) Server-authoritative entitlements
+
+No premium gating on the client alone.
+
+Every privileged operation must check:
+
+tier_state
+
+remaining quotas
+
+entitlement flags (purchases/unlocks)
+
+trial validity (time remaining)
+
+D) AI security (critical)
+
+Clients never call AI providers directly
+
+AI keys are never shipped to browsers
+
+All AI calls are made through server routes with:
+
+authentication required
+
+entitlement + quota checks
+
+rate limiting per user
+
+audit logging (who called what, when, and why)
+
+E) Payments and webhooks
+
+Stripe (or equivalent) with webhook verification
+
+Webhooks are the source of truth for subscription state transitions
+
+Prevent forged tier upgrades by:
+
+verifying webhook signatures
+
+storing webhook event IDs
+
+enforcing idempotency (don’t double-apply events)
+
+F) General web security baseline
+
+Input validation everywhere (forms, query params, uploads)
+
+Output encoding (protect against XSS (cross-site scripting))
+
+CSRF protections where applicable
+
+Secure headers (CSP (content security policy), HSTS (strict transport security), etc.)
+
+Logging + monitoring for abuse patterns (especially AI endpoints)
+
+8) Email/notification expectations (high-level)
+
+The blueprints include emails/notifications such as:
+
+Welcome / verification email (auth)
+
+Password reset
+
+Purchase receipts (Shop + Cheat Codes)
+
+Possibly upgrade/trial prompts (product messaging)
+
+Optional future security alerts (new login/device)
+
+Implementation should use a transactional email provider and log email events (sent, failed) for support.
+
+9) Content and assets included in the project.zip
+
+Your zip includes:
+
+Merch images (Shop catalog assets)
+
+Logos and app images (brand assets)
+
+Founder images (for About/identity/credibility usage)
+
+Full text blueprints for:
+
+Onboarding
+
+Nav layout rules
+
+Tier & access enforcement
+
+Plan
+
+Jobs
+
+Courses
+
+Shop
+
+FE Button
+
+Cheat Codes
+
+Life Plan questionnaire (20 questions)
+
+10) Build intent (what the AI builder should implement)
+
+When you hand this overview to an AI builder, the “non-negotiables” it must respect are:
+
+Mobile-first UI with a distinct mobile navigation model (bottom nav + FE Button hub).
+
+Onboarding tunnel has no nav and is enforced by routing + onboarding_step.
+
+Life Plan generation is the core feature triggered by questionnaire submission.
+
+Tier system is canonical: Starter → 7-day Trial → Plus/Pro with strict entitlements.
+
+All AI calls are server-side only with tier/quota checks + rate limits + logs.
+
+Supabase RLS must be used to prevent cross-user data access.
+
+Billing webhooks drive tier state (not client flags).
+
+Courses and Cheat Codes must be accessible inside the FE Button hub, with Cheat Codes functioning as micro-paid videos ($2–$10) with teaser → purchase → unlock.

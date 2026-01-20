@@ -1,0 +1,592 @@
+SHOP FINAL
+
+
+
+WEB_BLUEPRINT — SHOP TAB (FELON ENTREPRENEUR WEB APP, MERCH)
+
+This blueprint is written so we can derive high-quality prompts for:
+
+Frontend (Next.js App Router + React + TypeScript + Tailwind CSS)
+
+Backend (Next.js route handlers + Supabase + Stripe)
+
+Database schema (Supabase Postgres + RLS (Row-Level Security — access rules enforced inside the database))
+
+Security, fraud controls, and operational workflows
+
+Transactional emails (order confirmations, shipping updates)
+
+Admin workflows (product management, fulfillment, refunds)
+
+This Shop is intentionally “standard apparel merch storefront” and is not tied to onboarding completion. It is designed to work like a normal ecommerce store: browse → view product → add to cart → checkout → order confirmation → fulfillment.
+
+0. Purpose & Scope
+0.1 Purpose
+
+The Shop tab exists to sell Felon Entrepreneur merchandise (clothing + accessories) and reinforce brand identity. It should:
+
+Be publicly browsable (like a normal store)
+
+Require an account only if you choose (recommended: allow guest checkout; optional login linking)
+
+Be fully functional: product listing, product detail, cart, checkout, order confirmation, order emails, shipping policy
+
+0.2 MVP Product Types (examples)
+
+T-shirts, hoodies, hats, stickers
+
+Variants (size/color) with per-variant inventory
+
+Optional “limited drops” (limited stock)
+
+1. Routes, Navigation, and Access
+1.1 Route Map (Next.js App Router)
+
+Public routes (no auth required):
+
+/shop — Shop home (product grid + filters)
+
+/shop/[productId] — Product detail page
+
+/shop/cart — Cart page (session-based)
+
+/shop/checkout — Checkout page (Stripe Checkout or embedded Payment Element)
+
+/shop/confirmation — Order confirmation (reads checkout session result)
+
+Authenticated routes (optional, for account-linked orders):
+
+/profile/orders — “My Orders” (logged-in users only)
+
+/profile/orders/[orderId] — Order detail
+
+Admin routes (protected, Phase 2 if you want):
+
+/admin/shop — product CRUD (create/read/update/delete)
+
+/admin/shop/orders — order management and fulfillment status
+
+1.2 Navigation Placement (Consistency With Your Existing Structure)
+
+Desktop / tablet header nav: include Shop as a top-level link (like Courses is in public nav in your Courses blueprint). 
+
+COURSES WEB APP FINAL
+
+Mobile: Shop is not in the bottom nav (your bottom nav is Home | Plan | FE | Jobs | Profile).
+
+Shop should be reachable from:
+
+Public header menu on /shop
+
+A Shop link/button inside Profile
+
+Optional: an item in the FE Hub menu later (not required) 
+
+FE BUTTON FINAL
+
+1.3 Access Rules
+
+Browsing products: public
+
+Adding to cart: public
+
+Checkout: public (guest checkout) + optional “Sign in to track orders”
+
+Order history: requires account (linked orders only)
+
+2. Core User Flows
+2.1 Browse → Product → Cart → Checkout
+
+User goes to /shop
+
+Selects product card → /shop/[productId]
+
+Selects variant (size/color), quantity
+
+Clicks “Add to Cart”
+
+Goes to /shop/cart
+
+Proceeds to /shop/checkout
+
+Completes payment/shipping
+
+Redirects to /shop/confirmation?session_id=...
+
+2.2 Guest Checkout vs Logged-In Checkout (Recommended)
+
+Guest checkout: user enters email + shipping at checkout
+
+Logged-in checkout (optional): if user has Supabase session, we attach user_id to the order for /profile/orders
+
+2.3 Post-Purchase
+
+Immediate confirmation page
+
+Transactional emails:
+
+Order confirmation + receipt
+
+Shipping confirmation (when fulfilled)
+
+Delivery update (optional)
+
+If user creates an account later with the same email, you may optionally “claim” past orders (Phase 2)
+
+3. Frontend UX / UI Requirements
+3.1 Shop Home (/shop)
+
+Primary layout:
+
+Header: “Shop Felon Entrepreneur”
+
+Subtext: shipping promise + returns promise (short trust strip)
+
+Product grid (mobile-first; responsive)
+
+Filters row (chips + dropdown)
+
+Filters (MVP):
+
+Category (T-Shirts, Hoodies, Hats, Accessories)
+
+Availability (In stock / Sold out)
+
+Price sort (Low→High, High→Low)
+
+Newest / Featured
+
+Product card content:
+
+Product image
+
+Name
+
+Price
+
+“From $X” if variants differ
+
+Stock badge: “Sold out” overlay
+
+Optional tags: “New”, “Limited”, “Best Seller”
+
+3.2 Product Detail (/shop/[productId])
+
+Sections:
+
+Image gallery (tap to zoom on mobile)
+
+Title + price
+
+Variant selectors:
+
+Color swatches
+
+Size buttons (S/M/L/XL/2XL)
+
+Quantity stepper
+
+“Add to Cart” button
+
+“Shipping & Returns” accordion
+
+“Product Details” section
+
+“Size Guide” link/modal (for apparel)
+
+“You may also like” product row
+
+Behavior:
+
+If variant out of stock: disable that option
+
+If selected variant is out of stock: disable Add to Cart + show “Sold out”
+
+3.3 Cart (/shop/cart)
+
+Cart items:
+
+Thumbnail
+
+Product name + selected variant
+
+Price
+
+Quantity control
+
+Remove button
+
+Subtotal
+
+Cart summary:
+
+Subtotal
+
+Estimated shipping (optional estimate before checkout)
+
+Tax note (“Calculated at checkout”)
+
+“Checkout” button
+
+3.4 Checkout (/shop/checkout)
+
+Two implementation options:
+
+Option A (Recommended): Stripe Checkout (hosted)
+
+You create a Checkout Session server-side
+
+Redirect user to Stripe-hosted checkout
+
+Stripe handles shipping address collection, tax (optional), and payment
+
+Option B: Embedded Payment Element
+
+More work: you build shipping form + Stripe Payment Element
+
+Higher control, higher complexity
+
+For your “simple merch store,” Option A is the cleanest and safest.
+
+3.5 Confirmation (/shop/confirmation)
+
+“Order confirmed” headline
+
+Order number
+
+Email used
+
+Shipping address (masked display is fine)
+
+Items purchased
+
+“Continue shopping” button
+
+If logged in: “View order history” button
+
+4. Product Data Model (Supabase)
+4.1 products
+
+Table: products
+
+id (uuid, PK)
+
+slug (text, unique) — used for SEO-friendly URLs
+
+name (text)
+
+description (text)
+
+category (text or enum)
+
+is_featured (boolean)
+
+status (enum: draft, published, archived)
+
+default_image_url (text)
+
+image_gallery (text[] or jsonb)
+
+created_at, updated_at
+
+RLS:
+
+Public (anon) can SELECT only published products
+
+Only admin/service role can INSERT/UPDATE/DELETE
+
+4.2 product_variants
+
+Table: product_variants
+
+id (uuid, PK)
+
+product_id (uuid FK → products.id)
+
+sku (text, unique) (SKU = Stock Keeping Unit — unique inventory code)
+
+option_color (text nullable)
+
+option_size (text nullable)
+
+price_cents (int)
+
+currency (text default “USD”)
+
+inventory_quantity (int)
+
+inventory_reserved (int default 0)
+
+is_active (boolean)
+
+created_at, updated_at
+
+RLS:
+
+Public can read variants for published products
+
+Writes are admin/service only
+
+4.3 carts (optional persistence; MVP can be client-only)
+
+If you want persistent carts:
+Table: carts
+
+id uuid PK
+
+user_id uuid nullable
+
+guest_token text nullable (stored in cookie)
+
+created_at, updated_at
+
+Table: cart_items
+
+id uuid PK
+
+cart_id uuid FK
+
+variant_id uuid FK
+
+quantity int
+
+created_at, updated_at
+
+MVP alternative: store cart in localStorage (browser storage) and validate at checkout time.
+
+4.4 orders
+
+Table: orders
+
+id uuid PK
+
+user_id uuid nullable
+
+email text
+
+status enum: pending, paid, fulfilled, canceled, refunded
+
+currency text
+
+subtotal_cents int
+
+shipping_cents int
+
+tax_cents int
+
+total_cents int
+
+shipping_name text
+
+shipping_address_json jsonb
+
+stripe_checkout_session_id text (unique)
+
+stripe_payment_intent_id text nullable
+
+created_at, updated_at
+
+RLS:
+
+User can read own orders where user_id = auth.uid()
+
+Guest orders are not readable without auth (unless you build a magic-link system)
+
+4.5 order_items
+
+Table: order_items
+
+id uuid PK
+
+order_id uuid FK
+
+product_id uuid FK
+
+variant_id uuid FK
+
+product_name_snapshot text
+
+variant_snapshot jsonb (size/color at purchase time)
+
+unit_price_cents int
+
+quantity int
+
+created_at
+
+4.6 email_events (recommended)
+
+Track transactional email sends to prevent duplicates:
+
+id, order_id, type, provider_id, sent_at, status
+
+5. Backend APIs (Next.js Route Handlers)
+5.1 Products
+
+GET /api/shop/products — returns published products + basic variant price range
+
+GET /api/shop/products/[productId] — returns product + variants + inventory flags
+
+5.2 Checkout Session Creation (Stripe)
+
+POST /api/shop/checkout/create-session
+
+Input: cart items (variant_id + quantity)
+
+Server:
+
+Validates each variant exists and is active
+
+Validates inventory available
+
+Computes authoritative price server-side (never trust client price)
+
+Creates Stripe Checkout Session with line items
+
+Includes metadata: order draft id, user_id if present
+
+Returns: { checkoutUrl } (Stripe-hosted redirect)
+
+5.3 Stripe Webhook (Required)
+
+POST /api/stripe/webhook
+
+Verifies Stripe signature
+
+On checkout.session.completed:
+
+Creates orders + order_items
+
+Marks order paid
+
+Decrements inventory (atomic update)
+
+Sends order confirmation email
+
+Idempotency (duplicate event protection):
+
+Store webhook event ids in a stripe_webhook_events table
+
+5.4 Fulfillment Update (Admin/Operational)
+
+POST /api/shop/orders/[orderId]/fulfill (admin only)
+
+Marks fulfilled
+
+Stores tracking number + carrier
+
+Sends shipping confirmation email
+
+6. Shipping, Returns, and Store Policies (UI + Logic)
+6.1 Shipping Policy Content (MVP)
+
+On /shop and product detail accordion, include:
+
+Processing time (e.g., “Ships in 2–5 business days”)
+
+Shipping method options (Standard/Expedited if offered)
+
+Tracking availability
+
+International shipping (Yes/No)
+
+6.2 Returns / Exchanges (MVP)
+
+Window (e.g., 14 or 30 days)
+
+Condition requirements (unworn/unwashed)
+
+Exchange vs refund rules
+
+“Contact support” instructions
+
+6.3 Where These Appear
+
+Footer links on /shop:
+
+Shipping Policy
+
+Returns & Exchanges
+
+Contact
+
+Accordions on product detail:
+
+Shipping & Returns
+
+Size Guide
+
+(You can implement these as static routes: /shop/shipping, /shop/returns.)
+
+7. Security & Anti-Fraud Rules (Non-Negotiable)
+7.1 Server is the Source of Truth
+
+Client must never be allowed to control:
+
+prices
+
+discount amounts
+
+inventory availability
+
+order totals
+
+7.2 Inventory Protection
+
+At checkout session creation:
+
+Validate stock
+
+Optionally reserve inventory for a short time (advanced)
+At webhook completion:
+
+Atomically decrement inventory (inventory_quantity -= purchased_qty)
+
+7.3 Webhook Verification
+
+Stripe signature validation is mandatory
+
+Store events for idempotency so orders don’t duplicate
+
+7.4 RLS + Roles
+
+Products/variants are public read only for published
+
+Orders are private (user read only)
+
+Admin routes require admin role (separate policy)
+
+8. Admin & Operations (Phase 1 vs Phase 2)
+Phase 1 (Minimum viable operations)
+
+Products inserted manually in Supabase (admin)
+
+Stripe handles checkout and receipts
+
+Fulfillment done externally (manual)
+
+You update order status manually (optional)
+
+Phase 2 (Clean internal admin)
+
+Admin UI to create products/variants, upload images, toggle “featured,” manage stock
+
+Admin UI to update order status + tracking
+
+9. Implementation Checklist (Builder-Ready)
+
+Create /shop product grid + filters
+
+Create /shop/[productId] detail + variant selection + add-to-cart
+
+Implement client cart (localStorage) + /shop/cart UI
+
+Implement /api/shop/checkout/create-session (server validation + Stripe)
+
+Implement Stripe webhook → create order records + send emails
+
+Create /shop/confirmation page that reads session_id status
+
+Add Shop link in desktop header nav and Profile surface on mobile
+
+Add static policy pages: shipping, returns, contact

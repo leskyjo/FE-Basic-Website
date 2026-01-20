@@ -1,0 +1,661 @@
+LANDING PAGE DESIGN AND ONBOARDING
+
+
+
+1.1 Public visitor experience (logged out)
+
+A logged-out visitor sees one single page only:
+
+GET / → Public Landing Page 
+
+Onboarding Overview 100% Final
+
+
+And that landing page has:
+
+No app navigation
+
+No access to tools or AI
+
+Only marketing + education + CTAs that lead to account creation 
+
+Onboarding Overview 100% Final
+
+1.2 What happens if they try to access app pages while logged out
+
+If they try /dashboard /plan /jobs (Career Studio) /courses /etc. while logged out:
+
+Redirect to / with messaging, or
+
+Show a minimal gate that routes to /login or /signup 
+
+Onboarding Overview 100% Final
+
+Important clarification: This does not mean the landing page shows those app nav links. It means that if someone deep-links or types a URL, your route guard (middleware (server rule that intercepts requests)) kicks them back out.
+
+1.3 Onboarding tunnel rule (after signup/login)
+
+During onboarding, there is:
+
+No bottom nav
+
+No header nav
+
+No direct access to app sections
+
+Only minimal FE branding + step controls 
+
+Onboarding Overview 100% Final
+
+This is critical: onboarding must feel like a focused “guided tunnel,” not a website.
+
+2) Landing Page Blueprint (Public, Marketing-Only, High-Converting)
+Overall visual identity (matches your reference images)
+
+Background: primarily black, with subtle animated gradient washes (deep red + near-black) and occasional “cinematic texture” overlays (very faint).
+
+Card style: glassmorphism (frosted-glass look) panels with soft inner glow edges (red/white), clean separators, premium spacing.
+
+Motion: slow parallax (background drift), gentle fade-ins, crisp hover states (desktop), and smooth section transitions.
+
+Typography: bold, condensed-feeling headlines; high contrast white; red accents for emphasis.
+
+Conversion emphasis: every major section ends with a large primary CTA button.
+
+2.1 Structure at the top (exact order you required)
+A) Header (minimal, conversion-only)
+
+Per the doc, do this exactly:
+
+Left: FE logo (click → /)
+
+Right: two buttons:
+
+Log In (secondary) → /login
+
+Join Free (primary) → /signup
+
+No other nav items, no hamburger, no tabs 
+
+Onboarding Overview 100% Final
+
+B) Headline Block (first thing under header)
+
+This is your “big, bold, strong words” section. It must be visible immediately, above the fold.
+
+Layout:
+
+Big headline (H1)
+
+Short sub-headline (H2/H3)
+
+Two CTAs side-by-side (desktop) / stacked (mobile):
+
+Primary: Start My Life Plan → /signup
+
+Secondary: Log In → /login
+
+Example headline options (pick one later; structure stays the same):
+
+“Your past isn’t the end. It’s the beginning.”
+
+“Turn your record into your résumé.”
+
+“Build a real life plan. Then execute it.”
+
+“Get out. Get focused. Get paid.”
+
+(We can refine copy later, but this is the required top-of-page format.)
+
+C) Hero Intro Video (immediately under headline)
+
+Per your requirement, the first major media element is a badass introduction video.
+
+Hero video behavior:
+
+Autoplays muted (desktop + mobile), with captions (because most users watch muted).
+
+Big “cinematic” overlay text moments (short phrases that punctuate the message).
+
+Ends with a strong CTA overlay:
+
+Join Free
+
+“Start your Life Plan Questionnaire in minutes.”
+
+Hero supporting images (optional but recommended):
+
+1–2 supporting images under the video or as side-panels on desktop:
+
+“Success story vibe” imagery, premium, aspirational, consistent with brand tone.
+
+These images must not distract; they reinforce.
+
+Key rule: This hero area is not “busy.” It’s: headline → video → clear CTA.
+
+3) Landing Page Feature Sections (Cards on Mobile, Containers on Desktop)
+
+This is the core of what you asked for: each feature gets a dedicated section that looks “fire.”
+
+Global pattern for every feature section
+
+Each section includes (in some order, mixed up slightly per section so it doesn’t feel copy/paste):
+
+Feature Title (short)
+
+Power Headline (strong, emotional, direct)
+
+High-powered marketing copy (brief but punchy)
+
+Video (you/Nate, or cinematic product teaser)
+
+Images (screenshots/mockups/visual metaphors)
+
+CTA button (always)
+
+Optional: micro-proof (numbers, quick bullets, testimonial snippet)
+
+Important: even though the layout varies section to section, every section must still clearly contain those ingredients.
+
+4) Required Landing Page Sections (In Recommended Order)
+
+Below is the full, detailed landing page in the order I recommend for highest conversion.
+
+Section 1 — “What Felon Entrepreneur Is” (Fast clarity)
+
+Title: What This Is
+Headline: “A structured system to rebuild your life—step by step.”
+Content: 3–5 short bullets explaining the platform:
+
+Life Plan built from your answers
+
+Career Studio that matches you to jobs
+
+Tools to build resumes, apply smarter, and interview better
+
+Courses + Cheat Codes inside the FE Hub
+
+Progress tracking so you can see momentum
+
+Media: a short “platform montage” video (10–15 seconds) showing quick cuts of:
+
+Life Plan progress ring
+
+Career/job matching score visual
+
+Resume builder preview
+
+FE hub (Courses/Cheat Codes)
+
+Success story snapshots
+
+CTA: Join Free
+
+Section 2 — Life Plan (The flagship)
+
+Title: Life Plan
+Headline: “We don’t guess. We build your plan from your real situation.”
+
+Core promise (landing copy):
+
+“Answer the Life Plan Questionnaire (20 questions).”
+
+“We generate a strategic Life Plan tailored to you.”
+
+“Then you get an AI Life Coach to keep you moving.”
+
+Media (your request):
+
+Video: you and/or Nate: direct, motivating, credible tone.
+
+Images: a clean mockup of the Plan screen:
+
+progress indicator (“your journey 70% complete” style)
+
+“Recent Activity”
+
+“Next action” prompt
+
+CTA block (always visible):
+
+Primary: Start My Life Plan → /signup
+
+Secondary (small): “Already a member? Log in.”
+
+Section 3 — Career Studio (Jobs, but branded correctly)
+
+Title: Career Studio
+Headline: “Find the right job faster—and walk in prepared.”
+
+What we promise (landing copy):
+
+“We search jobs using modern tools and location-based matching.”
+
+“We score your fit for each job (match percentage).”
+
+“We help you build your resume, apply stronger, and practice the interview.”
+
+Feature callouts (bullet blocks, visually styled):
+
+Job Match Score (%) (a visual gauge, like your progress ring concept)
+
+Resume Builder Assistant (professional-grade resume)
+
+Application Assistant (better applications, fewer mistakes, stronger answers)
+
+AI Interview Role Player (practice before the real interview)
+
+Media:
+
+Video: you/Nate: “Here’s how we get you employed faster.”
+
+Images: job board mockups + match-score overlay.
+
+CTA: Join Free
+
+Section 4 — Resume Builder (Dedicated card as requested)
+
+Even if it’s “part of Career Studio,” marketing-wise it deserves its own feature card.
+
+Title: Resume Builder
+Headline: “Turn your experience into a resume that gets calls back.”
+Copy:
+
+“Industry-standard formatting.”
+
+“Highlights strengths—even if your work history is complicated.”
+
+“Built with guidance, not guesswork.”
+
+Media:
+
+“Before vs After” visual
+
+Short demo clip (scrolling through a generated resume)
+
+CTA: Create Free Account
+
+Section 5 — Application Assistant (Dedicated card as requested)
+
+Title: Application Assistant
+Headline: “Apply like a pro—without sounding like a robot.”
+Copy:
+
+“We help you fill out applications at a higher level.”
+
+“Clear, confident answers.”
+
+“Less rejection from preventable mistakes.”
+
+Media:
+
+Short clip showing:
+
+form fields filling
+
+“recommended wording” callouts
+
+“confidence score” style feedback (optional later)
+
+CTA: Join Free
+
+Section 6 — AI Interview Role Player (Dedicated card as requested)
+
+Title: Interview Role Player
+Headline: “Practice the interview until you’re ready.”
+Copy:
+
+“Simulate real interview questions for the exact job.”
+
+“Learn how to answer hard questions calmly and confidently.”
+
+“Get better every round.”
+
+Media:
+
+video showing a “mock interview” interface concept
+
+short “coach feedback” overlay
+
+CTA: Join Free
+
+Section 7 — FE Hub (The FE Button experience, marketed correctly)
+
+On landing, we do not show app navigation, but we do market the FE Hub as the center.
+
+Title: The FE Hub
+Headline: “The tools, the shortcuts, and the edge.”
+
+This section visually matches your FE glow vibe (from your nav image), but it is presented as a “feature hub,” not clickable nav.
+
+It contains two sub-cards:
+
+7A — Courses (inside FE Hub)
+
+Title: Courses
+Headline: “Learn skills that can change your income fast.”
+Copy:
+
+“Courses by Nate, you, and vetted community creators.”
+
+“Training built to fast-track you into real earning lanes.”
+
+Examples (described, not over-promised): freight brokering, web-building freelancing, etc.
+
+Media:
+
+“Featured Course” panel (like your dashboard reference)
+
+video teaser: “here’s what these courses are built to do”
+
+CTA: Join Free
+
+7B — Cheat Codes (inside FE Hub)
+
+Title: Cheat Codes
+Headline: “High-value life hacks you’ll actually use.”
+Copy:
+
+“Short videos built around real-world solutions.”
+
+“Teasers are free. Full access is unlocked per video.”
+
+“Designed to save you time, money, and pain.”
+
+Media:
+
+fast-cut teaser montage (no “how-to” revealed—just intrigue + outcomes)
+
+cards showing price range concept ($2–$10) without overexplaining
+
+CTA: Join Free
+
+Section 8 — Success Stories / Social Proof
+
+Required by the doc. 
+
+Onboarding Overview 100% Final
+
+Title: Success Stories
+Headline: “People like you are rebuilding—right now.”
+Content:
+
+3–6 story cards:
+
+photo + name (or initials) + short win
+
+optional “message mentor” later (but on landing it’s just story)
+
+1 short testimonial video (high impact)
+
+CTA: Join Free
+
+Section 9 — Security & Privacy (Trust section)
+
+Required by the doc. 
+
+Onboarding Overview 100% Final
+
+Title: Privacy & Security
+Headline: “Your data stays protected. Your progress stays yours.”
+Rules (kept honest and non-cringey):
+
+“We don’t expose your personal info publicly.”
+
+“AI runs through secured server endpoints (not from your browser).”
+
+“Your account content is protected with access controls.”
+
+(We keep this high-level on landing; the deep policy goes on /privacy.)
+
+CTA: Create Free Account
+
+Section 10 — Final CTA Block (Hard close)
+
+Required by the doc. 
+
+Onboarding Overview 100% Final
+
+Headline: “Start your Life Plan today.”
+Sub: “Join free. Answer a few questions. Get your plan.”
+Buttons:
+
+Primary: Join Free
+
+Secondary: Log In
+
+5) Mobile Landing Page (Must Include Everything, Just Stacked)
+
+Your doc is explicit: same content, optimized for mobile. 
+
+Onboarding Overview 100% Final
+
+Mobile rules
+
+Header: logo + small Log In / Join Free
+
+No hamburger
+
+No bottom nav
+
+Hero is a vertical stack with large thumb-friendly CTA 
+
+Onboarding Overview 100% Final
+
+Mobile section styling (matching your reference images)
+
+Each feature is a full-width “premium card”:
+
+Title
+
+Big headline
+
+Short punch copy
+
+Video (mobile-optimized)
+
+1–3 images
+
+CTA button (full-width)
+
+Between sections: a repeated CTA strip (“Join Free / Start My Life Plan”).
+
+Subtle background animation continues, but lighter so performance stays strong.
+
+6) Onboarding Blueprint (After They Click Join Free)
+
+This is the full “tunnel” that starts immediately after signup.
+
+Phase 2 — Account Creation
+
+Per doc:
+
+GET /signup + POST /signup (Supabase Auth (authentication)) 
+
+Onboarding Overview 100% Final
+
+Signup UI fields: email, password, confirm, accept terms/privacy 
+
+Onboarding Overview 100% Final
+
+Success behavior:
+
+create profiles row
+
+redirect to /onboarding/name 
+
+Onboarding Overview 100% Final
+
+Login flow:
+
+If onboarding incomplete → route to correct onboarding step
+
+If complete → /dashboard 
+
+Onboarding Overview 100% Final
+
+Phase 3 — Onboarding Tunnel (No nav, focused)
+
+Routes (must be exactly these): 
+
+Onboarding Overview 100% Final
+
+/onboarding/name
+
+/onboarding/location
+
+/onboarding/bridge
+
+/onboarding/questions
+
+Hard rule: no global navigation during onboarding. 
+
+Onboarding Overview 100% Final
+
+Device behavior
+
+Desktop/tablet/laptop:
+
+Centered onboarding card, constrained width
+
+Minimal FE logo
+
+Step title, supporting copy
+
+Large Next button, Back where applicable
+
+Progress indicator (1–4) 
+
+Onboarding Overview 100% Final
+
+Mobile:
+
+Near full-width container
+
+Larger touch targets
+
+Sticky/bottom-anchored primary button recommended
+
+Compact progress indicator
+
+No bottom nav, no header tabs 
+
+Onboarding Overview 100% Final
+
+Step 1: Name
+
+Input: preferred name
+
+Validation: non-empty, length limits
+
+Backend: update profiles.preferred_name, advance profiles.onboarding_step 
+
+Onboarding Overview 100% Final
+
+ 
+
+Onboarding Overview 100% Final
+
+Step 2: Location
+
+Input: ZIP code (5 digits)
+
+Backend: update profiles.zip_code, advance step 
+
+Onboarding Overview 100% Final
+
+Step 3: Bridge (The emotional commitment moment)
+
+Purpose (must include):
+
+Explain what Life Plan is
+
+Reassure privacy/safety
+
+Short video 
+
+Onboarding Overview 100% Final
+
+UI:
+
+Title: “Welcome to your Life Plan”
+
+Copy + short video
+
+Button: “Start My Life Plan Questionnaire” 
+
+Onboarding Overview 100% Final
+
+Step 4: Life Plan Questionnaire
+
+UI rules:
+
+Multi-step questionnaire
+
+Large tappable options + some free-text
+
+Autosave after each change
+
+Resume where they left off 
+
+Onboarding Overview 100% Final
+
+Backend:
+
+Save answers to questionnaire_answers.answers_json
+
+Final submit:
+
+validate required answers
+
+set profiles.onboarding_step = 4
+
+trigger Life Plan generation 
+
+Onboarding Overview 100% Final
+
+7) Life Plan Generation → First Dashboard Experience
+
+Trigger:
+
+When they submit questionnaire and click “Generate My Life Plan”
+
+Calls POST /api/life-plan/generate
+
+Redirects to /dashboard 
+
+Onboarding Overview 100% Final
+
+Dashboard states:
+
+Generating: pulsing animation, “Refresh Status” button 
+
+Onboarding Overview 100% Final
+
+Ready: “View Life Plan” button → /plan 
+
+Onboarding Overview 100% Final
+
+Failed: retry (rate-limited) + contact support 
+
+Onboarding Overview 100% Final
+
+8) Critical AI Rule (So Builders Don’t Screw It Up)
+
+AI is not available on:
+
+Landing
+
+Signup/login
+
+Any onboarding step 
+
+Onboarding Overview 100% Final
+
+AI becomes available only:
+
+After onboarding completion inside the app 
+
+Onboarding Overview 100% Final
+
+That keeps your funnel clean and prevents “half-experiences” before commitment.
