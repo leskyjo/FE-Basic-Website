@@ -53,7 +53,7 @@ export default function LoginPage() {
       return;
     }
 
-    router.push("/onboarding/name");
+    router.push("/welcome");
   };
 
   return (
@@ -62,8 +62,8 @@ export default function LoginPage() {
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-indigo-600">
           Welcome back
         </p>
-        <h1 className="mt-2 text-3xl font-semibold text-gray-900">Log in to FlowEngine</h1>
-        <p className="mt-2 text-sm text-gray-600">Pick up your onboarding where you left off.</p>
+        <h1 className="mt-2 text-3xl font-semibold text-gray-900">Log in to Felon Entrepreneur</h1>
+        <p className="mt-2 text-sm text-gray-600">Access your waitlist account.</p>
       </div>
 
       {errorMessage && (

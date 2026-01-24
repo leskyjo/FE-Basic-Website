@@ -4,6 +4,70 @@ Checkpoints saved before context clears. Read this file to resume work.
 
 ---
 
+# Session Checkpoint - 2026-01-22
+
+## Accomplished
+- **STRIPPED THE FULL APP DOWN TO A SIMPLE LANDING PAGE + WAITLIST**
+- Removed all full app routes (`/app/app/`, `/app/(app)/`)
+- Removed entire onboarding flow (7-step questionnaire)
+- Removed all API routes (life-plan, jobs, fe-coach, dev)
+- Removed complex components (plan, jobs, employment, navigation, guards, dev, questionnaire)
+- Removed lib folders (tier, jobs, ai, geo, profiles.ts, types)
+- Removed OpenAI dependency from package.json
+- Created new `/welcome` page for waitlist confirmation
+- Updated auth flow to redirect to `/welcome` instead of onboarding
+- Simplified `auth-context.tsx` to remove profile dependencies
+- Updated signup/login pages with waitlist messaging
+- **Build passes successfully**
+
+## Decisions Made
+- **Waitlist approach is acceptable** for Apple/Google developer account approval (not "Coming Soon" - it's a functional landing page)
+- Keep authentication working so users can actually sign up for the waitlist
+- After signup, users see a "You're on the list!" confirmation page with next steps
+- Removed all AI/OpenAI integration (not needed for landing page)
+- Custom domain recommended for Apple/Google approval (not `.netlify.app` subdomain)
+
+## Open Tasks
+- [ ] Get a custom domain (e.g., `felonentrepreneur.com`)
+- [ ] Deploy to Netlify or Vercel with custom domain
+- [ ] Commit stripped-down version to GitHub
+- [ ] Submit for Apple/Google developer accounts
+- [ ] Set up welcome email for waitlist signups (Supabase can handle this)
+
+## Files Modified/Removed
+
+**Removed directories:**
+- `app/app/` (entire authenticated app)
+- `app/(app)/` (pricing page)
+- `app/(tunnel)/onboarding/` (7-step onboarding)
+- `app/api/` (all API routes)
+- `components/plan/`, `components/jobs/`, `components/employment/`
+- `components/navigation/`, `components/nav/`, `components/guards/`
+- `components/dev/`, `components/questionnaire/`
+- `lib/tier/`, `lib/jobs/`, `lib/ai/`, `lib/geo/`, `lib/types/`
+- `docs/`, `project_blueprints/`, `scripts/`
+
+**Created:**
+- `app/welcome/page.tsx` - Waitlist confirmation page
+
+**Modified:**
+- `app/(tunnel)/signup/page.tsx` - Updated for waitlist flow
+- `app/(tunnel)/login/page.tsx` - Updated redirect to /welcome
+- `app/auth/callback/route.ts` - Simplified, redirects to /welcome
+- `lib/auth-context.tsx` - Simplified, removed profile dependencies
+- `package.json` - Removed OpenAI, renamed to "felon-entrepreneur-landing"
+
+## Context for Next Session
+The project has been successfully stripped down from a full web application to a simple landing page with waitlist signup. The build passes. Current pages: `/` (landing), `/signup`, `/login`, `/welcome`, `/forgot-password`, `/reset-password`, `/auth/callback`.
+
+**Next steps:** Commit to GitHub, get a custom domain, deploy to Netlify/Vercel, then apply for Apple/Google developer accounts.
+
+**GitHub:** https://github.com/leskyjo/FE-Basic-Website
+**Branch:** main
+**Build status:** PASSING
+
+---
+
 # Session Checkpoint - 2026-01-19
 
 ## Accomplished

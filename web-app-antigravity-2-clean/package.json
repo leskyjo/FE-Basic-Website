@@ -1,5 +1,5 @@
 {
-  "name": "web-app",
+  "name": "felon-entrepreneur-landing",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -13,7 +13,6 @@
     "@supabase/supabase-js": "^2.89.0",
     "lucide-react": "^0.562.0",
     "next": "14.2.35",
-    "openai": "^6.15.0",
     "react": "^18",
     "react-dom": "^18"
   },

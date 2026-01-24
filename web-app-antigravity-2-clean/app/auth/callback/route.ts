@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 
-import { getOrCreateProfile, routeForOnboardingStep } from "@/lib/profiles";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET(request: Request) {
@@ -18,16 +17,6 @@ export async function GET(request: Request) {
     return NextResponse.redirect(`${origin}/login`);
   }
 
-  const { data: userData } = await supabase.auth.getUser();
-  if (!userData.user) {
-    return NextResponse.redirect(`${origin}/login`);
-  }
-
-  try {
-    const profile = await getOrCreateProfile(supabase, userData.user);
-    const step = profile.onboarding_step ?? 0;
-    return NextResponse.redirect(`${origin}${routeForOnboardingStep(step)}`);
-  } catch {
-    return NextResponse.redirect(`${origin}/login`);
-  }
+  // After successful email verification, redirect to welcome page
+  return NextResponse.redirect(`${origin}/welcome`);
 }

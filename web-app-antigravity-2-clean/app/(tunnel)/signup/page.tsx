@@ -30,7 +30,7 @@ export default function SignupPage() {
 
   useEffect(() => {
     if (!hydrated || !isLoggedIn) return;
-    const targetPath = "/onboarding/name";
+    const targetPath = "/welcome";
     if (didRedirect.current || pathname === targetPath) return;
     didRedirect.current = true;
     router.replace(targetPath);
@@ -78,7 +78,7 @@ export default function SignupPage() {
     }
 
     if (data.session) {
-      router.push("/onboarding/name");
+      router.push("/welcome");
       return;
     }
 
@@ -92,9 +92,9 @@ export default function SignupPage() {
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-indigo-600">
           Join free
         </p>
-        <h1 className="mt-2 text-3xl font-semibold text-gray-900">Create your FlowEngine account</h1>
+        <h1 className="mt-2 text-3xl font-semibold text-gray-900">Join the Waitlist</h1>
         <p className="mt-2 text-sm text-gray-600">
-          Start with a quick signup, then we&apos;ll guide you through onboarding.
+          Sign up to get early access when Felon Entrepreneur launches.
         </p>
       </div>
 
@@ -109,7 +109,7 @@ export default function SignupPage() {
           <div className="rounded-2xl border border-emerald-100 bg-emerald-50 px-4 py-4 text-sm text-emerald-700">
             <p className="text-base font-semibold text-emerald-800">Check your email</p>
             <p className="mt-1">
-              We sent a verification link to {successEmail}. Click it to continue to onboarding.
+              We sent a verification link to {successEmail}. Click it to complete your signup.
             </p>
           </div>
           <Link
@@ -207,7 +207,7 @@ export default function SignupPage() {
               disabled={isSubmitting || !termsAccepted}
               className="w-full rounded-xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition hover:-translate-y-0.5 hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-70"
             >
-              {isSubmitting ? "Creating account..." : "Join free & start onboarding"}
+              {isSubmitting ? "Creating account..." : "Join the Waitlist"}
             </button>
           </form>
 

@@ -7,17 +7,13 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 
 import { createClient } from "@/lib/supabase/browser";
-import { getOrCreateProfile } from "@/lib/profiles";
 
 type Profile = {
-  name?: string;
-  zip?: string;
-  onboardingStep?: number;
+  email?: string;
 };
 
 type AuthContextValue = {
@@ -26,9 +22,6 @@ type AuthContextValue = {
   isLoggedIn: boolean;
   hydrated: boolean;
   profile: Profile;
-  updateProfile: (data: Partial<Profile>) => void;
-  resetProfile: () => void;
-  reloadProfile: () => Promise<void>;
   signOut: () => Promise<void>;
 };
 
@@ -41,37 +34,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [hydrated, setHydrated] = useState(false);
   const [profile, setProfile] = useState<Profile>(defaultProfile);
   const supabase = useMemo(() => createClient(), []);
-  const lastUserIdRef = useRef<string | null>(null);
-  const loadingProfileRef = useRef(false);
-
-  const loadProfile = useCallback(
-    async (user: User | null) => {
-      if (!user) {
-        lastUserIdRef.current = null;
-        setProfile(defaultProfile);
-        return;
-      }
-
-      if (loadingProfileRef.current) return;
-      if (lastUserIdRef.current === user.id) return;
-
-      try {
-        loadingProfileRef.current = true;
-        const profileRow = await getOrCreateProfile(supabase, user);
-        setProfile({
-          name: profileRow.preferred_name ?? "",
-          zip: profileRow.zip_code ?? "",
-          onboardingStep: profileRow.onboarding_step ?? 0,
-        });
-        lastUserIdRef.current = user.id;
-      } catch {
-        setProfile(defaultProfile);
-      } finally {
-        loadingProfileRef.current = false;
-      }
-    },
-    [supabase],
-  );
 
   useEffect(() => {
     let isMounted = true;
@@ -85,7 +47,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (nextSession?.user) {
           const { data: userData, error } = await supabase.auth.getUser();
           if (error || !userData.user) {
-            // Invalid/expired session - clear it
             await supabase.auth.signOut();
             if (!isMounted) return;
             setSession(null);
@@ -94,7 +55,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             return;
           }
           setSession(nextSession);
-          await loadProfile(userData.user);
+          setProfile({ email: userData.user.email });
         } else {
           setSession(null);
           setProfile(defaultProfile);
@@ -103,8 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (!isMounted) return;
         setHydrated(true);
       } catch (error) {
-        // Handle corrupted session data
-        console.warn('Session restoration failed, clearing auth state:', error);
+        console.warn('Session restoration failed:', error);
         try {
           await supabase.auth.signOut();
         } catch {
@@ -124,78 +84,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setSession(nextSession ?? null);
 
       if (!nextSession?.user) {
-        lastUserIdRef.current = null;
         setProfile(defaultProfile);
         return;
       }
 
-      void loadProfile(nextSession.user);
+      setProfile({ email: nextSession.user.email });
     });
 
     return () => {
       isMounted = false;
       data.subscription.unsubscribe();
     };
-  }, [loadProfile, supabase]);
-
-  useEffect(() => {
-    if (profile.onboardingStep === undefined) return;
-    if (profile.onboardingStep < 4) return;
-    try {
-      localStorage.setItem("fe_onboarding_done", "1");
-      localStorage.setItem("fe_onboarding_done_at", String(Date.now()));
-    } catch {
-      // Ignore storage errors (privacy mode / denied access).
-    }
-  }, [profile.onboardingStep]);
-
-  const updateProfile = useCallback(
-    async (data: Partial<Profile>) => {
-      if (!session?.user) return;
-      const updates: Record<string, string> = {};
-      if (data.name !== undefined) {
-        updates.preferred_name = data.name;
-      }
-      if (data.zip !== undefined) {
-        updates.zip_code = data.zip;
-      }
-      if (!Object.keys(updates).length) return;
-
-      const { error } = await supabase
-        .from("profiles")
-        .update(updates)
-        .eq("user_id", session.user.id);
-
-      if (!error) {
-        setProfile((prev) => ({
-          ...prev,
-          ...data,
-        }));
-      }
-    },
-    [session, supabase],
-  );
-
-  const resetProfile = useCallback(async () => {
-    if (!session?.user) {
-      setProfile(defaultProfile);
-      return;
-    }
-    await supabase
-      .from("profiles")
-      .update({ onboarding_step: 0 })
-      .eq("user_id", session.user.id);
-    setProfile((prev) => ({
-      ...prev,
-      onboardingStep: 0,
-    }));
-  }, [session, supabase]);
-
-  const reloadProfile = useCallback(async () => {
-    if (!session?.user) return;
-    lastUserIdRef.current = null;
-    await loadProfile(session.user);
-  }, [session, loadProfile]);
+  }, [supabase]);
 
   const signOut = useCallback(async () => {
     await supabase.auth.signOut();
@@ -209,12 +109,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       isLoggedIn: Boolean(session),
       hydrated,
       profile,
-      updateProfile,
-      resetProfile,
-      reloadProfile,
       signOut,
     }),
-    [session, hydrated, profile, updateProfile, resetProfile, reloadProfile, signOut],
+    [session, hydrated, profile, signOut],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
