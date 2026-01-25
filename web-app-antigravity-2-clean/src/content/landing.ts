@@ -22,172 +22,217 @@ export type FeatureConfig = {
 };
 
 export const supportHub = {
-  title: "Support Hub",
-  headline: "Support the movement, get on board, and help us help those still struggling.",
+  title: "Support the Mission",
+  headline: "Help us help those rebuilding their lives.",
   copy:
-    "Join the people powering Felon Entrepreneur. Your support keeps courses, jobs, and tools flowing to those rebuilding their lives.",
+    "Felon Entrepreneur exists to break the cycle of recidivism through real business education and economic independence. Your support expands access to tools, training, and opportunity for justice-impacted individuals nationwide.",
   bullets: [
-    "Donations fuel real support tools",
-    "Every contribution helps someone rebuild",
-    "Expand courses, job support, and resources",
-    "Support the mission—not just the platform",
+    "Fund real tools that create real income",
+    "Expand access to business training",
+    "Support a movement, not just a platform",
+    "Help someone build a legacy",
   ],
-  cta: { label: "Join free and support the movement", href: "/signup" },
+  cta: { label: "Join the movement", href: "/signup" },
 };
 
 export const heroContent = {
-  eyebrow: "YOUR NEXT MOVE",
-  title:
-    "Design and execute a masterclass comeback system with Felon Entrepreneur",
+  eyebrow: "OWNERSHIP OVER EXCUSES",
+  title: "From Setback to Ownership",
   subtitle:
-    "You don’t need motivation. You need a system. Join free, answer a few questions, and we build a Life Plan that turns chaos into clear next steps",
-  primaryCta: { label: "Join free and start", href: "/signup" },
-  secondaryCta: { label: "I already have an account", href: "/login" },
+    "Felon Entrepreneur is the execution platform for justice-impacted individuals ready to build legitimate income, real businesses, and lasting legacy. No fluff. No excuses. Just systems that work.",
+  primaryCta: { label: "Join Free", href: "/signup" },
+  secondaryCta: { label: "See What's Inside", href: "#features" },
   highlights: [
-    "Built from your answers in minutes",
-    "Tools that push you forward daily",
-    "One platform for the whole comeback",
+    "AI-powered life planning built from your goals",
+    "Fair-chance employers who actually hire",
+    "Business builder tools to start your own",
   ],
 };
 
 export const benefitCards = [
   {
-    title: "Personal plan, zero fluff",
+    title: "Your Plan. Your Path.",
     description:
-      "No generic advice. No wasted time. Your plan is built from your answers and focused on real actions that improve your life, starting today",
+      "Answer a few questions and our AI builds a personalized Life Plan with clear action steps—weekly, monthly, quarterly. No generic advice. Real moves based on your situation.",
     href: "/signup",
   },
   {
-    title: "Built-in accountability",
+    title: "Systems Over Motivation",
     description:
-      "Progress doesn’t happen by accident. Felon Entrepreneur gives you structure, momentum, and follow-through without pressure or overwhelm",
+      "Daily check-ins, streak tracking, and micro-routines keep you moving forward. Progress happens through structure, not willpower. We built the system—you execute.",
     href: "/signup",
   },
   {
-    title: "Build something of your own",
+    title: "Own Something Real",
     description:
-      "Not everyone is meant to just work a job. Learn how to build income, skills, and confidence through entrepreneurship, even if you’re starting from zero",
+      "Not everyone is meant to work for someone else. Our Build My Business track walks you step-by-step from idea to LLC to income. Ownership creates freedom.",
     href: "/signup",
   },
 ];
 
 export const features: FeatureConfig[] = [
   {
-    id: "career-finder",
-    title: "Career Finder Studio",
+    id: "life-plan",
+    title: "Personalized Life Plan",
     description:
-      "Get hired fast with auto-generated searches, targeted resumes, and an assistant that preps every application.",
-    bullets: ["Auto-Generated Job Finder", "Resume Builder", "Application Assistant"],
+      "Tell us where you are and where you want to go. Our AI builds a custom roadmap organized by timeframe—with action steps you can actually execute. Regenerate as your goals evolve.",
+    bullets: [
+      "AI-generated plan from your answers",
+      "Weekly, monthly, and quarterly action steps",
+      "Daily recommendations on what to focus on",
+      "Track progress and adjust as you grow",
+    ],
     media: [
       {
         type: "image",
         src: "/skyscraper.jpg.png",
-        alt: "Career finder skyline",
-        label: "Signal scan",
-      },
-      {
-        type: "video",
-        src: "/skyscraper.jpg.png",
-        alt: "Career finder preview",
-        label: "Preview",
+        alt: "Life Plan dashboard",
+        label: "Your roadmap",
       },
     ],
-    cta: { label: "Join free to start your job plan", href: "/signup" },
+    cta: { label: "Get your plan", href: "/signup" },
   },
   {
-    id: "skill-accelerator",
-    title: "Skill Accelerator Courses",
-    description: "Real training that fast-tracks you into earning again—built for speed, proof, and momentum.",
-    bullets: ["Fast-Track Training Courses", "Live Training Sessions", "One-on-One Training"],
+    id: "career-finder",
+    title: "Job Discovery",
+    description:
+      "Find employers who actually hire people with records. Search by location, filter for remote and fair-chance employers, build resumes, and get application support—all in one place.",
+    bullets: [
+      "Fair-chance employer database",
+      "Location-based job search",
+      "Resume builder tool",
+      "Save jobs and track applications",
+    ],
+    media: [
+      {
+        type: "image",
+        src: "/skyscraper.jpg.png",
+        alt: "Job search interface",
+        label: "Find work",
+      },
+    ],
+    cta: { label: "Start searching", href: "/signup" },
+    flip: true,
+  },
+  {
+    id: "build-business",
+    title: "Build My Business",
+    description:
+      "Ready to own something? Our step-by-step business builder walks you through formation, registration, branding, and launch. Verify each step, unlock the next. No guesswork.",
+    bullets: [
+      "Visual workflow from idea to income",
+      "Step-by-step guidance with verified resources",
+      "Business document templates",
+      "Progress tracking and AI assistance",
+    ],
     media: [
       {
         type: "image",
         src: "/redgraph.jpg.png",
-        alt: "Skills dashboard",
-        label: "Course stack",
-      },
-      {
-        type: "video",
-        src: "/redgraph.jpg.png",
-        alt: "Course preview",
-        label: "Preview",
+        alt: "Business builder workflow",
+        label: "Build it right",
       },
     ],
-    cta: { label: "Join free to unlock courses", href: "/signup" },
+    cta: { label: "Start building", href: "/signup" },
+  },
+  {
+    id: "stories",
+    title: "Stories",
+    description:
+      "Connect with a community that understands. Share your journey, read others' experiences, and find inspiration from people who've walked similar paths. Real stories. Real transformation.",
+    bullets: [
+      "Share your transformation story",
+      "Read community experiences",
+      "Find inspiration and accountability",
+      "Build connections that matter",
+    ],
+    media: [
+      {
+        type: "image",
+        src: "/hero-credit.jpg.png",
+        alt: "Community stories",
+        label: "Real stories",
+      },
+    ],
+    cta: { label: "Join the community", href: "/signup" },
     flip: true,
   },
   {
     id: "cheat-codes",
     title: "Cheat Codes",
-    description: "Smart life hacks that cut through obstacles and hand you quick wins that pay off immediately.",
+    description:
+      "Short, high-value video lessons that give you immediate wins. Credit hacks, business shortcuts, mindset resets, and practical tactics from people who've been there. Quick to watch. Instant to apply.",
     bullets: [
-      "Quick wins you can use today",
-      "Money, mindset, and momentum shortcuts",
-      "High-value micro-lessons",
+      "Bite-sized video lessons",
+      "Practical tactics you can use today",
+      "Created by founders and community",
+      "New content added regularly",
     ],
     media: [
       {
         type: "video",
         src: "/hero-credit.jpg.png",
         alt: "Cheat Codes preview",
-        label: "Preview",
+        label: "Quick wins",
       },
     ],
-    cta: { label: "Join free to access Cheat Codes", href: "/signup" },
+    cta: { label: "Access Cheat Codes", href: "/signup" },
   },
   {
     id: "merch",
-    title: "Wear Your Wins",
-    description: "Limited drops that represent your comeback. Premium basics built to remind you what you’re building.",
-    bullets: ["Limited drops", "Mission-driven designs", "Represent your comeback"],
+    title: "Shop",
+    description:
+      "Represent the movement. Premium merchandise designed for people building something real. Limited drops, mission-driven designs, and quality that reflects who you're becoming.",
+    bullets: [
+      "Limited edition drops",
+      "Premium quality apparel",
+      "Mission-driven designs",
+      "Represent your transformation",
+    ],
     media: [],
     videoSrc: "/shirtvideo.mp4",
     supportingImages: [
       { src: "/FE-tradtional.png", alt: "FE traditional design" },
       { src: "/FEtradtional-white.png", alt: "FE traditional white design" },
     ],
-    cta: { label: "Join free and visit the Shop", href: "/signup" },
+    cta: { label: "Visit the Shop", href: "/signup" },
     flip: true,
-  },
-  {
-    id: "book",
-    title: "Get the Book",
-    description:
-      "The guide for people getting ready to re-enter society—mindset reset, modern playbook, and step-by-step comeback plan.",
-    bullets: ["Mindset reset", "Modern society catch-up", "Step-by-step comeback plan"],
-    media: [
-      {
-        type: "image",
-        src: "/bookcover.png",
-        alt: "Book cover",
-        label: "FE Book",
-      },
-    ],
-    gallery: [{ src: "/book-spread.png", alt: "Book spread" }],
-    cta: { label: "Join free to get book updates", href: "/signup" },
   },
 ];
 
 export const howItWorks = {
-  title: "Enter, onboard, launch.",
+  title: "How It Works",
   description:
-    "Everyone starts here. Join free, complete onboarding (name, zip, questionnaire), and unlock the full Felon Entrepreneur app experience.",
+    "Felon Entrepreneur is designed to meet you where you are and move you forward. Start free, build your plan, and access the tools you need to create real change.",
   steps: [
-    { title: "Join free", description: "Tap in and secure your spot." },
-    { title: "Complete onboarding", description: "Preferred name → zip → quick questionnaire." },
-    { title: "Enter the app", description: "Home, Plan, Jobs, Courses, Shop, Profile unlocked." },
+    {
+      title: "Create your account",
+      description: "Sign up free. No credit card required to start.",
+    },
+    {
+      title: "Complete your profile",
+      description: "Answer questions about your goals, situation, and what you want to build.",
+    },
+    {
+      title: "Get your Life Plan",
+      description: "Our AI creates a personalized roadmap with clear action steps.",
+    },
+    {
+      title: "Execute daily",
+      description: "Use our tools to find jobs, build a business, learn skills, and track progress.",
+    },
   ],
 };
 
 export const founders = [
   {
     name: "Kyle",
-    bio: "Builder, operator, and relentless optimist. Pushing Felon Entrepreneur to be the comeback partner people deserve.",
+    bio: "Builder and operator focused on creating real tools that help people execute. Pushing Felon Entrepreneur to be the platform people actually need—not just another app.",
     imageSrc: "/me%20in%20vegas.png",
   },
   {
     name: "Nate",
-    bio: "Founder on a mission to turn setbacks into superpowers. Designing FE so you can move faster than the obstacles.",
+    bio: "Founder with lived experience turning setbacks into systems. Building FE to give others the framework he wished existed—practical, direct, and built for results.",
     imageSrc: "/nate-the-founder.png",
   },
 ];

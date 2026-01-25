@@ -66,7 +66,6 @@ export default function SignupPage() {
       email,
       password,
       options: {
-        // Keep email verification landing on onboarding instead of the public landing page.
         emailRedirectTo,
       },
     });
@@ -87,47 +86,47 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="rounded-3xl border border-white/70 bg-white/90 p-8 shadow-xl shadow-indigo-100">
+    <div className="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm">
       <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-indigo-600">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-red-400">
           Join free
         </p>
-        <h1 className="mt-2 text-3xl font-semibold text-gray-900">Join the Waitlist</h1>
-        <p className="mt-2 text-sm text-gray-600">
+        <h1 className="mt-2 text-2xl font-bold text-white">Join the Waitlist</h1>
+        <p className="mt-2 text-sm text-slate-400">
           Sign up to get early access when Felon Entrepreneur launches.
         </p>
       </div>
 
       {errorMessage && (
-        <div className="mt-6 rounded-2xl border border-rose-100 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+        <div className="mt-6 rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-300">
           {errorMessage}
         </div>
       )}
 
       {successEmail ? (
         <div className="mt-6 space-y-6">
-          <div className="rounded-2xl border border-emerald-100 bg-emerald-50 px-4 py-4 text-sm text-emerald-700">
-            <p className="text-base font-semibold text-emerald-800">Check your email</p>
+          <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-4 text-sm text-emerald-300">
+            <p className="text-base font-semibold text-emerald-200">Check your email</p>
             <p className="mt-1">
               We sent a verification link to {successEmail}. Click it to complete your signup.
             </p>
           </div>
           <Link
             href="/login"
-            className="block w-full rounded-xl bg-indigo-600 px-4 py-3 text-center text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition hover:-translate-y-0.5 hover:bg-indigo-500"
+            className="block w-full rounded-lg bg-red-500 px-4 py-3 text-center text-sm font-semibold text-white shadow-lg shadow-red-500/25 transition hover:-translate-y-0.5 hover:bg-red-400"
           >
             I verified — Log in
           </Link>
-          <div className="text-center text-sm text-gray-600">
-            <Link href="/" className="font-semibold text-indigo-600 hover:text-indigo-500">
-              Back to landing
+          <div className="text-center text-sm text-slate-400">
+            <Link href="/" className="font-semibold text-red-400 hover:text-red-300">
+              Back to home
             </Link>
           </div>
         </div>
       ) : (
         <>
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-            <label className="block text-sm font-semibold text-gray-800">
+            <label className="block text-sm font-medium text-slate-300">
               Email address
               <input
                 required
@@ -136,11 +135,11 @@ export default function SignupPage() {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 placeholder="you@example.com"
-                className="mt-2 w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-900 shadow-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+                className="mt-2 w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition focus:border-red-500/50 focus:ring-2 focus:ring-red-500/20"
               />
             </label>
 
-            <label className="block text-sm font-semibold text-gray-800">
+            <label className="block text-sm font-medium text-slate-300">
               Password
               <div className="relative mt-2">
                 <input
@@ -150,12 +149,12 @@ export default function SignupPage() {
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
                   placeholder="Create a password"
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 pr-12 text-sm text-gray-900 shadow-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 pr-16 text-sm text-white placeholder-slate-500 outline-none transition focus:border-red-500/50 focus:ring-2 focus:ring-red-500/20"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-indigo-600 hover:text-indigo-500"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-red-400 hover:text-red-300"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? "Hide" : "Show"}
@@ -163,7 +162,7 @@ export default function SignupPage() {
               </div>
             </label>
 
-            <label className="block text-sm font-semibold text-gray-800">
+            <label className="block text-sm font-medium text-slate-300">
               Confirm password
               <div className="relative mt-2">
                 <input
@@ -173,12 +172,12 @@ export default function SignupPage() {
                   value={confirmPassword}
                   onChange={(event) => setConfirmPassword(event.target.value)}
                   placeholder="Re-enter your password"
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 pr-12 text-sm text-gray-900 shadow-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 pr-16 text-sm text-white placeholder-slate-500 outline-none transition focus:border-red-500/50 focus:ring-2 focus:ring-red-500/20"
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirm((prev) => !prev)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-indigo-600 hover:text-indigo-500"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-red-400 hover:text-red-300"
                   aria-label={
                     showConfirm ? "Hide password confirmation" : "Show password confirmation"
                   }
@@ -188,13 +187,13 @@ export default function SignupPage() {
               </div>
             </label>
 
-            <label className="flex items-start gap-3 rounded-2xl border border-gray-100 bg-gray-50/70 px-4 py-3 text-sm text-gray-700">
+            <label className="flex items-start gap-3 rounded-lg border border-white/5 bg-white/5 px-4 py-3 text-sm text-slate-400">
               <input
                 required
                 type="checkbox"
                 checked={termsAccepted}
                 onChange={(event) => setTermsAccepted(event.target.checked)}
-                className="mt-1 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                className="mt-1 h-4 w-4 rounded border-white/20 bg-white/5 text-red-500 focus:ring-red-500/50"
               />
               <span>
                 I agree to the terms and acknowledge the privacy policy. This is required to
@@ -205,15 +204,15 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={isSubmitting || !termsAccepted}
-              className="w-full rounded-xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition hover:-translate-y-0.5 hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-70"
+              className="w-full rounded-lg bg-red-500 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-red-500/25 transition hover:-translate-y-0.5 hover:bg-red-400 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isSubmitting ? "Creating account..." : "Join the Waitlist"}
             </button>
           </form>
 
-          <div className="mt-6 flex items-center justify-between text-sm text-gray-600">
+          <div className="mt-6 flex items-center justify-between text-sm text-slate-400">
             <span>Already have an account?</span>
-            <Link href="/login" className="font-semibold text-indigo-600 hover:text-indigo-500">
+            <Link href="/login" className="font-semibold text-red-400 hover:text-red-300">
               Log in
             </Link>
           </div>

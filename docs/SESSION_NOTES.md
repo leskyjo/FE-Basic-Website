@@ -4,6 +4,75 @@ Checkpoints saved before context clears. Read this file to resume work.
 
 ---
 
+# Session Checkpoint - 2026-01-24
+
+## Accomplished
+- **Committed stripped-down version to GitHub** (leskyjo/FE-Basic-Website) - 150 files changed, 33,310 deletions
+- **Fixed corrupted node_modules** - Full clean reinstall resolved webpack/build errors
+- **Redesigned hero section** to match professional design:
+  - Red announcement bar at top
+  - Centered layout with pill badge ("Ownership Over Excuses")
+  - Mixed-font headline: "From Setback to *Ownership*"
+  - Trust indicators row (AI-Powered, Fair-Chance Employers, Business Builder)
+  - Centered video section
+- **Rebranded all auth pages** (signup, login, forgot-password, reset-password):
+  - Dark background matching landing page
+  - Red accent colors throughout
+  - Consistent styling with main brand
+- **Updated all landing page content** based on Felon Entrepreneur brand definition:
+  - Hero messaging aligned with mission (execution-focused, systems over motivation)
+  - Added 6 features matching app capabilities (Life Plan, Job Discovery, Build My Business, Stories, Cheat Codes, Shop)
+  - Updated benefit cards, how-it-works section, founder bios
+- **Created new "What's Inside" section** (`whats-inside-section.tsx`):
+  - Scrolls to when "See What's Inside" button clicked
+  - Core values row (Systems, Ownership, Execution)
+  - Feature grid with icons for all 6 app features
+  - CTA at bottom
+- **Build passes successfully**
+
+## Decisions Made
+- **Using Vercel for hosting** (not Network Solutions - doesn't support Next.js)
+- **Custom domain:** felonentrepreneur.com (already owned)
+- **Keeping Supabase** for auth/database
+- **DeepSeek AI** will be added later (instead of OpenAI)
+- **Brand tone:** Execution-focused, ownership-first, no motivational fluff, systems over motivation
+- **Support section moved** to appear after Stories feature (not after book)
+
+## Open Tasks
+- [ ] Deploy to Vercel with custom domain (felonentrepreneur.com)
+- [ ] Configure DNS at Network Solutions to point to Vercel
+- [ ] Submit for Apple/Google developer accounts
+- [ ] Add DeepSeek AI integration (future)
+- [ ] Set up welcome email for waitlist signups
+
+## Files Modified
+
+**Created:**
+- `components/landing/whats-inside-section.tsx` - New "What's Inside" overview section
+
+**Modified:**
+- `components/landing/hero-section.tsx` - Redesigned with announcement bar, centered layout, trust indicators
+- `src/content/landing.ts` - Updated all content (hero, features, benefit cards, how-it-works, founders)
+- `app/page.tsx` - Added WhatsInsideSection, moved SupportHub after Stories
+- `app/(tunnel)/layout.tsx` - Dark theme with logo
+- `app/(tunnel)/signup/page.tsx` - Dark/red brand theme
+- `app/(tunnel)/login/page.tsx` - Dark/red brand theme
+- `app/(tunnel)/forgot-password/page.tsx` - Dark/red brand theme
+- `app/(tunnel)/reset-password/page.tsx` - Dark/red brand theme
+
+## Context for Next Session
+The landing page has been completely redesigned to match the Felon Entrepreneur brand identity. All content now properly reflects the app's features (Life Plan, Jobs, Build My Business, Stories, Cheat Codes, Shop) and brand values (ownership, execution, systems). Auth pages are on-brand with dark theme and red accents.
+
+**Next steps:** Deploy to Vercel, configure custom domain DNS, then apply for Apple/Google developer accounts.
+
+**GitHub:** https://github.com/leskyjo/FE-Basic-Website
+**Branch:** main
+**Build status:** PASSING
+**Dev server:** http://localhost:3000
+**Custom domain:** felonentrepreneur.com (ready for DNS config)
+
+---
+
 # Session Checkpoint - 2026-01-22
 
 ## Accomplished

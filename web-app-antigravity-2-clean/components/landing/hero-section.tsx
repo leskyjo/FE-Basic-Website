@@ -1,89 +1,92 @@
-import Image from "next/image";
 import Link from "next/link";
-
-import { heroContent } from "@/src/content/landing";
 import { MediaBlock } from "./media-block";
-
-const highlightCardClasses =
-  "relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-[#0b0b0b]/90 to-[#050505]/90 shadow-[0_50px_140px_rgba(255,0,0,0.14)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_60px_160px_rgba(255,0,0,0.2)] focus-within:outline focus-within:outline-1 focus-within:outline-red-500/70";
 
 export function HeroSection() {
   return (
-    <section className="relative isolate overflow-hidden bg-gradient-to-br from-[#0b0b0b] via-[#050505] to-black px-6 pb-14 pt-6 md:px-10 md:pt-12">
-      <div className="absolute left-1/2 top-1/4 h-64 w-64 -translate-x-1/2 rounded-full bg-red-500/10 blur-3xl" />
-      <div className="mx-auto grid max-w-6xl items-start gap-10 md:grid-cols-2">
-        {/* LEFT: Text + Highlight Card */}
-        <div className="space-y-6 text-left">
-          <p className="sectionEyebrow text-sm md:text-xl text-red-400">{heroContent.eyebrow}</p>
-          <h1 className="sectionTitle text-[34px] md:text-[52px]">{heroContent.title}</h1>
-          <p className="sectionSubhead max-w-2xl text-xl md:text-2xl">{heroContent.subtitle}</p>
-          <div className="flex flex-wrap gap-4">
+    <>
+      {/* Announcement Bar */}
+      <div className="bg-gradient-to-r from-red-600 via-red-500 to-red-600 px-4 py-2.5 text-center text-sm font-medium text-white">
+        Now Available on iOS &amp; Android - Join the Movement
+      </div>
+
+      {/* Hero Section */}
+      <section className="relative isolate overflow-hidden bg-gradient-to-b from-[#0a0a0a] via-[#080808] to-[#050505] px-6 pb-20 pt-20 md:px-10 md:pt-28">
+        {/* Background glow */}
+        <div className="absolute left-1/2 top-1/3 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-500/8 blur-[120px]" />
+
+        <div className="relative mx-auto max-w-4xl text-center">
+          {/* Pill Badge */}
+          <div className="mb-8 inline-flex items-center rounded-full border border-red-500/30 bg-red-500/10 px-5 py-2 text-sm font-semibold uppercase tracking-wider text-red-400">
+            Ownership Over Excuses
+          </div>
+
+          {/* Main Headline */}
+          <h1 className="mb-6 text-4xl font-bold leading-tight tracking-tight text-white md:text-6xl lg:text-7xl">
+            From Setback to{" "}
+            <span className="bg-gradient-to-r from-red-400 to-red-500 bg-clip-text font-serif italic text-transparent">
+              Ownership
+            </span>
+          </h1>
+
+          {/* Subtitle */}
+          <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-slate-400 md:text-xl">
+            Felon Entrepreneur is the execution platform for justice-impacted individuals ready to
+            build legitimate income, real businesses, and lasting legacy. No fluff. No excuses. Just systems that work.
+          </p>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
-              href={heroContent.primaryCta.href}
-              className="action-focus rounded-full bg-gradient-to-r from-red-500 via-red-600 to-red-500 px-7 py-3 text-sm font-semibold text-white shadow-[0_34px_110px_rgba(255,0,0,0.38)] transition hover:-translate-y-0.5 hover:shadow-[0_44px_140px_rgba(255,0,0,0.55)]"
+              href="/signup"
+              className="rounded-lg bg-red-500 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-red-500/25 transition hover:-translate-y-0.5 hover:bg-red-400 hover:shadow-xl hover:shadow-red-500/30"
             >
-              {heroContent.primaryCta.label}
+              Join Free
             </Link>
             <Link
-              href={heroContent.secondaryCta.href}
-              className="action-focus rounded-full border border-white/20 px-7 py-3 text-sm font-semibold text-slate-200 shadow-[0_14px_60px_rgba(255,0,0,0.12)] transition hover:-translate-y-0.5 hover:border-red-300 hover:text-white hover:shadow-[0_24px_90px_rgba(255,0,0,0.24)]"
+              href="#features"
+              className="group flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-8 py-4 text-base font-semibold text-slate-200 transition hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/10 hover:text-white"
             >
-              {heroContent.secondaryCta.label}
+              See What&apos;s Inside
+              <span className="transition group-hover:translate-x-1">&rarr;</span>
             </Link>
           </div>
 
-          <div className={highlightCardClasses}>
-            <Image
+          {/* Video Section - Centered */}
+          <div className="mx-auto mt-16 max-w-3xl">
+            <MediaBlock
+              type="video"
               src="/hero-credit.jpg.png"
-              alt="Hero visual"
-              width={800}
-              height={640}
-              className="absolute inset-0 h-full w-full object-cover opacity-30"
-              priority
+              alt="Felon Entrepreneur app preview"
+              label="Preview"
+              className="w-full min-h-[400px] md:min-h-[500px] rounded-2xl"
             />
-            <div className="absolute inset-0 bg-gradient-to-br from-black via-black/60 to-transparent" />
-            <div className="relative space-y-4 p-6">
-              <div className="sectionEyebrow">Highlighted actions</div>
-              <h3 className="sectionTitle text-2xl md:text-3xl">Everything tuned to your next move</h3>
-              <p className="text-xl md:text-2xl text-slate-100">
-              </p>
-              <div className="space-y-3">
-                {heroContent.highlights.map((item) => (
-                  <div
-                    key={item}
-                    className="flex items-start gap-3 rounded-2xl border border-white/5 bg-white/5 px-4 py-3 text-lg text-slate-200 transition hover:border-red-300/60 hover:shadow-[0_20px_60px_rgba(255,0,0,0.25)]"
-                  >
-                    <span className="mt-1 grid h-6 w-6 place-items-center rounded-full bg-red-500/20 text-xs font-bold text-red-300">
-                      ✓
-                    </span>
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
-              <div
-                aria-hidden
-                className="pointer-events-none absolute right-6 bottom-6 h-24 w-24 rounded-full bg-gradient-to-br from-red-500/30 via-red-500/15 to-transparent opacity-80 shadow-[0_0_60px_rgba(255,0,0,0.35)] ring-1 ring-red-500/30 backdrop-blur-sm"
-              >
-                <div className="absolute inset-3 rounded-full bg-black/40 ring-1 ring-red-400/40" />
-                <div className="absolute inset-6 grid place-items-center rounded-full bg-red-500/30 text-xs font-semibold text-white/80">
-                  FE
-                </div>
-              </div>
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="mx-auto mt-20 max-w-3xl border-t border-white/10" />
+
+        {/* Trust Indicators */}
+        <div className="mx-auto mt-12 max-w-3xl text-center">
+          <p className="mb-8 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+            Built for Second Chances. Designed for First-Class Results.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-white md:text-3xl">AI-Powered</div>
+              <div className="mt-1 text-sm text-slate-500">Life Planning</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-white md:text-3xl">Fair-Chance</div>
+              <div className="mt-1 text-sm text-slate-500">Employers</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-white md:text-3xl">Business</div>
+              <div className="mt-1 text-sm text-slate-500">Builder Tools</div>
             </div>
           </div>
         </div>
-
-        {/* RIGHT: Video aligned to top */}
-        <div className="relative">
-          <MediaBlock
-            type="video"
-            src="/hero-credit.jpg.png"
-            alt="Hero preview"
-            label="Preview"
-            className="w-full min-h-[540px] md:min-h-[660px]"
-          />
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
