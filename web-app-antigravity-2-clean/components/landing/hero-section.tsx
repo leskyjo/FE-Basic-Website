@@ -55,9 +55,10 @@ export function HeroSection() {
           <div className="mx-auto mt-16 max-w-3xl">
             <MediaBlock
               type="video"
+              videoSrc="/fe-intro-video.mp4"
               src="/hero-credit.jpg.png"
-              alt="Felon Entrepreneur app preview"
-              label="Preview"
+              alt="Felon Entrepreneur intro video"
+              label="Watch"
               className="w-full min-h-[400px] md:min-h-[500px] rounded-2xl"
             />
           </div>

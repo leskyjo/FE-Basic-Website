@@ -3,6 +3,7 @@ import Image from "next/image";
 type MediaBlockProps = {
   type: "image" | "video";
   src?: string;
+  videoSrc?: string;
   alt?: string;
   label?: string;
   className?: string;
@@ -11,7 +12,7 @@ type MediaBlockProps = {
 const cx = (...classes: Array<string | undefined | false>) =>
   classes.filter(Boolean).join(" ");
 
-export function MediaBlock({ type, src, alt, label, className }: MediaBlockProps) {
+export function MediaBlock({ type, src, videoSrc, alt, label, className }: MediaBlockProps) {
   const base =
     "group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-[#0c0c0c] to-[#050505] shadow-[0_30px_120px_rgba(255,0,0,0.07)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_40px_140px_rgba(255,0,0,0.18)] focus-within:outline focus-within:outline-1 focus-within:outline-red-500/70";
 
@@ -19,7 +20,7 @@ export function MediaBlock({ type, src, alt, label, className }: MediaBlockProps
     return (
       <div className={cx(base, className)}>
         {label && (
-          <span className="absolute left-4 top-4 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
+          <span className="absolute left-4 top-4 z-10 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
             {label}
           </span>
         )}
@@ -42,10 +43,33 @@ export function MediaBlock({ type, src, alt, label, className }: MediaBlockProps
     );
   }
 
+  // Video type - play actual video if videoSrc is provided
+  if (videoSrc) {
+    return (
+      <div className={cx(base, className)}>
+        {label && (
+          <span className="absolute left-4 top-4 z-10 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
+            {label}
+          </span>
+        )}
+        <video
+          src={videoSrc}
+          controls
+          playsInline
+          className="h-full w-full object-cover"
+          poster={src}
+        >
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    );
+  }
+
+  // Fallback - video placeholder with play button
   return (
     <div className={cx(base, className)}>
       {label && (
-        <span className="absolute left-4 top-4 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
+        <span className="absolute left-4 top-4 z-10 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
           {label}
         </span>
       )}
