@@ -7,24 +7,27 @@ import { LandingFooter } from "@/components/landing/landing-footer";
 import { LandingHeader } from "@/components/landing/landing-header";
 import { SupportHubSection } from "@/components/landing/support-hub-section";
 import { WhatsInsideSection } from "@/components/landing/whats-inside-section";
+import { LightboxProvider } from "@/components/ui/lightbox-context";
 import { features } from "@/src/content/landing";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#050505] text-slate-50">
-      <LandingHeader />
-      <HeroSection />
-      <WhatsInsideSection />
-      <BenefitCardsRow />
-      {features.map((feature) => (
-        <div key={feature.id}>
-          <FeatureSection feature={feature} />
-          {feature.id === "stories" && <SupportHubSection />}
-        </div>
-      ))}
-      <HowItWorksBand />
-      <FoundersSection />
-      <LandingFooter />
-    </div>
+    <LightboxProvider>
+      <div className="min-h-screen bg-[#050505] text-slate-50">
+        <LandingHeader />
+        <HeroSection />
+        <WhatsInsideSection />
+        <BenefitCardsRow />
+        {features.map((feature) => (
+          <div key={feature.id}>
+            <FeatureSection feature={feature} />
+            {feature.id === "stories" && <SupportHubSection />}
+          </div>
+        ))}
+        <HowItWorksBand />
+        <FoundersSection />
+        <LandingFooter />
+      </div>
+    </LightboxProvider>
   );
 }

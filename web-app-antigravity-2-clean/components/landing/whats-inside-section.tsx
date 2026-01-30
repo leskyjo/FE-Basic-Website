@@ -6,36 +6,42 @@ const insideFeatures = [
     title: "Personalized Life Plan",
     description:
       "AI builds a custom roadmap from your goals—weekly, monthly, quarterly action steps you can actually execute.",
+    href: "#life-plan",
   },
   {
     icon: "💼",
     title: "Job Discovery",
     description:
       "Find fair-chance employers who hire people with records. Resume builder, job search, and application tracking.",
+    href: "#career-finder",
   },
   {
     icon: "🏗️",
     title: "Build My Business",
     description:
       "Step-by-step workflow to start your own business—from idea to LLC to income. Verified resources, no guesswork.",
+    href: "#build-business",
   },
   {
     icon: "📖",
     title: "Stories",
     description:
       "Connect with a community that gets it. Share your journey, find inspiration, build real connections.",
+    href: "#stories",
   },
   {
     icon: "⚡",
     title: "Cheat Codes",
     description:
       "Short video lessons with instant wins—credit hacks, business shortcuts, mindset resets. Quick to watch, easy to apply.",
+    href: "#cheat-codes",
   },
   {
     icon: "🛒",
     title: "Shop",
     description:
       "Premium merch for people building something real. Limited drops, mission-driven designs.",
+    href: "#merch",
   },
 ];
 
@@ -98,14 +104,33 @@ export function WhatsInsideSection() {
         {/* Feature Grid */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {insideFeatures.map((feature) => (
-            <div
+            <a
               key={feature.title}
-              className="group rounded-2xl border border-white/10 bg-gradient-to-br from-[#0c0c0c] via-[#090909] to-[#050505] p-6 transition duration-300 hover:-translate-y-1 hover:border-red-500/30 hover:shadow-[0_30px_100px_rgba(255,0,0,0.15)]"
+              href={feature.href}
+              className="group rounded-2xl border border-white/10 bg-gradient-to-br from-[#0c0c0c] via-[#090909] to-[#050505] p-6 transition duration-300 hover:-translate-y-1 hover:border-red-500/30 hover:shadow-[0_30px_100px_rgba(255,0,0,0.15)] focus:outline-none focus:ring-2 focus:ring-red-500/50"
             >
-              <div className="mb-4 text-4xl">{feature.icon}</div>
-              <h3 className="mb-2 text-xl font-semibold text-white">{feature.title}</h3>
+              <div className="mb-4 flex items-center justify-between">
+                <span className="text-4xl">{feature.icon}</span>
+                <span className="text-slate-500 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-red-400">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </span>
+              </div>
+              <h3 className="mb-2 text-xl font-semibold text-white group-hover:text-red-300 transition-colors">{feature.title}</h3>
               <p className="text-sm leading-relaxed text-slate-400">{feature.description}</p>
-            </div>
+            </a>
           ))}
         </div>
 

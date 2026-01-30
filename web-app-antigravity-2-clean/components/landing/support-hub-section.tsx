@@ -1,10 +1,37 @@
+"use client";
+
+import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
 
 import { supportHub } from "@/src/content/landing";
 
+import { LightboxImage } from "../ui/image-lightbox";
+import { useLightbox } from "../ui/lightbox-context";
+
 const bullets = supportHub.bullets;
 
+const supportImages: LightboxImage[] = [
+  {
+    src: "/newimage5.webp",
+    alt: "Support the Movement - Donations",
+    caption: "Your support helps justice-impacted individuals access the tools they need to rebuild.",
+  },
+  {
+    src: "/newimage6.webp",
+    alt: "Housing Stability",
+    caption: "From housing to business—comprehensive support for a fresh start.",
+  },
+];
+
 export function SupportHubSection() {
+  const { openLightbox, registerImages } = useLightbox();
+
+  // Register images with global lightbox on mount
+  useEffect(() => {
+    registerImages(supportImages);
+  }, [registerImages]);
+
   return (
     <section className="relative isolate overflow-hidden px-6 py-12 md:px-10">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,0,0,0.16),transparent_45%),radial-gradient(circle_at_80%_0%,rgba(255,0,0,0.12),transparent_35%)]" />
@@ -36,42 +63,33 @@ export function SupportHubSection() {
           </Link>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="group relative col-span-2 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-[#0c0c0c] to-[#050505] shadow-[0_30px_120px_rgba(255,0,0,0.14)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_40px_140px_rgba(255,0,0,0.22)] focus-within:outline focus-within:outline-1 focus-within:outline-red-500/70">
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-black/70 via-black/40 to-red-700/20" />
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-6">
-              <button
-                type="button"
-                className="grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-red-500 to-red-600 text-white shadow-[0_20px_60px_rgba(255,0,0,0.35)] transition hover:scale-105 hover:shadow-[0_28px_80px_rgba(255,0,0,0.55)] focus-visible:outline focus-visible:outline-1 focus-visible:outline-red-400"
-                aria-label="Play preview"
-              >
-                ▶
-              </button>
-              <span className="rounded-full bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/80 backdrop-blur">
-                Video coming soon
-              </span>
-            </div>
-            <div className="absolute bottom-0 left-0 right-0 space-y-2 px-4 pb-4">
-              <div className="flex items-center justify-between text-[11px] font-semibold text-white/70">
-                <span>0:00</span>
-                <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] uppercase tracking-wide">
-                  HD
+        <div className="flex flex-col gap-4">
+          {supportImages.map((image) => (
+            <button
+              key={image.src}
+              onClick={() => openLightbox(image.src)}
+              className="group relative h-72 cursor-zoom-in overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-[#0c0c0c] to-[#050505] shadow-[0_24px_90px_rgba(255,0,0,0.12)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_30px_120px_rgba(255,0,0,0.22)] focus:outline-none focus:ring-2 focus:ring-red-500/50"
+              aria-label={`View ${image.alt} in fullscreen`}
+            >
+              <Image
+                src={image.src}
+                alt={image.alt}
+                fill
+                className="object-contain"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-red-500/10" />
+              <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-opacity group-hover:bg-black/20 group-hover:opacity-100">
+                <span className="rounded-full bg-white/10 p-2 backdrop-blur">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    <line x1="11" y1="8" x2="11" y2="14" />
+                    <line x1="8" y1="11" x2="14" y2="11" />
+                  </svg>
                 </span>
-                <span>1:45</span>
               </div>
-              <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-                <div className="h-full w-1/2 rounded-full bg-gradient-to-r from-red-400 to-red-600 transition duration-300 group-hover:w-2/3" />
-              </div>
-            </div>
-          </div>
-          <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-[#0c0c0c] to-[#050505] shadow-[0_24px_90px_rgba(255,0,0,0.12)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_30px_120px_rgba(255,0,0,0.22)] focus-within:outline focus-within:outline-1 focus-within:outline-red-500/70">
-            <div className="flex h-36 items-center justify-center text-sm text-slate-300">Image placeholder</div>
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-black/40 via-transparent to-red-500/15" />
-          </div>
-          <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-[#0c0c0c] to-[#050505] shadow-[0_24px_90px_rgba(255,0,0,0.12)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_30px_120px_rgba(255,0,0,0.22)] focus-within:outline focus-within:outline-1 focus-within:outline-red-500/70">
-            <div className="flex h-36 items-center justify-center text-sm text-slate-300">Image placeholder</div>
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-black/40 via-transparent to-red-500/15" />
-          </div>
+            </button>
+          ))}
         </div>
       </div>
     </section>
