@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { Providers } from "./providers";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -15,8 +14,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "FlowEngine",
-  description: "Landing, onboarding, and app shell for FlowEngine",
+  title: "Felon Entrepreneur",
+  description: "Rebuild your life. Build your empire. Your past doesn't define your future.",
 };
 
 export default function RootLayout({
@@ -29,7 +28,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}
       >
-        <Providers>{children}</Providers>
+        {children}
       </body>
     </html>
   );

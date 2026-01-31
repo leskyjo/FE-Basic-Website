@@ -6,7 +6,7 @@ export function HeroSection() {
     <>
       {/* Announcement Bar */}
       <div className="bg-gradient-to-r from-red-600 via-red-500 to-red-600 px-4 py-2.5 text-center text-sm font-medium text-white">
-        Now Available on iOS &amp; Android - Join the Movement
+        Coming Soon to iOS &amp; Android
       </div>
 
       {/* Hero Section */}
@@ -34,17 +34,11 @@ export function HeroSection() {
             build legitimate income, real businesses, and lasting legacy. No fluff. No excuses. Just systems that work.
           </p>
 
-          {/* CTA Buttons */}
+          {/* CTA Button */}
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
-              href="/signup"
-              className="rounded-lg bg-red-500 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-red-500/25 transition hover:-translate-y-0.5 hover:bg-red-400 hover:shadow-xl hover:shadow-red-500/30"
-            >
-              Join Free
-            </Link>
-            <Link
               href="#features"
-              className="group flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-8 py-4 text-base font-semibold text-slate-200 transition hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/10 hover:text-white"
+              className="group flex items-center gap-2 rounded-lg bg-red-500 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-red-500/25 transition hover:-translate-y-0.5 hover:bg-red-400 hover:shadow-xl hover:shadow-red-500/30"
             >
               See What&apos;s Inside
               <span className="transition group-hover:translate-x-1">&rarr;</span>

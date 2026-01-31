@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 const insideFeatures = [
   {
     icon: "🎯",
@@ -137,14 +135,11 @@ export function WhatsInsideSection() {
         {/* CTA */}
         <div className="mt-16 text-center">
           <p className="mb-6 text-slate-400">
-            Ready to see how it all works together?
+            The app that turns setbacks into ownership.
           </p>
-          <Link
-            href="/signup"
-            className="inline-flex items-center gap-2 rounded-lg bg-red-500 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-red-500/25 transition hover:-translate-y-0.5 hover:bg-red-400 hover:shadow-xl hover:shadow-red-500/30"
-          >
-            Get Started Free
-          </Link>
+          <span className="inline-flex items-center gap-2 rounded-lg bg-red-500/80 px-8 py-4 text-base font-semibold text-white">
+            Coming Soon to iOS &amp; Android
+          </span>
         </div>
       </div>
     </section>

@@ -16,18 +16,9 @@ export function LandingHeader() {
           />
         </Link>
         <div className="flex items-center gap-3 text-sm font-semibold">
-          <Link
-            href="/login"
-            className="rounded-full px-4 py-2 text-slate-200 transition hover:text-white hover:underline hover:underline-offset-4 focus-visible:outline focus-visible:outline-1 focus-visible:outline-red-500/70"
-          >
-            Log in
-          </Link>
-          <Link
-            href="/signup"
-            className="rounded-full bg-gradient-to-r from-red-500 to-red-600 px-5 py-2 text-white shadow-[0_20px_60px_rgba(255,0,0,0.35)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_80px_rgba(255,0,0,0.55)] focus-visible:outline focus-visible:outline-1 focus-visible:outline-red-400"
-          >
-            Join free
-          </Link>
+          <span className="rounded-full bg-gradient-to-r from-red-500 to-red-600 px-5 py-2 text-white shadow-[0_20px_60px_rgba(255,0,0,0.35)]">
+            Coming Soon
+          </span>
         </div>
       </div>
     </header>

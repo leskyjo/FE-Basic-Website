@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 
 export function LandingFooter() {
   return (
@@ -15,19 +14,8 @@ export function LandingFooter() {
           />
           <p className="text-sm text-slate-400">Felon Entrepreneur · Command your comeback.</p>
         </div>
-        <div className="flex items-center gap-4 text-sm font-semibold">
-          <Link
-            href="/signup"
-            className="rounded-full bg-white/5 px-4 py-2 text-slate-200 transition hover:-translate-y-0.5 hover:border-red-300 hover:text-white focus-visible:outline focus-visible:outline-1 focus-visible:outline-red-500/70"
-          >
-            Join free
-          </Link>
-          <Link
-            href="/login"
-            className="rounded-full px-4 py-2 text-slate-300 transition hover:text-white hover:underline hover:underline-offset-4 focus-visible:outline focus-visible:outline-1 focus-visible:outline-red-500/70"
-          >
-            Log in
-          </Link>
+        <div className="flex items-center gap-4 text-sm">
+          <span className="text-slate-400">App coming soon to iOS and Android</span>
         </div>
       </div>
     </footer>

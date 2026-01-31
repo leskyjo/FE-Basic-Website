@@ -39,7 +39,7 @@ export const supportHub = {
     "Support a movement, not just a platform",
     "Help someone build a legacy",
   ],
-  cta: { label: "Join the movement", href: "/signup" },
+  cta: { label: "Learn more", href: "#features" },
 };
 
 export const heroContent = {
@@ -47,8 +47,8 @@ export const heroContent = {
   title: "From Setback to Ownership",
   subtitle:
     "Felon Entrepreneur is the execution platform for justice-impacted individuals ready to build legitimate income, real businesses, and lasting legacy. No fluff. No excuses. Just systems that work.",
-  primaryCta: { label: "Join Free", href: "/signup" },
-  secondaryCta: { label: "See What's Inside", href: "#features" },
+  primaryCta: { label: "See What's Inside", href: "#features" },
+  secondaryCta: { label: "Coming Soon", href: "#" },
   highlights: [
     "AI-powered life planning built from your goals",
     "Fair-chance employers who actually hire",
@@ -61,19 +61,19 @@ export const benefitCards = [
     title: "Your Plan. Your Path.",
     description:
       "Answer a few questions and our AI builds a personalized Life Plan with clear action steps—weekly, monthly, quarterly. No generic advice. Real moves based on your situation.",
-    href: "/signup",
+    href: "#",
   },
   {
     title: "Systems Over Motivation",
     description:
       "Daily check-ins, streak tracking, and micro-routines keep you moving forward. Progress happens through structure, not willpower. We built the system—you execute.",
-    href: "/signup",
+    href: "#",
   },
   {
     title: "Own Something Real",
     description:
       "Not everyone is meant to work for someone else. Our Build My Business track walks you step-by-step from idea to LLC to income. Ownership creates freedom.",
-    href: "/signup",
+    href: "#",
   },
 ];
 
@@ -119,7 +119,7 @@ export const features: FeatureConfig[] = [
           "Your personalized roadmap—built from your goals, organized by timeframe, ready to execute.",
       },
     ],
-    cta: { label: "Get your plan", href: "/signup" },
+    cta: { label: "Get your plan", href: "#" },
   },
   {
     id: "career-finder",
@@ -162,7 +162,7 @@ export const features: FeatureConfig[] = [
           "Find employers who hire based on your potential, not just your past.",
       },
     ],
-    cta: { label: "Start searching", href: "/signup" },
+    cta: { label: "Start searching", href: "#" },
     flip: true,
   },
   {
@@ -206,7 +206,7 @@ export const features: FeatureConfig[] = [
           "Every step mapped out. Every resource verified. From idea to income.",
       },
     ],
-    cta: { label: "Start building", href: "/signup" },
+    cta: { label: "Start building", href: "#" },
   },
   {
     id: "stories",
@@ -249,7 +249,7 @@ export const features: FeatureConfig[] = [
           "Real transformation stories from people who understand your journey.",
       },
     ],
-    cta: { label: "Join the community", href: "/signup" },
+    cta: { label: "Join the community", href: "#" },
     flip: true,
   },
   {
@@ -292,7 +292,7 @@ export const features: FeatureConfig[] = [
         caption: "Quick wins, practical tactics, immediate results.",
       },
     ],
-    cta: { label: "Access Cheat Codes", href: "/signup" },
+    cta: { label: "Access Cheat Codes", href: "#" },
   },
   {
     id: "merch",
@@ -339,7 +339,7 @@ export const features: FeatureConfig[] = [
         caption: "Represent the movement. Wear your transformation.",
       },
     ],
-    cta: { label: "Visit the Shop", href: "/signup" },
+    cta: { label: "Visit the Shop", href: "#" },
     flip: true,
   },
 ];
@@ -347,11 +347,11 @@ export const features: FeatureConfig[] = [
 export const howItWorks = {
   title: "How It Works",
   description:
-    "Felon Entrepreneur is designed to meet you where you are and move you forward. Start free, build your plan, and access the tools you need to create real change.",
+    "Felon Entrepreneur is designed to meet you where you are and move you forward. Build your plan and access the tools you need to create real change.",
   steps: [
     {
-      title: "Create your account",
-      description: "Sign up free. No credit card required to start.",
+      title: "Download the app",
+      description: "Available soon on iOS and Android.",
     },
     {
       title: "Complete your profile",
