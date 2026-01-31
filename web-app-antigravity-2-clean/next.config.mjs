@@ -10,6 +10,8 @@ const nextConfig = {
     // your project has type errors.
     ignoreBuildErrors: true,
   },
+  // Disable React strict mode to prevent double renders and HMR issues in dev
+  reactStrictMode: false,
 };
 
 export default nextConfig;

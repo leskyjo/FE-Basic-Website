@@ -4,6 +4,80 @@ Checkpoints saved before context clears. Read this file to resume work.
 
 ---
 
+# Session Checkpoint - 2026-01-30
+
+## Current Status
+- **Project**: Felon Entrepreneur (FE) landing page website
+- **Location**: `/home/leskyjo/Documents/FE WebApp-Clean/web-app-antigravity-2-clean/`
+- **Tech Stack**: Next.js 14, React, TypeScript, Tailwind CSS, Supabase
+- **Deployed**: Landing page is live on Netlify
+
+## Recent Accomplishments (2026-01-29)
+- Pushed all interactive enhancements to GitHub (commit 3ee3fc5)
+- Implemented expandable bullet points in feature sections
+- Built global image lightbox gallery with arrow navigation
+- Made "What's Inside" cards clickable with smooth scroll
+- Fixed image sizing (520px containers, object-contain)
+- Converted images to WebP format
+
+## Superpowers Workflow
+The Superpowers plugin is now enabled. When starting new features or changes:
+1. Claude should automatically invoke brainstorming skill
+2. Design gets refined through questions
+3. Plan gets created with bite-sized tasks
+4. Implementation follows the plan
+
+## Open Tasks
+- [ ] Verify lightbox arrows work correctly
+- [ ] Final visual QA pass
+- [ ] User mentioned "a couple of things left" before deploy - clarify what those are
+
+## Key Files
+- `app/page.tsx` - Main landing page
+- `components/landing/` - All landing page sections
+- `components/ui/image-lightbox.tsx` - Lightbox component
+- `components/ui/lightbox-context.tsx` - Global lightbox provider
+- `src/content/landing.ts` - All landing page content/copy
+
+---
+
+# Session Checkpoint - 2026-01-29 (Evening)
+
+## Accomplished
+- Pushed all interactive enhancements to GitHub (commit 3ee3fc5)
+- Fixed CSS loading issue by killing stale dev servers and clearing .next cache
+- Fixed Stories image sizing (changed to object-contain with 520px min-height)
+- Converted PNG images to WebP format for better performance
+- Added new product images (Entrepreneur Essentials black/white)
+
+## Decisions Made
+- Images now use object-contain to show full image without cropping (user preference over object-cover)
+- Container height at 520px provides good balance of size vs layout
+
+## Open Tasks
+- [ ] Verify lightbox arrows work correctly with global image collection
+- [ ] Test all images open in lightbox at proper large size (90vh)
+- [ ] Final visual QA pass before deployment
+- [ ] Ask user about "couple things left" before deploy
+
+## Files Modified
+This session was primarily fixes and the git push:
+- Restarted dev server and cleared .next cache
+- Committed and pushed 35 files to GitHub
+
+## Context for Next Session
+All interactive enhancements are now on GitHub. The landing page has:
+1. Expandable bullet points in each feature section
+2. Global image lightbox gallery with navigation arrows
+3. Clickable "What's Inside" cards with smooth scroll
+4. Larger images in feature sections and lightbox
+
+User should test the lightbox functionality - clicking any image should open a full-screen gallery where they can navigate through ALL site images using arrows. Images should display large (90vh max height).
+
+If CSS breaks on refresh, run: `pkill -f "next dev" && rm -rf .next && npm run dev`
+
+---
+
 # Session Checkpoint - 2026-01-29
 
 ## Accomplished
