@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Static export for AWS Amplify hosting
-  output: 'export',
-  // Disable image optimization for static export (use unoptimized images)
+  // SSR mode for authentication (AWS Amplify supports Next.js SSR)
+  // Disable image optimization for simpler deployment
   images: {
     unoptimized: true,
   },

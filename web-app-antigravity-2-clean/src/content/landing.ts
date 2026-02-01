@@ -48,7 +48,7 @@ export const heroContent = {
   subtitle:
     "Felon Entrepreneur is the execution platform for justice-impacted individuals ready to build legitimate income, real businesses, and lasting legacy. No fluff. No excuses. Just systems that work.",
   primaryCta: { label: "See What's Inside", href: "#features" },
-  secondaryCta: { label: "Coming Soon", href: "#" },
+  secondaryCta: { label: "Join the Waitlist", href: "/signup" },
   highlights: [
     "AI-powered life planning built from your goals",
     "Fair-chance employers who actually hire",
@@ -61,19 +61,19 @@ export const benefitCards = [
     title: "Your Plan. Your Path.",
     description:
       "Answer a few questions and our AI builds a personalized Life Plan with clear action steps—weekly, monthly, quarterly. No generic advice. Real moves based on your situation.",
-    href: "#",
+    href: "/signup",
   },
   {
     title: "Systems Over Motivation",
     description:
       "Daily check-ins, streak tracking, and micro-routines keep you moving forward. Progress happens through structure, not willpower. We built the system—you execute.",
-    href: "#",
+    href: "/signup",
   },
   {
     title: "Own Something Real",
     description:
       "Not everyone is meant to work for someone else. Our Build My Business track walks you step-by-step from idea to LLC to income. Ownership creates freedom.",
-    href: "#",
+    href: "/signup",
   },
 ];
 
@@ -119,7 +119,7 @@ export const features: FeatureConfig[] = [
           "Your personalized roadmap—built from your goals, organized by timeframe, ready to execute.",
       },
     ],
-    cta: { label: "Get your plan", href: "#" },
+    cta: { label: "Get your plan", href: "/signup" },
   },
   {
     id: "career-finder",
@@ -162,7 +162,7 @@ export const features: FeatureConfig[] = [
           "Find employers who hire based on your potential, not just your past.",
       },
     ],
-    cta: { label: "Start searching", href: "#" },
+    cta: { label: "Start searching", href: "/signup" },
     flip: true,
   },
   {
@@ -206,7 +206,7 @@ export const features: FeatureConfig[] = [
           "Every step mapped out. Every resource verified. From idea to income.",
       },
     ],
-    cta: { label: "Start building", href: "#" },
+    cta: { label: "Start building", href: "/signup" },
   },
   {
     id: "stories",
@@ -249,7 +249,7 @@ export const features: FeatureConfig[] = [
           "Real transformation stories from people who understand your journey.",
       },
     ],
-    cta: { label: "Join the community", href: "#" },
+    cta: { label: "Join the community", href: "/signup" },
     flip: true,
   },
   {
@@ -292,7 +292,7 @@ export const features: FeatureConfig[] = [
         caption: "Quick wins, practical tactics, immediate results.",
       },
     ],
-    cta: { label: "Access Cheat Codes", href: "#" },
+    cta: { label: "Access Cheat Codes", href: "/signup" },
   },
   {
     id: "merch",
@@ -339,7 +339,7 @@ export const features: FeatureConfig[] = [
         caption: "Represent the movement. Wear your transformation.",
       },
     ],
-    cta: { label: "Visit the Shop", href: "#" },
+    cta: { label: "Visit the Shop", href: "/signup" },
     flip: true,
   },
 ];
@@ -372,11 +372,19 @@ export const founders = [
   {
     name: "Kyle",
     bio: "Builder and operator focused on creating real tools that help people execute. Pushing Felon Entrepreneur to be the platform people actually need—not just another app.",
-    imageSrc: "/me%20in%20vegas.webp",
+    imageSrc: "/me2.jpg",
+    social: {
+      facebook: "https://www.facebook.com/kylejohnson.FE/",
+      instagram: "https://www.instagram.com/leskyjo/",
+    },
   },
   {
     name: "Nate",
     bio: "Founder with lived experience turning setbacks into systems. Building FE to give others the framework he wished existed—practical, direct, and built for results.",
     imageSrc: "/nate-the-founder.png",
+    social: {
+      facebook: "https://www.facebook.com/REENTRYSGOAT",
+      instagram: "https://www.instagram.com/felon_entrepreneur/",
+    },
   },
 ];

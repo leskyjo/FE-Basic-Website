@@ -56,7 +56,7 @@ export function MediaBlock({ type, src, videoSrc, alt, label, className }: Media
           src={videoSrc}
           controls
           playsInline
-          className="h-full w-full object-cover"
+          className="w-full h-auto"
           poster={src}
         >
           Your browser does not support the video tag.

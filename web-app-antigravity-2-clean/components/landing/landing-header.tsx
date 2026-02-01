@@ -16,9 +16,18 @@ export function LandingHeader() {
           />
         </Link>
         <div className="flex items-center gap-3 text-sm font-semibold">
-          <span className="rounded-full bg-gradient-to-r from-red-500 to-red-600 px-5 py-2 text-white shadow-[0_20px_60px_rgba(255,0,0,0.35)]">
-            Coming Soon
-          </span>
+          <Link
+            href="/login"
+            className="rounded-full px-5 py-2 text-slate-300 transition hover:text-white"
+          >
+            Log in
+          </Link>
+          <Link
+            href="/signup"
+            className="rounded-full bg-gradient-to-r from-red-500 to-red-600 px-5 py-2 text-white shadow-[0_20px_60px_rgba(255,0,0,0.35)] transition hover:from-red-400 hover:to-red-500"
+          >
+            Join Free
+          </Link>
         </div>
       </div>
     </header>

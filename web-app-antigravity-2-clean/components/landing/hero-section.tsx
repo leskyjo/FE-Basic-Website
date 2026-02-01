@@ -53,7 +53,7 @@ export function HeroSection() {
               src="/hero-credit.jpg.png"
               alt="Felon Entrepreneur intro video"
               label="Watch"
-              className="w-full min-h-[400px] md:min-h-[500px] rounded-2xl"
+              className="w-full rounded-2xl"
             />
           </div>
         </div>
