@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // SSR mode for authentication (AWS Amplify supports Next.js SSR)
+  // Standalone output for AWS Amplify SSR deployment
+  output: 'standalone',
   // Disable image optimization for simpler deployment
   images: {
     unoptimized: true,
