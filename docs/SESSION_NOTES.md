@@ -4,6 +4,125 @@ Checkpoints saved before context clears. Read this file to resume work.
 
 ---
 
+# Session Checkpoint - 2026-01-28
+
+## Accomplished
+- **Diagnosed Netlify deployment issue** - Site was showing old design because Netlify was building from repo root instead of `web-app-antigravity-2-clean` subdirectory
+- **Created `netlify.toml`** at repo root to configure proper build directory
+- **Pushed fix to GitHub** - Netlify should now rebuild correctly
+
+## Decisions Made
+- **Added Netlify configuration** via `netlify.toml` rather than changing Netlify dashboard settings (config-as-code is more maintainable)
+- **Confirmed GitHub repo** is `leskyjo/FE-Basic-Website` - user should verify Netlify is connected to this same repo
+
+## Open Tasks
+- [ ] **VERIFY Netlify is connected to correct repo** - User needs to check Netlify dashboard to confirm it's connected to `leskyjo/FE-Basic-Website`
+- [ ] Wait for Netlify rebuild and verify new design appears (announcement bar, "Ownership Over Excuses", centered video)
+- [ ] Hard refresh browser (Ctrl+Shift+R) to bypass cache after rebuild
+- [ ] Finish AWS setup (IAM users, Route 53, Amplify, RDS, EC2)
+- [ ] Transfer domains to Route 53
+- [ ] Apply for Apple/Google developer accounts
+
+## Files Modified
+- `netlify.toml` (created at repo root) - Configures Netlify to build from `web-app-antigravity-2-clean` subdirectory
+
+## Context for Next Session
+
+**Netlify was showing old site design** because the GitHub repo structure has the Next.js app inside `web-app-antigravity-2-clean/` subdirectory, but Netlify was building from the repo root. Added `netlify.toml` to fix this.
+
+**Important:** User should verify in Netlify dashboard that the site is connected to `https://github.com/leskyjo/FE-Basic-Website`. If it's connected to a different repo, that would explain the mismatch.
+
+**After Netlify rebuilds**, the site should show:
+- Red announcement bar: "Now Available on iOS & Android"
+- Pill badge: "Ownership Over Excuses"
+- Headline: "From Setback to Ownership"
+- Centered video player with intro video
+
+**GitHub:** https://github.com/leskyjo/FE-Basic-Website
+**Branch:** main
+**Latest commit:** `af24786` - Add netlify.toml to configure build from subdirectory
+
+---
+
+# Session Checkpoint - 2026-01-27
+
+## Accomplished
+- **Created intro video using Remotion** (45 seconds, 1920x1080)
+  - Scene 1: "entrepreneur" definition with collect call audio from jail
+  - Scene 2: Black & white image montage (cop cars, jail cell, courtroom, led away, prison yard) with strobe effect and voiceover
+  - Scene 3: Color reunion images (man released from prison, family reunion)
+  - Scene 4: "A reminder that nothing about you is ever wasted"
+  - Scene 5: "Welcome to Felon Entrepreneur" with logo
+- **Set up Remotion project** at `/home/leskyjo/Documents/FE-Videos/fe-intro-video/`
+- **Generated AI images using Gemini (Nano Banana)** via gemini.google.com
+- **Generated AI voiceover** using Vidnoz (free TTS)
+- **Generated background music** using ElevenLabs (Eleven Music)
+- **Integrated video into FE website** hero section
+- **Updated MediaBlock component** to support actual video playback (not just placeholder)
+- **Pushed to GitHub** - Video now live on Netlify for Nate to see
+- **Created AWS account** for Felon Entrepreneur LLC (business account)
+- **Researched AWS infrastructure** for unified hosting (Route 53, Amplify, RDS, EC2, S3)
+
+## Decisions Made
+- **AWS for unified hosting** - Will move everything to AWS (domains, hosting, database, storage)
+- **Keep Supabase for now** - Database already set up, can migrate to RDS later
+- **Remotion for video creation** - Programmatic video generation using React
+- **ElevenLabs for music** - User already has account, generates royalty-free instrumentals
+- **Netlify for temporary hosting** - Quick deployment for Nate to preview while AWS is being set up
+
+## Open Tasks
+- [ ] Finish AWS setup (IAM users for both owners, Route 53, Amplify, RDS, EC2)
+- [ ] Transfer domains to Route 53 (felonentrepreneur.com from Network Solutions, felonmediagroup.com from Squarespace/Google)
+- [ ] Deploy FE website to AWS Amplify
+- [ ] Set up RDS PostgreSQL for mobile app database
+- [ ] Deploy Express API to EC2 for mobile app backend
+- [ ] Migrate mobile app from localhost database to AWS RDS
+- [ ] Apply for Apple/Google developer accounts (website is now live)
+- [ ] Create FE LLC landing page (separate from homepage)
+- [ ] Create FMG homepage and landing page
+
+## Files Modified
+
+**Created (Remotion project):**
+- `/home/leskyjo/Documents/FE-Videos/fe-intro-video/` - Complete Remotion project
+- `src/FEIntroVideo.tsx` - Main video composition with 5 scenes
+- `src/Root.tsx` - Remotion composition registration
+- `src/index.ts` - Entry point
+- `generate-images.js` - Script to generate images via Gemini API
+- `public/images/` - All video images (cop-cars, jail-cell, courtroom, led-away, prison-yard, reunion, fe-logo)
+- `public/audio/` - Audio files (collect call, voiceover, background music)
+- `out/fe-intro-video-final.mp4` - Rendered video
+
+**Modified (FE Website):**
+- `components/landing/media-block.tsx` - Added videoSrc prop for actual video playback
+- `components/landing/hero-section.tsx` - Updated to use fe-intro-video.mp4
+- `public/fe-intro-video.mp4` - Video file added
+
+## Context for Next Session
+
+**Video is complete and live on the website!** The 45-second intro video plays in the hero section with collect call audio, dramatic voiceover, AI-generated images, and background music from ElevenLabs.
+
+**AWS account created** under Felon Entrepreneur LLC with $100 in credits (182 days). Need to complete setup:
+1. Create IAM users for both owners
+2. Set up Route 53 for domains
+3. Deploy to Amplify
+4. Set up RDS for mobile app database
+
+**Mobile app** at `/home/leskyjo/apps9/felonentrepreneur9` still uses local PostgreSQL - needs to be migrated to AWS RDS before launch.
+
+**Domains:**
+- felonentrepreneur.com - at Network Solutions, needs transfer to Route 53
+- felonmediagroup.com - location TBD (Squarespace or Google), needs transfer to Route 53
+
+**GitHub:** https://github.com/leskyjo/FE-Basic-Website
+**Branch:** main
+**Build status:** PASSING
+**Netlify:** Live (Nate can see the video)
+**Remotion Studio:** http://localhost:3000 (when running `npm run dev` in fe-intro-video folder)
+**Video location:** `/home/leskyjo/Documents/FE-Videos/fe-intro-video/out/fe-intro-video-final.mp4`
+
+---
+
 # Session Checkpoint - 2026-01-24
 
 ## Accomplished
