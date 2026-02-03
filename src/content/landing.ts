@@ -325,17 +325,19 @@ export const features: FeatureConfig[] = [
           "This isn't just merchandise—it's a statement. When you wear FE, you're declaring who you're becoming. Ownership starts with how you carry yourself.",
       },
     ],
-    media: [],
-    videoSrc: "/shirtvideo.mp4",
-    supportingImages: [
+    media: [
       {
+        type: "image",
         src: "/FE-tradtional.png",
         alt: "FE traditional design",
+        label: "Classic",
         caption: "Represent the movement. Wear your transformation.",
       },
       {
+        type: "image",
         src: "/FEtradtional-white.png",
         alt: "FE traditional white design",
+        label: "Light",
         caption: "Represent the movement. Wear your transformation.",
       },
     ],

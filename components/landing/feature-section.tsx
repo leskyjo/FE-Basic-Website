@@ -254,6 +254,39 @@ export function FeatureSection({ feature }: FeatureSectionProps) {
               )}
               <MediaBlock type="video" label="Preview" className="min-h-[180px]" />
             </div>
+          ) : isMerch && feature.media.length > 0 ? (
+            <div className="grid gap-4">
+              {feature.media.map((media) =>
+                media.src ? (
+                  <ClickableImage key={media.src} src={media.src} alt={media.alt || feature.title}>
+                    <div className="group relative min-h-[320px] overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-[#0c0c0c] to-[#050505] shadow-[0_30px_120px_rgba(255,0,0,0.14)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_40px_140px_rgba(255,0,0,0.22)]">
+                      <Image
+                        src={media.src}
+                        alt={media.alt || "Shop image"}
+                        fill
+                        className="object-contain p-4 opacity-90"
+                      />
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-black/40 via-transparent to-red-500/15" />
+                      {media.label && (
+                        <span className="absolute left-3 bottom-3 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
+                          {media.label}
+                        </span>
+                      )}
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-opacity group-hover:bg-black/20 group-hover:opacity-100">
+                        <span className="rounded-full bg-white/10 p-2 backdrop-blur">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                            <line x1="11" y1="8" x2="11" y2="14" />
+                            <line x1="8" y1="11" x2="14" y2="11" />
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                  </ClickableImage>
+                ) : null
+              )}
+            </div>
           ) : hasCustomVideo ? (
             <>
               <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-[#0c0c0c] to-[#050505] shadow-[0_30px_120px_rgba(255,0,0,0.14)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_40px_140px_rgba(255,0,0,0.22)] focus-within:outline focus-within:outline-1 focus-within:outline-red-500/70">
