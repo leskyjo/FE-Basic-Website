@@ -52,8 +52,8 @@ export function HeroSection() {
               videoSrc="/fe-intro-video.mp4"
               src="/hero-credit.jpg.png"
               alt="Felon Entrepreneur intro video"
-              label="Watch"
               className="w-full rounded-2xl"
+              autoPlay
             />
           </div>
         </div>

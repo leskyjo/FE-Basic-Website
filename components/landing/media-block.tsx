@@ -7,12 +7,13 @@ type MediaBlockProps = {
   alt?: string;
   label?: string;
   className?: string;
+  autoPlay?: boolean;
 };
 
 const cx = (...classes: Array<string | undefined | false>) =>
   classes.filter(Boolean).join(" ");
 
-export function MediaBlock({ type, src, videoSrc, alt, label, className }: MediaBlockProps) {
+export function MediaBlock({ type, src, videoSrc, alt, label, className, autoPlay }: MediaBlockProps) {
   const base =
     "group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-[#0c0c0c] to-[#050505] shadow-[0_30px_120px_rgba(255,0,0,0.07)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_40px_140px_rgba(255,0,0,0.18)] focus-within:outline focus-within:outline-1 focus-within:outline-red-500/70";
 
@@ -56,6 +57,9 @@ export function MediaBlock({ type, src, videoSrc, alt, label, className }: Media
           src={videoSrc}
           controls
           playsInline
+          autoPlay={autoPlay}
+          muted={autoPlay}
+          loop={autoPlay}
           className="w-full h-auto"
           poster={src}
         >
