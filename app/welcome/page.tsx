@@ -3,13 +3,22 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 
 export default function WelcomePage() {
+  const router = useRouter();
   const { profile, signOut } = useAuth();
   const [showElectricity, setShowElectricity] = useState(false);
   const [showContent, setShowContent] = useState(false);
+  const [isSigningOut, setIsSigningOut] = useState(false);
   const [waitlistPosition] = useState(() => Math.floor(Math.random() * 200) + 100);
+
+  const handleSignOut = async () => {
+    setIsSigningOut(true);
+    await signOut();
+    router.push("/");
+  };
 
   useEffect(() => {
     // Trigger electricity animation after mount
@@ -41,10 +50,11 @@ export default function WelcomePage() {
           />
         </Link>
         <button
-          onClick={() => signOut()}
-          className="text-sm text-slate-400 hover:text-white transition"
+          onClick={handleSignOut}
+          disabled={isSigningOut}
+          className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg transition disabled:opacity-50"
         >
-          Sign out
+          {isSigningOut ? "Signing out..." : "Sign Out"}
         </button>
       </header>
 
