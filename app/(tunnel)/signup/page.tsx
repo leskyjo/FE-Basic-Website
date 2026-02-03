@@ -82,7 +82,9 @@ export default function SignupPage() {
     }
 
     setIsSubmitting(true);
-    const emailRedirectTo = `${window.location.origin}/auth/callback`;
+    // Use production URL for email redirects, fallback to current origin for local dev
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
+    const emailRedirectTo = `${siteUrl}/auth/callback`;
     const { data, error } = await supabase.auth.signUp({
       email: sanitizedEmail,
       password,

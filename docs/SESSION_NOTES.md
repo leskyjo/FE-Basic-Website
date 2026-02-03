@@ -4,6 +4,63 @@ Checkpoints saved before context clears. Read this file to resume work.
 
 ---
 
+# Session Checkpoint - 2026-02-02
+
+## Accomplished
+- **Successfully deployed FE website to AWS Amplify** - Site is now live at https://main.d1jay7o3nd1uxx.amplifyapp.com
+- **Restructured project** - Moved Next.js app from `web-app-antigravity-2-clean/` subdirectory to repo root for Amplify compatibility
+- **Restored Supabase authentication** - Signup, login, forgot-password, reset-password pages all working
+- **Created welcome page** with red electricity animation effect for post-signup experience
+- **Added founder social links** (Facebook/Instagram) to Kyle and Nate's cards in founders section
+- **Fixed async cookies() issue** for Next.js 14 compatibility in auth callback route
+- **Installed and configured Vercel CLI** (alternative deployment option)
+- **Verified Supabase CLI works** and confirmed 2 users exist in database (myyardstar@gmail.com, felonentrepreneurllc@gmail.com)
+- **Set environment variables in Amplify** (NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY)
+
+## Decisions Made
+- **AWS Amplify over Vercel** - Stayed with Amplify despite initial build failures; eventually got it working
+- **Project restructure required** - Amplify's framework detection works best when Next.js app is at repo root, not in subdirectory
+- **Standalone output mode** - Configured `output: 'standalone'` in next.config.mjs for Amplify SSR deployment
+- **Keep auth enabled** - Even though Supabase had maintenance issues with email delivery, left auth in place since it's working
+
+## Open Tasks
+- [ ] **Add DNS records at Network Solutions** to point felonentrepreneur.com to Amplify:
+  - CNAME: `_7e3e4edbcda8e85dcaae1880a20ef1d3` → `_b51cc15e6f12167f736f5dacafccbd21.jkddzztszm.acm-validations.aws.`
+  - CNAME: `www` → `d1jay7o3nd1uxx.amplifyapp.com`
+  - ANAME/ALIAS: `@` → `d1jay7o3nd1uxx.amplifyapp.com` (if supported)
+- [ ] Run `npm install` in the new project location before running dev server
+- [ ] Test email verification flow once Supabase maintenance completes
+- [ ] Verify welcome page displays correctly after email verification
+
+## Files Modified
+- **Restructured entire project** - All files moved from `web-app-antigravity-2-clean/` to repo root
+- `lib/supabase/server.ts` - Made `createClient()` async and added `await cookies()`
+- `app/auth/callback/route.ts` - Added `await` to `createClient()` call
+- `next.config.mjs` - Added `output: 'standalone'` for Amplify SSR
+- `package.json` - Added `@aws-amplify/adapter-nextjs` dependency
+- `components/landing/founders-section.tsx` - Added social links for Kyle and Nate
+- Deleted: `amplify.yml`, `netlify.toml` (no longer needed at root)
+
+## Context for Next Session
+
+**Project location changed!** The Next.js app is now at:
+- **`/home/leskyjo/Documents/FE WebApp-Clean/`** (was in `web-app-antigravity-2-clean/` subdirectory)
+
+**Before running dev server**, run `npm install` since node_modules wasn't moved.
+
+**Website is LIVE** at https://main.d1jay7o3nd1uxx.amplifyapp.com
+
+**DNS setup still needed** at Network Solutions to make felonentrepreneur.com work. The SSL certificate verification CNAME must be added first, then wait for propagation, then add the www and root domain records.
+
+**Auth flow**: Signup → Email verification → `/auth/callback` → `/welcome` page. Fixed the Internal Server Error by making cookies() async.
+
+**GitHub:** https://github.com/leskyjo/FE-Basic-Website
+**Branch:** main
+**Amplify App ID:** d1jay7o3nd1uxx
+**Build status:** PASSING (Build #7)
+
+---
+
 # Session Checkpoint - 2026-01-28
 
 ## Accomplished
