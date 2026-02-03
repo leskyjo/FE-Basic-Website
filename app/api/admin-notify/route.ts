@@ -1,11 +1,8 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
-// Admin emails to notify on new signups
-const ADMIN_EMAILS = [
-  "kyle@felonentrepreneur.com",
-  "nate@felonentrepreneur.com",
-];
+// Admin email to notify on new signups
+const ADMIN_EMAIL = "felonentrepreneurllc@gmail.com";
 
 export async function POST(request: Request) {
   try {
@@ -32,7 +29,7 @@ export async function POST(request: Request) {
     // Send notification to all admins
     const mailOptions = {
       from: '"Felon Entrepreneur" <noreply@felonentrepreneur.com>',
-      to: ADMIN_EMAILS.join(", "),
+      to: ADMIN_EMAIL,
       subject: "New Waitlist Signup - Felon Entrepreneur",
       html: `
 <!DOCTYPE html>
