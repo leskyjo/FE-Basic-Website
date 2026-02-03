@@ -106,6 +106,15 @@ export default function SignupPage() {
       return;
     }
 
+    // Send admin notification (fire-and-forget, don't block user)
+    fetch("/api/admin-notify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userEmail: sanitizedEmail }),
+    }).catch(() => {
+      // Silently fail - admin notification is not critical for user
+    });
+
     setSuccessEmail(sanitizedEmail);
     setIsSubmitting(false);
   };
