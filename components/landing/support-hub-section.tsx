@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { supportHub } from "@/src/content/landing";
 
@@ -26,11 +26,16 @@ const supportImages: LightboxImage[] = [
 
 export function SupportHubSection() {
   const { openLightbox, registerImages } = useLightbox();
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
   // Register images with global lightbox on mount
   useEffect(() => {
     registerImages(supportImages);
   }, [registerImages]);
+
+  const toggleExpanded = (index: number) => {
+    setExpandedIndex(expandedIndex === index ? null : index);
+  };
 
   return (
     <section className="relative isolate overflow-hidden px-6 py-12 md:px-10">
@@ -43,15 +48,42 @@ export function SupportHubSection() {
           <h2 className="text-3xl font-semibold text-white leading-tight">{supportHub.headline}</h2>
           <p className="text-sm text-slate-300">{supportHub.copy}</p>
           <ul className="space-y-3">
-            {bullets.map((item) => (
-              <li
-                key={item}
-                className="group flex items-start gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-200 transition hover:-translate-y-1 hover:border-red-300/50 hover:shadow-[0_24px_90px_rgba(255,0,0,0.2)]"
-              >
-                <span className="mt-0.5 grid h-9 w-9 place-items-center rounded-full border border-red-500/60 bg-black text-xs font-bold text-red-200 transition group-hover:shadow-[0_0_0_6px_rgba(255,0,0,0.2)]">
-                  ❤️
-                </span>
-                <span>{item}</span>
+            {bullets.map((item, index) => (
+              <li key={item.text}>
+                <button
+                  onClick={() => toggleExpanded(index)}
+                  className="group flex w-full items-start gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-sm text-slate-200 transition hover:-translate-y-1 hover:border-red-300/50 hover:shadow-[0_24px_90px_rgba(255,0,0,0.2)]"
+                >
+                  <span className="mt-0.5 grid h-9 w-9 flex-shrink-0 place-items-center rounded-full border border-red-500/60 bg-black text-xs font-bold text-red-200 transition group-hover:shadow-[0_0_0_6px_rgba(255,0,0,0.2)]">
+                    ❤️
+                  </span>
+                  <span className="flex-1">{item.text}</span>
+                  <span
+                    className={`mt-1 text-red-400 transition-transform duration-200 ${
+                      expandedIndex === index ? "rotate-180" : ""
+                    }`}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                  </span>
+                </button>
+                {expandedIndex === index && (
+                  <div className="mt-2 ml-12 rounded-xl border border-red-500/20 bg-red-500/5 p-4 text-sm">
+                    <h4 className="font-semibold text-red-300 mb-2">{item.expandedTitle}</h4>
+                    <p className="text-slate-300 leading-relaxed">{item.expandedContent}</p>
+                  </div>
+                )}
               </li>
             ))}
           </ul>

@@ -94,9 +94,19 @@ export default function SignupPage() {
     });
 
     if (error) {
-      // Generic error message to avoid revealing account existence
-      const genericMessage = "Unable to create account. Please check your information and try again.";
-      setErrorMessage(genericMessage);
+      const lowered = error.message.toLowerCase();
+      let friendlyMessage = "Unable to create account. Please check your information and try again.";
+
+      // Check for account already exists
+      if (lowered.includes("already registered") || lowered.includes("already exists") || lowered.includes("user already")) {
+        friendlyMessage = "An account with this email already exists. Please log in instead.";
+      } else if (lowered.includes("rate limit") || lowered.includes("too many")) {
+        friendlyMessage = "Too many attempts. Please wait a few minutes and try again.";
+      } else if (lowered.includes("invalid email")) {
+        friendlyMessage = "Please enter a valid email address.";
+      }
+
+      setErrorMessage(friendlyMessage);
       setIsSubmitting(false);
       return;
     }
@@ -251,8 +261,15 @@ export default function SignupPage() {
                 className="mt-1 h-4 w-4 rounded border-white/20 bg-white/5 text-red-500 focus:ring-red-500/50"
               />
               <span>
-                I agree to the terms and acknowledge the privacy policy. This is required to
-                continue.
+                I agree to the{" "}
+                <Link href="/terms" className="text-red-400 hover:text-red-300 underline" target="_blank">
+                  Terms of Service
+                </Link>{" "}
+                and acknowledge the{" "}
+                <Link href="/privacy-policy" className="text-red-400 hover:text-red-300 underline" target="_blank">
+                  Privacy Policy
+                </Link>
+                . This is required to continue.
               </span>
             </label>
 

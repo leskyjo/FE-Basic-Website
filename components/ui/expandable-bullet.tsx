@@ -6,9 +6,10 @@ import { BulletItem } from "@/src/content/landing";
 
 type ExpandableBulletProps = {
   bullet: BulletItem;
+  icon?: string;
 };
 
-export function ExpandableBullet({ bullet }: ExpandableBulletProps) {
+export function ExpandableBullet({ bullet, icon = "✓" }: ExpandableBulletProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
@@ -25,8 +26,8 @@ export function ExpandableBullet({ bullet }: ExpandableBulletProps) {
       className="group cursor-pointer rounded-2xl border border-white/5 bg-white/5 px-4 py-3 text-sm text-slate-200 transition-all duration-300 hover:border-red-500/20 hover:bg-white/[0.07]"
     >
       <div className="flex items-start gap-3">
-        <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-red-500/20 text-xs font-bold text-red-300">
-          ✓
+        <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-red-500/20 text-sm">
+          {icon}
         </span>
         <span className="flex-1">{bullet.text}</span>
         <span

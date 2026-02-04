@@ -171,7 +171,7 @@ export function FeatureSection({ feature }: FeatureSectionProps) {
 
                 <ul className="space-y-3">
                   {feature.bullets.map((bullet) => (
-                    <ExpandableBullet key={bullet.text} bullet={bullet} />
+                    <ExpandableBullet key={bullet.text} bullet={bullet} icon={feature.bulletIcon} />
                   ))}
                 </ul>
 
@@ -220,7 +220,7 @@ export function FeatureSection({ feature }: FeatureSectionProps) {
 
               <ul className="space-y-3">
                 {feature.bullets.map((bullet) => (
-                  <ExpandableBullet key={bullet.text} bullet={bullet} />
+                  <ExpandableBullet key={bullet.text} bullet={bullet} icon={feature.bulletIcon} />
                 ))}
               </ul>
 

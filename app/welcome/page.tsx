@@ -12,7 +12,18 @@ export default function WelcomePage() {
   const [showElectricity, setShowElectricity] = useState(false);
   const [showContent, setShowContent] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
-  const [waitlistPosition] = useState(() => Math.floor(Math.random() * 200) + 100);
+  const [waitlistPosition] = useState(() => {
+    // Check localStorage for existing position
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('fe_waitlist_position');
+      if (stored) return parseInt(stored, 10);
+      // Generate and store new position
+      const newPosition = Math.floor(Math.random() * 200) + 100;
+      localStorage.setItem('fe_waitlist_position', newPosition.toString());
+      return newPosition;
+    }
+    return 150; // Fallback for SSR
+  });
 
   const handleSignOut = async () => {
     setIsSigningOut(true);

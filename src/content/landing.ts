@@ -26,6 +26,7 @@ export type FeatureConfig = {
   accentImage?: string;
   videoSrc?: string;
   supportingImages?: { src: string; alt: string; caption?: string }[];
+  bulletIcon?: string; // Unique icon for this feature's bullets
 };
 
 export const supportHub = {
@@ -34,12 +35,32 @@ export const supportHub = {
   copy:
     "Felon Entrepreneur exists to break the cycle of recidivism through real business education and economic independence. Your support expands access to tools, training, and opportunity for justice-impacted individuals nationwide.",
   bullets: [
-    "Fund real tools that create real income",
-    "Expand access to business training",
-    "Support a movement, not just a platform",
-    "Help someone build a legacy",
+    {
+      text: "See exactly where your money goes",
+      expandedTitle: "Full Transparency, Every Week",
+      expandedContent:
+        "Every week, we post videos on our app, website, and social media showing exactly how donations are used. Watch real people get real help—housing assistance, business startup costs, emergency support. You'll see the direct impact of every dollar.",
+    },
+    {
+      text: "Top donors get rewarded monthly",
+      expandedTitle: "Monthly Donor Recognition Program",
+      expandedContent:
+        "Our top three monthly donors receive exclusive rewards. First place chooses from three premium packages including 6 months free app access, a podcast appearance, limited-edition merch, website leaderboard placement, and social media shoutouts. Second place picks from two packages. Third place receives exclusive limited-edition merchandise.",
+    },
+    {
+      text: "Support a movement, not just a platform",
+      expandedTitle: "Breaking the Cycle Together",
+      expandedContent:
+        "This isn't charity—it's investment in human potential. Every contribution helps someone access tools for legitimate income, business education, and economic independence. You're not just donating—you're helping break the cycle of recidivism one person at a time.",
+    },
+    {
+      text: "Help someone build a legacy",
+      expandedTitle: "From Setback to Ownership",
+      expandedContent:
+        "Your support gives justice-impacted individuals the foundation to build something real—businesses, careers, stable families. When someone goes from incarceration to entrepreneur, that's a legacy. You made that possible.",
+    },
   ],
-  cta: { label: "Learn more", href: "#features" },
+  cta: { label: "Support the Mission", href: "/signup" },
 };
 
 export const heroContent = {
@@ -62,18 +83,21 @@ export const benefitCards = [
     description:
       "Answer a few questions and our AI builds a personalized Life Plan with clear action steps—weekly, monthly, quarterly. No generic advice. Real moves based on your situation.",
     href: "/signup",
+    cta: "Reserve Your Spot →",
   },
   {
     title: "Systems Over Motivation",
     description:
       "Daily check-ins, streak tracking, and micro-routines keep you moving forward. Progress happens through structure, not willpower. We built the system—you execute.",
     href: "/signup",
+    cta: "Join the Movement →",
   },
   {
     title: "Own Something Real",
     description:
       "Not everyone is meant to work for someone else. Our Build My Business track walks you step-by-step from idea to LLC to income. Ownership creates freedom.",
     href: "/signup",
+    cta: "Get Early Access →",
   },
 ];
 
@@ -81,6 +105,7 @@ export const features: FeatureConfig[] = [
   {
     id: "life-plan",
     title: "Personalized Life Plan",
+    bulletIcon: "🎯",
     description:
       "Tell us where you are and where you want to go. Our AI builds a custom roadmap organized by timeframe—with action steps you can actually execute. Regenerate as your goals evolve.",
     bullets: [
@@ -119,11 +144,12 @@ export const features: FeatureConfig[] = [
           "Your personalized roadmap—built from your goals, organized by timeframe, ready to execute.",
       },
     ],
-    cta: { label: "Get your plan", href: "/signup" },
+    cta: { label: "Be First In Line", href: "/signup" },
   },
   {
     id: "career-finder",
     title: "Job Discovery",
+    bulletIcon: "💼",
     description:
       "Find employers who actually hire people with records. Search by location, filter for remote and fair-chance employers, build resumes, and get application support—all in one place.",
     bullets: [
@@ -162,12 +188,13 @@ export const features: FeatureConfig[] = [
           "Find employers who hire based on your potential, not just your past.",
       },
     ],
-    cta: { label: "Start searching", href: "/signup" },
+    cta: { label: "Get Notified", href: "/signup" },
     flip: true,
   },
   {
     id: "build-business",
     title: "Build My Business",
+    bulletIcon: "🏗️",
     description:
       "Ready to own something? Our step-by-step business builder walks you through formation, registration, branding, and launch. Verify each step, unlock the next. No guesswork.",
     bullets: [
@@ -206,11 +233,12 @@ export const features: FeatureConfig[] = [
           "Every step mapped out. Every resource verified. From idea to income.",
       },
     ],
-    cta: { label: "Start building", href: "/signup" },
+    cta: { label: "Claim Your Spot", href: "/signup" },
   },
   {
     id: "stories",
     title: "Stories",
+    bulletIcon: "📖",
     description:
       "Connect with a community that understands. Share your journey, read others' experiences, and find inspiration from people who've walked similar paths. Real stories. Real transformation.",
     bullets: [
@@ -249,12 +277,13 @@ export const features: FeatureConfig[] = [
           "Real transformation stories from people who understand your journey.",
       },
     ],
-    cta: { label: "Join the community", href: "/signup" },
+    cta: { label: "Join the Waitlist", href: "/signup" },
     flip: true,
   },
   {
     id: "cheat-codes",
     title: "Cheat Codes",
+    bulletIcon: "⚡",
     description:
       "Short, high-value video lessons that give you immediate wins. Credit hacks, business shortcuts, mindset resets, and practical tactics from people who've been there. Quick to watch. Instant to apply.",
     bullets: [
@@ -292,11 +321,12 @@ export const features: FeatureConfig[] = [
         caption: "Quick wins, practical tactics, immediate results.",
       },
     ],
-    cta: { label: "Access Cheat Codes", href: "/signup" },
+    cta: { label: "Unlock Early Access", href: "/signup" },
   },
   {
     id: "merch",
     title: "Shop",
+    bulletIcon: "🛍️",
     description:
       "Represent the movement. Premium merchandise designed for people building something real. Limited drops, mission-driven designs, and quality that reflects who you're becoming.",
     bullets: [
@@ -341,7 +371,7 @@ export const features: FeatureConfig[] = [
         caption: "Represent the movement. Wear your transformation.",
       },
     ],
-    cta: { label: "Visit the Shop", href: "/signup" },
+    cta: { label: "Get First Dibs", href: "/signup" },
     flip: true,
   },
 ];

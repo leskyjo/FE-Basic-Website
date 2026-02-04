@@ -15,7 +15,7 @@ export function BenefitCardsRow() {
             <h3 className="text-2xl font-semibold text-red-400">{card.title}</h3>
             <p className="mt-2 text-lg text-slate-200">{card.description}</p>
             <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-red-300 transition group-hover:text-red-200">
-              Start now →
+              {card.cta}
             </span>
           </Link>
         ))}
