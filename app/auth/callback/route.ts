@@ -4,12 +4,15 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function GET(request: Request) {
   try {
-    const { searchParams, origin } = new URL(request.url);
+    const { searchParams } = new URL(request.url);
     const code = searchParams.get("code");
+
+    // Use production URL - don't rely on origin which can be wrong in SSR deployments
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://felonentrepreneur.com';
 
     if (!code) {
       console.error("Auth callback: No code provided");
-      return NextResponse.redirect(`${origin}/login?error=no_code`);
+      return NextResponse.redirect(`${baseUrl}/login?error=no_code`);
     }
 
     const supabase = await createClient();
@@ -18,12 +21,12 @@ export async function GET(request: Request) {
     if (error) {
       console.error("Auth callback error:", error.message);
       return NextResponse.redirect(
-        `${origin}/login?error=${encodeURIComponent(error.message)}`
+        `${baseUrl}/login?error=${encodeURIComponent(error.message)}`
       );
     }
 
     // After successful email verification, redirect to welcome page
-    return NextResponse.redirect(`${origin}/welcome`);
+    return NextResponse.redirect(`${baseUrl}/welcome`);
   } catch (err) {
     console.error("Auth callback exception:", err);
     // Return a proper error page instead of crashing
