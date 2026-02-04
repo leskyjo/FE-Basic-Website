@@ -82,8 +82,10 @@ export default function SignupPage() {
     }
 
     setIsSubmitting(true);
-    // Use production URL for email redirects, fallback to current origin for local dev
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
+    // Use production URL for email redirects
+    // In production, always use the custom domain; locally use origin for dev
+    const isLocalhost = typeof window !== 'undefined' && window.location.hostname === 'localhost';
+    const siteUrl = isLocalhost ? window.location.origin : 'https://www.felonentrepreneur.com';
     const emailRedirectTo = `${siteUrl}/auth/callback`;
     const { data, error } = await supabase.auth.signUp({
       email: sanitizedEmail,
